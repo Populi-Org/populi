@@ -1,0 +1,14 @@
+services:
+  database:
+    image: "postgres:18"
+    container_name: "populi-db"
+    ports:
+      - 5432:5432
+
+    environment:
+      POSTGRES_USER: populi 
+      POSTGRES_PASSWORD: populi 
+      POSTGRES_DB: populi-db
+
+    volumes:
+      - ./db-data/:/var/lib/postgresql/

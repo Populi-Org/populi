@@ -1,0 +1,5 @@
+downloads/
+__pycache__/
+sorted/
+final_data.json
+.env

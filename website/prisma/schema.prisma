@@ -1,0 +1,398 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Deputy {
+  id                Int                @id @default(autoincrement())
+  depId             Int                @unique @map("dep_id")
+  depCadId          Int?               @map("dep_cad_id")
+  depNomeParlamentar String            @map("dep_nome_parlamentar")
+  depNomeCompleto   String             @map("dep_nome_completo")
+  depCPId           Int?               @map("dep_cp_id")
+  depCPDes          String?            @map("dep_cp_des")
+  depCargo          String?            @map("dep_cargo")
+  legDes            String             @map("leg_des")
+
+  partyHistory      PartyHistory[]
+  statusHistory     StatusHistory[]
+  dadosLegis        DadosLegisDeputado[]
+  actP              ActP[]
+  audicoes          Audicoes[]
+  audiencias        Audiencias[]
+  cms               Cms[]
+  deslocacoes       Deslocacoes[]
+  dle               DlE[]
+  eventos           Eventos[]
+  gpa               Gpa[]
+  ini               Ini[]
+  intev             Intev[]
+  parlamentoJovens  ParlamentoJovens[]
+  req               Req[]
+  scgt              Scgt[]
+
+  relAutoresPareceres    RelAutoresPareceres[]
+  relContasPublicas      RelContasPublicas[]
+  relIniciativas         RelIniciativas[]
+  relIniEuropeias        RelIniEuropeias[]
+  relPeticoes            RelPeticoes[]
+
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+
+  @@index([depNomeParlamentar])
+  @@index([depCPDes])
+  @@map("deputies")
+}
+
+model PartyHistory {
+  id            Int       @id @default(autoincrement())
+  deputyId      Int       @map("deputy_id")
+  gpId          Int?      @map("gp_id")
+  gpSigla       String?   @map("gp_sigla")
+  gpDtInicio    DateTime? @map("gp_dt_inicio")
+  gpDtFim       DateTime? @map("gp_dt_fim")
+
+  deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+
+  @@index([gpSigla])
+  @@map("party_history")
+}
+
+model StatusHistory {
+  id            Int       @id @default(autoincrement())
+  deputyId      Int       @map("deputy_id")
+  sioDes        String?   @map("sio_des")
+  sioDtInicio   DateTime? @map("sio_dt_inicio")
+  sioDtFim      DateTime? @map("sio_dt_fim")
+
+  deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+
+  @@map("status_history")
+}
+
+model DadosLegisDeputado {
+  id            Int       @id @default(autoincrement())
+  deputyId      Int       @map("deputy_id")
+  dplGrpar      String?   @map("dpl_grpar")
+  dplLg         String?   @map("dpl_lg")
+  nome          String?   @map("nome")
+
+  deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+
+  @@map("dados_legis_deputado")
+}
+
+model ActP {
+  id            Int       @id @default(autoincrement())
+  deputyId      Int       @map("deputy_id")
+  actAs         String?   @map("act_as")
+  actDtdeb      DateTime? @map("act_dtdeb")
+  actDtent      DateTime? @map("act_dtent")
+  actId         String?   @map("act_id")
+  actNr         String?   @map("act_nr")
+  actSelLg      String?   @map("act_sel_lg")
+  actSelNr      String?   @map("act_sel_nr")
+  actTp         String?   @map("act_tp")
+  actTpdesc     String?   @map("act_tpdesc")
+
+  deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+
+  @@map("act_p")
+}
+
+model Audicoes {
+  id            Int       @id @default(autoincrement())
+  deputyId      Int       @map("deputy_id")
+  accDtaud      DateTime? @map("acc_dtaud")
+  actAs         String?   @map("act_as")
+  actDtdes1     DateTime? @map("act_dtdes1")
+  actDtdes2     DateTime? @map("act_dtdes2")
+  actDtent      DateTime? @map("act_dtent")
+  actId         String?   @map("act_id")
+  actLg         String?   @map("act_lg")
+  actLoc        String?   @map("act_loc")
+  actNr         String?   @map("act_nr")
+  actSl         String?   @map("act_sl")
+  actTp         String?   @map("act_tp")
+  actTpdesc     String?   @map("act_tpdesc")
+  cmsAb         String?   @map("cms_ab")
+  cmsNo         String?   @map("cms_no")
+  nomeEntidadeExterna String? @map("nome_entidade_externa")
+  tevTp         String?   @map("tev_tp")
+
+  deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+
+  @@map("audicoes")
+}
+
+model Audiencias {
+  id            Int       @id @default(autoincrement())
+  deputyId      Int       @map("deputy_id")
+  accDtaud      DateTime? @map("acc_dtaud")
+  actAs         String?   @map("act_as")
+  actDtdes1     DateTime? @map("act_dtdes1")
+  actDtdes2     DateTime? @map("act_dtdes2")
+  actDtent      DateTime? @map("act_dtent")
+  actId         String?   @map("act_id")
+  actLg         String?   @map("act_lg")
+  actLoc        String?   @map("act_loc")
+  actNr         String?   @map("act_nr")
+  actSl         String?   @map("act_sl")
+  actTp         String?   @map("act_tp")
+  actTpdesc     String?   @map("act_tpdesc")
+  cmsAb         String?   @map("cms_ab")
+  cmsNo         String?   @map("cms_no")
+  nomeEntidadeExterna String? @map("nome_entidade_externa")
+  tevTp         String?   @map("tev_tp")
+
+  deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+
+  @@map("audiencias")
+}
+
+model Cms {
+  id            Int       @id @default(autoincrement())
+  deputyId      Int       @map("deputy_id")
+  cmsCargo      String?   @map("cms_cargo")
+  cmsCd         String?   @map("cms_cd")
+  cmsLg         String?   @map("cms_lg")
+  cmsNo         String?   @map("cms_no")
+  cmsSituacao   String?   @map("cms_situacao")
+  cmsSubCargo   String?   @map("cms_sub_cargo")
+
+  deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+
+  @@map("cms")
+}
+
+model Deslocacoes {
+  id            Int       @id @default(autoincrement())
+  deputyId      Int       @map("deputy_id")
+  accDtaud      DateTime? @map("acc_dtaud")
+  actAs         String?   @map("act_as")
+  actDtdes1     DateTime? @map("act_dtdes1")
+  actDtdes2     DateTime? @map("act_dtdes2")
+  actDtent      DateTime? @map("act_dtent")
+  actId         String?   @map("act_id")
+  actLg         String?   @map("act_lg")
+  actLoc        String?   @map("act_loc")
+  actNr         String?   @map("act_nr")
+  actSl         String?   @map("act_sl")
+  actTp         String?   @map("act_tp")
+  actTpdesc     String?   @map("act_tpdesc")
+  cmsAb         String?   @map("cms_ab")
+  cmsNo         String?   @map("cms_no")
+  nomeEntidadeExterna String? @map("nome_entidade_externa")
+  tevTp         String?   @map("tev_tp")
+
+  deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+
+  @@map("deslocacoes")
+}
+
+model DlE {
+  id            Int       @id @default(autoincrement())
+  deputyId      Int       @map("deputy_id")
+  devDtfim      DateTime? @map("dev_dtfim")
+  devDtini      DateTime? @map("dev_dtini")
+  devId         String?   @map("dev_id")
+  devLoc        String?   @map("dev_loc")
+  devNo         String?   @map("dev_no")
+  devSelLg      String?   @map("dev_sel_lg")
+  devSelNr      String?   @map("dev_sel_nr")
+  devTp         String?   @map("dev_tp")
+
+  deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+
+  @@map("dle")
+}
+
+model Eventos {
+  id            Int       @id @default(autoincrement())
+  deputyId      Int       @map("deputy_id")
+  accDtaud      DateTime? @map("acc_dtaud")
+  actAs         String?   @map("act_as")
+  actDtdes1     DateTime? @map("act_dtdes1")
+  actDtdes2     DateTime? @map("act_dtdes2")
+  actDtent      DateTime? @map("act_dtent")
+  actId         String?   @map("act_id")
+  actLg         String?   @map("act_lg")
+  actLoc        String?   @map("act_loc")
+  actNr         String?   @map("act_nr")
+  actSl         String?   @map("act_sl")
+  actTp         String?   @map("act_tp")
+  actTpdesc     String?   @map("act_tpdesc")
+  cmsAb         String?   @map("cms_ab")
+  cmsNo         String?   @map("cms_no")
+  nomeEntidadeExterna String? @map("nome_entidade_externa")
+  tevTp         String?   @map("tev_tp")
+
+  deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+
+  @@map("eventos")
+}
+
+model Gpa {
+  id            Int       @id @default(autoincrement())
+  deputyId      Int       @map("deputy_id")
+  cgaCrg        String?   @map("cga_crg")
+  cgaDtfim      DateTime? @map("cga_dtfim")
+  cgaDtini      DateTime? @map("cga_dtini")
+  gplId         String?   @map("gpl_id")
+  gplNo         String?   @map("gpl_no")
+  gplSelLg      String?   @map("gpl_sel_lg")
+
+  deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+
+  @@map("gpa")
+}
+
+model Ini {
+  id            Int       @id @default(autoincrement())
+  deputyId      Int       @map("deputy_id")
+  iniId         String?   @map("ini_id")
+  iniNr         String?   @map("ini_nr")
+  iniSelLg      String?   @map("ini_sel_lg")
+  iniSelNr      String?   @map("ini_sel_nr")
+  iniTi         String?   @map("ini_ti")
+  iniTp         String?   @map("ini_tp")
+  iniTpdesc     String?   @map("ini_tpdesc")
+
+  deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+
+  @@map("ini")
+}
+
+model Intev {
+  id            Int       @id @default(autoincrement())
+  deputyId      Int       @map("deputy_id")
+  intId         String?   @map("int_id")
+  intSu         String?   @map("int_su")
+  intTe         String?   @map("int_te")
+  pubDar        String?   @map("pub_dar")
+  pubDtreu      DateTime? @map("pub_dtreu")
+  pubLg         String?   @map("pub_lg")
+  pubNr         String?   @map("pub_nr")
+  pubSl         String?   @map("pub_sl")
+  pubTp         String?   @map("pub_tp")
+  tinDs         String?   @map("tin_ds")
+
+  deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+
+  @@map("intev")
+}
+
+model ParlamentoJovens {
+  id                Int       @id @default(autoincrement())
+  deputyId          Int       @map("deputy_id")
+  circuloEleitoral  String?   @map("circulo_eleitoral")
+  data              DateTime? @map("data")
+  estabelecimento   String?   @map("estabelecimento")
+  legislatura       String?   @map("legislatura")
+  sessao            String?   @map("sessao")
+  tipoReuniao       String?   @map("tipo_reuniao")
+
+  deputy            Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+
+  @@map("parlamento_jovens")
+}
+
+model Req {
+  id            Int       @id @default(autoincrement())
+  deputyId      Int       @map("deputy_id")
+  reqAs         String?   @map("req_as")
+  reqDt         DateTime? @map("req_dt")
+  reqId         String?   @map("req_id")
+  reqLg         String?   @map("req_lg")
+  reqNr         String?   @map("req_nr")
+  reqPerTp      String?   @map("req_per_tp")
+  reqSl         String?   @map("req_sl")
+  reqTp         String?   @map("req_tp")
+
+  deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+
+  @@map("req")
+}
+
+model Scgt {
+  id            Int       @id @default(autoincrement())
+  deputyId      Int       @map("deputy_id")
+  ccmDscom      String?   @map("ccm_dscom")
+  cmsCargo      String?   @map("cms_cargo")
+  cmsSituacao   String?   @map("cms_situacao")
+  scmCd         String?   @map("scm_cd")
+  scmComCd      String?   @map("scm_com_cd")
+  scmComLg      String?   @map("scm_com_lg")
+
+  deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+
+  @@map("scgt")
+}
+
+model RelAutoresPareceres {
+  id            Int       @id @default(autoincrement())
+  deputyId      Int       @map("deputy_id")
+
+  deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+
+  @@map("rel_autores_pareceres")
+}
+
+model RelContasPublicas {
+  id            Int       @id @default(autoincrement())
+  deputyId      Int       @map("deputy_id")
+
+  deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+
+  @@map("rel_contas_publicas")
+}
+
+model RelIniciativas {
+  id            Int       @id @default(autoincrement())
+  deputyId      Int       @map("deputy_id")
+  accDtrel      DateTime? @map("acc_dtrel")
+  iniId         String?   @map("ini_id")
+  iniNr         String?   @map("ini_nr")
+  iniSelLg      String?   @map("ini_sel_lg")
+  iniTi         String?   @map("ini_ti")
+  iniTp         String?   @map("ini_tp")
+  relFase       String?   @map("rel_fase")
+
+  deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+
+  @@map("rel_iniciativas")
+}
+
+model RelIniEuropeias {
+  id            Int       @id @default(autoincrement())
+  deputyId      Int       @map("deputy_id")
+  ineDataRelatorio DateTime? @map("ine_data_relatorio")
+  ineId         String?   @map("ine_id")
+  ineReferencia String?   @map("ine_referencia")
+  ineTitulo     String?   @map("ine_titulo")
+  leg           String?   @map("leg")
+
+  deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+
+  @@map("rel_ini_europeias")
+}
+
+model RelPeticoes {
+  id            Int       @id @default(autoincrement())
+  deputyId      Int       @map("deputy_id")
+  pecDtrelf     DateTime? @map("pec_dtrelf")
+  petAspet      String?   @map("pet_aspet")
+  petId         String?   @map("pet_id")
+  petNr         String?   @map("pet_nr")
+  petSelLgPk    String?   @map("pet_sel_lg_pk")
+  petSelNrPk    String?   @map("pet_sel_nr_pk")
+
+  deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+
+  @@map("rel_peticoes")
+}
