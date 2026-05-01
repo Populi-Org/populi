@@ -65,12 +65,13 @@ def parse_datetime(value: str | None) -> datetime | None:
 # ---------------------------------------------------------------------------
 
 
-def make_party_history(dep_id: int, gp_list: list[dict]) -> list[tuple]:
+def make_party_history(
+    dep_id: int, gp_list: list[dict], party_map: dict
+) -> list[tuple]:
     return [
         (
             dep_id,
-            int(g["GpId"]) if g.get("GpId") else None,
-            g.get("GpSigla"),
+            party_map.get(int(g["GpId"])) if g.get("GpId") else None,
             parse_date(g.get("GpDtInicio")),
             parse_date(g.get("GpDtFim")),
         )
@@ -406,10 +407,16 @@ INSERT_DEPUTY = """
     RETURNING id
 """
 
+INSERT_PARTY_TABLE = """
+    INSERT INTO parties (gp_id, sigla)
+    VALUES (%s, %s)
+    RETURNING id
+"""
+
 INSERT_PARTY = """
     INSERT INTO party_history
-        (deputy_id, gp_id, gp_sigla, gp_dt_inicio, gp_dt_fim)
-    VALUES (%s, %s, %s, %s, %s)
+        (deputy_id, party_id, gp_dt_inicio, gp_dt_fim)
+    VALUES (%s, %s, %s, %s)
 """
 
 INSERT_STATUS = """
@@ -564,13 +571,16 @@ async def truncate_all(conn: psycopg.AsyncConnection) -> None:
         "status_history",
         "party_history",
         "deputies",
+        "parties",
     ]
     for t in tables:
         await conn.execute(f'TRUNCATE TABLE "{t}" RESTART IDENTITY CASCADE')
     print("  ✓ All tables truncated")
 
 
-async def insert_deputy(conn: psycopg.AsyncConnection, entry: dict) -> int:
+async def insert_deputy(
+    conn: psycopg.AsyncConnection, entry: dict, party_map: dict
+) -> int:
     dep = entry["Deputado"]
     act = (
         entry["AtividadeDeputadoList"][0] if entry.get("AtividadeDeputadoList") else {}
@@ -600,7 +610,7 @@ async def insert_deputy(conn: psycopg.AsyncConnection, entry: dict) -> int:
     dep_db_id = row[0]
 
     batches = [
-        (INSERT_PARTY, make_party_history(dep_db_id, dep.get("DepGP"))),
+        (INSERT_PARTY, make_party_history(dep_db_id, dep.get("DepGP"), party_map)),
         (INSERT_STATUS, make_status_history(dep_db_id, dep.get("DepSituacao"))),
         (INSERT_DADOS, make_dados_legis(dep_db_id, act.get("DadosLegisDeputado"))),
         (INSERT_ACTP, make_actp_list(dep_db_id, act.get("ActP"))),
@@ -658,11 +668,31 @@ async def main() -> None:
         total = len(data)
         print(f"Found {total} deputies\n")
 
+        # Extract unique parties
+        parties = {}
+        for entry in data:
+            for gp in entry["Deputado"].get("DepGP", []):
+                gp_id = int(gp["GpId"]) if gp.get("GpId") else None
+                sigla = gp.get("GpSigla")
+                if gp_id and sigla and gp_id not in parties:
+                    parties[gp_id] = sigla
+
+        print(f"Found {len(parties)} unique parties")
+
+        # Insert parties and build mapping gp_id -> party_db_id
+        party_map = {}
+        for gp_id, sigla in sorted(parties.items()):
+            cur = await conn.execute(INSERT_PARTY_TABLE, (gp_id, sigla))
+            row = await cur.fetchone()
+            party_map[gp_id] = row[0]
+
+        print(f"  ✓ Inserted {len(party_map)} parties\n")
+
         errors = 0
-        print("Importing ...")
+        print("Importing deputies ...")
         for idx, entry in enumerate(data):
             try:
-                await insert_deputy(conn, entry)
+                await insert_deputy(conn, entry, party_map)
                 if (idx + 1) % 100 == 0 or idx == total - 1:
                     name = entry["Deputado"]["DepNomeParlamentar"]
                     print(f"  [{idx + 1}/{total}] {name}")
@@ -673,6 +703,7 @@ async def main() -> None:
 
         print(f"\nDone!")
         print(f"  Total deputies: {total}")
+        print(f"  Total parties: {len(party_map)}")
         print(f"  Errors: {errors}")
 
 

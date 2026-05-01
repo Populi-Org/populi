@@ -16,11 +16,19 @@ CREATE TABLE "deputies" (
 );
 
 -- CreateTable
+CREATE TABLE "parties" (
+    "id" SERIAL NOT NULL,
+    "gp_id" INTEGER NOT NULL,
+    "sigla" TEXT NOT NULL,
+
+    CONSTRAINT "parties_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "party_history" (
     "id" SERIAL NOT NULL,
     "deputy_id" INTEGER NOT NULL,
-    "gp_id" INTEGER,
-    "gp_sigla" TEXT,
+    "party_id" INTEGER NOT NULL,
     "gp_dt_inicio" TIMESTAMP(3),
     "gp_dt_fim" TIMESTAMP(3),
 
@@ -351,10 +359,16 @@ CREATE INDEX "deputies_dep_nome_parlamentar_idx" ON "deputies"("dep_nome_parlame
 CREATE INDEX "deputies_dep_cp_des_idx" ON "deputies"("dep_cp_des");
 
 -- CreateIndex
-CREATE INDEX "party_history_gp_sigla_idx" ON "party_history"("gp_sigla");
+CREATE UNIQUE INDEX "parties_gp_id_key" ON "parties"("gp_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "parties_sigla_key" ON "parties"("sigla");
 
 -- AddForeignKey
 ALTER TABLE "party_history" ADD CONSTRAINT "party_history_deputy_id_fkey" FOREIGN KEY ("deputy_id") REFERENCES "deputies"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "party_history" ADD CONSTRAINT "party_history_party_id_fkey" FOREIGN KEY ("party_id") REFERENCES "parties"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "status_history" ADD CONSTRAINT "status_history_deputy_id_fkey" FOREIGN KEY ("deputy_id") REFERENCES "deputies"("id") ON DELETE CASCADE ON UPDATE CASCADE;

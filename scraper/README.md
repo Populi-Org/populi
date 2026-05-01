@@ -188,9 +188,10 @@ Many activity types share these fields:
 The data is deeply nested. For a PostgreSQL schema, consider normalizing into these tables:
 
 1. **`deputies`** — Core deputy identity (`DepId`, `DepNomeParlamentar`, `DepNomeCompleto`, `DepCPId`, `DepCPDes`, etc.)
-2. **`deputy_party_history`** — One row per `DepGP` entry
-3. **`deputy_status_history`** — One row per `DepSituacao` entry
-4. **`activities` (or per-type tables)** — Each activity type (Audiencias, Cms, Ini, etc.) can be its own table with a `deputy_id` foreign key.
+2. **`parties`** — Unique political parties (`gp_id`, `sigla`). Extracted automatically from `DepGP` data.
+3. **`party_history`** — One row per `DepGP` entry, referencing `parties` via `party_id`
+4. **`status_history`** — One row per `DepSituacao` entry
+5. **`activities` (or per-type tables)** — Each activity type (Audiencias, Cms, Ini, etc.) can be its own table with a `deputy_id` foreign key.
 
 ### JSONB Alternative
 

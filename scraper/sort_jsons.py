@@ -4,6 +4,7 @@ from pathlib import Path
 
 DOWNLOADS_DIR = Path(__file__).parent / "downloads"
 SORTED_DIR = Path(__file__).parent / "sorted"
+FINAL_DATA = Path(__file__).parent / "final_data.json"
 
 
 def sort_json_file(src_path: Path, dest_path: Path) -> None:
@@ -35,6 +36,16 @@ def main():
         dest_path = SORTED_DIR / rel
         print(f"Sorting {rel} ...")
         sort_json_file(src_path, dest_path)
+
+    # Copy sorted XVII Legislatura to final_data.json
+    xvii_sorted = SORTED_DIR / "XVII Legislatura" / "AtividadeDeputadoXVII.json"
+    if xvii_sorted.exists():
+        import shutil
+
+        shutil.copy2(xvii_sorted, FINAL_DATA)
+        print(f"\n✓ Copied XVII Legislatura to {FINAL_DATA}")
+    else:
+        print(f"\n⚠ XVII Legislatura sorted file not found at {xvii_sorted}")
 
     print(f"\nDone! Sorted files saved to {SORTED_DIR}")
 

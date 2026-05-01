@@ -49,17 +49,26 @@ model Deputy {
   @@map("deputies")
 }
 
+model Party {
+  id            Int       @id @default(autoincrement())
+  gpId          Int       @unique @map("gp_id")
+  sigla         String    @unique @map("sigla")
+
+  partyHistory  PartyHistory[]
+
+  @@map("parties")
+}
+
 model PartyHistory {
   id            Int       @id @default(autoincrement())
   deputyId      Int       @map("deputy_id")
-  gpId          Int?      @map("gp_id")
-  gpSigla       String?   @map("gp_sigla")
+  partyId       Int       @map("party_id")
   gpDtInicio    DateTime? @map("gp_dt_inicio")
   gpDtFim       DateTime? @map("gp_dt_fim")
 
   deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+  party         Party     @relation(fields: [partyId], references: [id], onDelete: Cascade)
 
-  @@index([gpSigla])
   @@map("party_history")
 }
 
@@ -396,3 +405,4 @@ model RelPeticoes {
 
   @@map("rel_peticoes")
 }
+
