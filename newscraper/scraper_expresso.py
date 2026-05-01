@@ -258,10 +258,11 @@ def scrape_deputy(deputy: Dict) -> Dict:
                     except ValueError:
                         pass
 
+                cur.execute("SAVEPOINT insert_sp")
                 cur.execute("""
                     INSERT INTO articles
-                    (deputy_id, title, url, section, published_at, authors, lead, has_picture, article_type)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    (deputy_id, title, url, section, published_at, authors, lead, has_picture, article_type, updated_at)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     ON CONFLICT (deputy_id, url) DO NOTHING
                 """, (
                     deputy_id,
@@ -273,10 +274,13 @@ def scrape_deputy(deputy: Dict) -> Dict:
                     art["lead"],
                     bool(art["has_picture"]),
                     art["article_type"],
+                    datetime.now(),
                 ))
                 if cur.rowcount > 0:
                     total_new += 1
+                cur.execute("RELEASE SAVEPOINT insert_sp")
             except Exception as exc:
+                cur.execute("ROLLBACK TO SAVEPOINT insert_sp")
                 print(f"  [!] DB insert error for {name}: {exc}")
 
     conn.commit()
