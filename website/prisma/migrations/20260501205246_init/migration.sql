@@ -349,6 +349,24 @@ CREATE TABLE "rel_peticoes" (
     CONSTRAINT "rel_peticoes_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "articles" (
+    "id" SERIAL NOT NULL,
+    "deputy_id" INTEGER NOT NULL,
+    "title" TEXT NOT NULL,
+    "url" TEXT NOT NULL,
+    "section" TEXT,
+    "published_at" TIMESTAMP(3),
+    "authors" TEXT,
+    "lead" TEXT,
+    "has_picture" BOOLEAN NOT NULL DEFAULT false,
+    "article_type" TEXT,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "articles_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "deputies_dep_id_key" ON "deputies"("dep_id");
 
@@ -363,6 +381,15 @@ CREATE UNIQUE INDEX "parties_gp_id_key" ON "parties"("gp_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "parties_sigla_key" ON "parties"("sigla");
+
+-- CreateIndex
+CREATE INDEX "articles_deputy_id_idx" ON "articles"("deputy_id");
+
+-- CreateIndex
+CREATE INDEX "articles_published_at_idx" ON "articles"("published_at");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "articles_deputy_id_url_key" ON "articles"("deputy_id", "url");
 
 -- AddForeignKey
 ALTER TABLE "party_history" ADD CONSTRAINT "party_history_deputy_id_fkey" FOREIGN KEY ("deputy_id") REFERENCES "deputies"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -429,3 +456,6 @@ ALTER TABLE "rel_ini_europeias" ADD CONSTRAINT "rel_ini_europeias_deputy_id_fkey
 
 -- AddForeignKey
 ALTER TABLE "rel_peticoes" ADD CONSTRAINT "rel_peticoes_deputy_id_fkey" FOREIGN KEY ("deputy_id") REFERENCES "deputies"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "articles" ADD CONSTRAINT "articles_deputy_id_fkey" FOREIGN KEY ("deputy_id") REFERENCES "deputies"("id") ON DELETE CASCADE ON UPDATE CASCADE;
