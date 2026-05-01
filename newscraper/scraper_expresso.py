@@ -8,11 +8,9 @@ import os
 import sys
 import time
 import random
-import re
 from datetime import datetime
 from typing import List, Dict, Optional
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from urllib.parse import urlparse
 
 import requests
 from bs4 import BeautifulSoup
@@ -40,17 +38,35 @@ JITTER = 0.1
 PAGE_SIZE = 10
 MAX_WORKERS = 12
 
+
 # ── DB helpers ───────────────────────────────────────────────────────────────
+
+def _find_env_file() -> Optional[str]:
+    """Look for website/.env or .env walking up from this file."""
+    start = os.path.dirname(os.path.abspath(__file__))
+    for _ in range(5):
+        for name in ("website/.env", ".env"):
+            candidate = os.path.join(start, name)
+            if os.path.exists(candidate):
+                return candidate
+        parent = os.path.dirname(start)
+        if parent == start:
+            break
+        start = parent
+    return None
+
 
 def get_db_url() -> str:
     """Read DATABASE_URL from .env or environment."""
-    env_path = os.path.join(os.path.dirname(__file__), "website", ".env")
-    if os.path.exists(env_path):
+    env_path = _find_env_file()
+    if env_path:
         with open(env_path) as f:
             for line in f:
                 if line.startswith("DATABASE_URL="):
-                    return line.strip().split("=", 1)[1].strip('"')
-    return os.environ.get("DATABASE_URL", "")
+                    return line.strip().split("=", 1)[1].strip('"').strip("'")
+    return os.environ.get(
+        "DATABASE_URL", "postgresql://populi:populi@localhost:5432/populi-db"
+    )
 
 
 def get_connection():
@@ -83,7 +99,7 @@ def fetch_search_page(session: requests.Session, name: str, page: int, offset: i
         resp = session.get(BASE_API_URL, params=params, headers=HEADERS, timeout=30)
         resp.raise_for_status()
         return resp.text
-    except requests.RequestException as exc:
+    except requests.RequestException:
         return None
 
 
@@ -158,6 +174,7 @@ def _name_in_title(name: str, title: str) -> bool:
 
 
 def _distribute_across_pages(pages: List[List[Dict]], max_total: int) -> List[Dict]:
+    """Round-robin pick articles from pages to spread across time."""
     result = []
     idx = 0
     while len(result) < max_total:

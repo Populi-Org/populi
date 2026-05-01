@@ -40,6 +40,7 @@ model Deputy {
   relIniciativas         RelIniciativas[]
   relIniEuropeias        RelIniEuropeias[]
   relPeticoes            RelPeticoes[]
+  articles               Article[]
 
   createdAt         DateTime           @default(now()) @map("created_at")
   updatedAt         DateTime           @updatedAt @map("updated_at")
@@ -406,3 +407,25 @@ model RelPeticoes {
   @@map("rel_peticoes")
 }
 
+
+model Article {
+  id            Int       @id @default(autoincrement())
+  deputyId      Int       @map("deputy_id")
+  title         String    @map("title")
+  url           String    @map("url")
+  section       String?   @map("section")
+  publishedAt   DateTime? @map("published_at")
+  authors       String?   @map("authors")
+  lead          String?   @map("lead")
+  hasPicture    Boolean   @default(false) @map("has_picture")
+  articleType   String?   @map("article_type")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+
+  @@unique([deputyId, url])
+  @@index([deputyId])
+  @@index([publishedAt])
+  @@map("articles")
+}
