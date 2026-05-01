@@ -16,6 +16,10 @@
           buildInputs = with pkgs; [
             python3
             uv
+            pnpm
+            nodejs_24
+            openssl
+            prisma-engines
           ];
 
           shellHook = ''
