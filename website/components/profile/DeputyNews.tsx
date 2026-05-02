@@ -81,9 +81,9 @@ export default function DeputyNews({ deputyId }: DeputyNewsProps) {
 
       {loading ? (
         <div className="space-y-6">
-          {Array.from({ length: 4 }).map((v, _i) => (
+          {["a", "b", "c", "d"].map((id) => (
             <div
-              key={`${v}-skeleton`}
+              key={`skeleton-${id}`}
               className="border-2 border-stone-900 bg-surface p-6 glossy-finish animate-pulse"
             >
               <div className="h-5 bg-stone-300 rounded w-3/4 mb-3" />
