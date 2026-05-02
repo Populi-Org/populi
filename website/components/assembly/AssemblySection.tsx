@@ -1,4 +1,4 @@
-import FilterChip from "./FilterChip";
+import FilterChip from "../ui/FilterChip";
 import RepresentativeCard from "./RepresentativeCard";
 
 interface Representative {

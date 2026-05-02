@@ -1,4 +1,6 @@
-import { AssemblySection, Footer, Header } from "@/components";
+import AssemblySection from "@/components/assembly/AssemblySection";
+import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
 
 export default function AssemblyPage() {
   return (
