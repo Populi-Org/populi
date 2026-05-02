@@ -11,40 +11,40 @@ interface TrendingTopic {
 
 const trendingTopics: TrendingTopic[] = [
   {
-    title: "Reforma da Saúde",
+    title: "Maria Santos",
     description:
-      "O novo plano para o SNS está a gerar debate intenso nas comissões parlamentares.",
-    category: "Política",
-    metric: "852 Comentários",
-    icon: "trending_up",
-    image: "/images/reforma-saude.jpg",
+      "Deputada em foco pelas propostas sobre habitação acessível e renda jovem.",
+    category: "Deputada",
+    metric: "1.8k Menções",
+    icon: "person",
+    image: "/images/politicians/maria-santos.jpg",
   },
   {
-    title: "Orçamento 2025",
+    title: "João Ferreira",
     description:
-      "Análise detalhada das dotações para educação e habitação no próximo ano fiscal.",
-    category: "Institucional",
-    metric: "1.2k Atividade",
-    icon: "account_balance",
-    image: "/images/orcamento-2025.jpg",
+      "Intervenções recentes nas comissões económicas com impacto nas PME.",
+    category: "Deputado",
+    metric: "1.1k Interações",
+    icon: "person",
+    image: "/images/politicians/joao-ferreira.jpg",
   },
   {
-    title: "Pacto Ecológico",
+    title: "Ana Costa",
     description:
-      "Novas diretrizes para a transição energética e impacto na indústria local.",
-    category: "Sociedade",
-    metric: "643 Peças",
-    icon: "eco",
-    image: "/images/pacto-ecologico.jpg",
+      "Posições de destaque na agenda ambiental e energia renovável.",
+    category: "Deputada",
+    metric: "980 Menções",
+    icon: "person",
+    image: "/images/politicians/ana-costa.jpg",
   },
   {
-    title: "Direito à Habitação",
+    title: "Carlos Silva",
     description:
-      "Acompanhamento legislativo das medidas de apoio ao arrendamento jovem.",
-    category: "Lei",
-    metric: "2.4k Votos",
-    icon: "gavel",
-    image: "/images/direito-habitacao.jpg",
+      "Debate intenso em torno das propostas sobre saúde e cuidados primários.",
+    category: "Deputado",
+    metric: "2.3k Reações",
+    icon: "person",
+    image: "/images/politicians/carlos-silva.jpg",
   },
 ];
 
@@ -53,11 +53,11 @@ export default function TrendingSection() {
     <section>
       <div className="flex items-center gap-4 mb-8">
         <h2 className="font-headline text-3xl md:text-4xl font-semibold text-primary">
-          Em Destaque
+          Deputados em Destaque
         </h2>
         <div className="h-[2px] flex-grow bg-stone-900 opacity-20" />
         <span className="font-label text-on-surface-variant text-xs font-medium uppercase tracking-wider">
-          As Peças Mais Debatidas
+          Políticos Mais Debatidos
         </span>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
