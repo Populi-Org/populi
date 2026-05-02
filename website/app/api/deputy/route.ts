@@ -10,6 +10,7 @@ export async function GET(request: NextRequest) {
 
   const search = searchParams.get("search") || "";
   const constituency = searchParams.get("constituency") || "";
+  const party = searchParams.get("party") || "";
   const showSuplentes = searchParams.get("showSuplentes") === "true";
   const sortByPhoto = searchParams.get("sortByPhoto") !== "false";
   const page = Math.max(
@@ -29,6 +30,15 @@ export async function GET(request: NextRequest) {
 
   if (constituency) {
     where.depCPDes = constituency;
+  }
+
+  if (party) {
+    where.partyHistory = {
+      some: {
+        party: { sigla: party },
+        gpDtFim: null,
+      },
+    };
   }
 
   if (!showSuplentes) {

@@ -19,6 +19,12 @@ interface Deputy {
   isSuplente: boolean;
 }
 
+interface Party {
+  id: number;
+  sigla: string;
+  color: string | null;
+}
+
 interface PaginationData {
   page: number;
   limit: number;
@@ -59,6 +65,8 @@ export default function AssemblySection() {
   });
   const [search, setSearch] = useState("");
   const [constituency, setConstituency] = useState("");
+  const [party, setParty] = useState("");
+  const [parties, setParties] = useState<Party[]>([]);
   const [showSuplentes, setShowSuplentes] = useState(false);
   const [sortByPhoto, setSortByPhoto] = useState(true);
   const [filtersVisible, setFiltersVisible] = useState(false);
@@ -70,6 +78,7 @@ export default function AssemblySection() {
       page: number,
       searchTerm: string,
       constituencyFilter: string,
+      partyFilter: string,
       showSuplentesFilter: boolean,
       sortByPhotoFilter: boolean,
     ) => {
@@ -82,6 +91,7 @@ export default function AssemblySection() {
         params.set("limit", "12");
         if (searchTerm) params.set("search", searchTerm);
         if (constituencyFilter) params.set("constituency", constituencyFilter);
+        if (partyFilter) params.set("party", partyFilter);
         if (showSuplentesFilter) params.set("showSuplentes", "true");
         if (!sortByPhotoFilter) params.set("sortByPhoto", "false");
 
@@ -106,19 +116,48 @@ export default function AssemblySection() {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      fetchDeputies(1, search, constituency, showSuplentes, sortByPhoto);
+      fetchDeputies(1, search, constituency, party, showSuplentes, sortByPhoto);
     }, 300);
 
     return () => clearTimeout(timeout);
-  }, [search, constituency, showSuplentes, sortByPhoto, fetchDeputies]);
+  }, [search, constituency, party, showSuplentes, sortByPhoto, fetchDeputies]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const fetchParties = async () => {
+      try {
+        const response = await fetch("/api/parties");
+        if (!response.ok) return;
+        const data = await response.json();
+        if (!cancelled) {
+          setParties(Array.isArray(data.parties) ? data.parties : []);
+        }
+      } catch {
+        if (!cancelled) {
+          setParties([]);
+        }
+      }
+    };
+
+    fetchParties();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const handlePageChange = (page: number) => {
     if (page < 1 || page > pagination.totalPages) return;
-    fetchDeputies(page, search, constituency, showSuplentes, sortByPhoto);
+    fetchDeputies(page, search, constituency, party, showSuplentes, sortByPhoto);
   };
 
   const toggleConstituency = (c: string) => {
     setConstituency((prev) => (prev === c ? "" : c));
+  };
+
+  const toggleParty = (sigla: string) => {
+    setParty((prev) => (prev === sigla ? "" : sigla));
   };
 
   return (
@@ -133,7 +172,14 @@ export default function AssemblySection() {
           value={search}
           onChange={setSearch}
           onSearch={() =>
-            fetchDeputies(1, search, constituency, showSuplentes, sortByPhoto)
+            fetchDeputies(
+              1,
+              search,
+              constituency,
+              party,
+              showSuplentes,
+              sortByPhoto,
+            )
           }
           onFilterToggle={() => setFiltersVisible((v) => !v)}
           filtersVisible={filtersVisible}
@@ -155,6 +201,24 @@ export default function AssemblySection() {
               />
             ))}
           </div>
+          {parties.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-4">
+              <FilterChip
+                key="all-parties"
+                label="Todos"
+                active={!party}
+                onClick={() => setParty("")}
+              />
+              {parties.map((p) => (
+                <FilterChip
+                  key={p.id}
+                  label={p.sigla}
+                  active={party === p.sigla}
+                  onClick={() => toggleParty(p.sigla)}
+                />
+              ))}
+            </div>
+          )}
           <div className="pt-4 border-t-2 border-stone-900/20 flex flex-wrap gap-x-6 gap-y-3">
             <Toggle
               label="Com foto primeiro"
@@ -215,6 +279,7 @@ export default function AssemblySection() {
                 pagination.page,
                 search,
                 constituency,
+                party,
                 showSuplentes,
                 sortByPhoto,
               )
