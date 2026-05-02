@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 
 const partyColors: Record<string, string> = {
   PS: "#dc2626",
@@ -37,75 +36,61 @@ export default function ProfileHero({
   committees,
 }: ProfileHeroProps) {
   const partyColor = getPartyColor(party);
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-0 border-2 border-stone-900">
-      <div className="md:col-span-5 relative border-b-2 md:border-b-0 md:border-r-2 border-stone-900">
-        <img
-          alt={`Retrato de ${name}`}
-          className="w-full h-64 md:h-full object-cover"
-          src={image}
-          width={600}
-          height={800}
-        />
-        {partyColor && (
-          <div
-            className="absolute top-0 left-0 w-full h-2 geometric-bg"
-            style={{ backgroundColor: partyColor }}
+    <div className="relative p-6 border-2 border-[#2F2F2F] bg-surface-container tile-bevel crazing-overlay flex flex-col md:flex-row gap-8 overflow-hidden">
+      <div className="absolute inset-0 azulejo-border opacity-20 pointer-events-none" />
+
+      <div className="relative w-full md:w-1/2 aspect-[4/5] flex-shrink-0">
+        <div className="absolute inset-0 bg-primary translate-x-2 translate-y-2" />
+        <div className="relative z-10 w-full h-full border-4 border-[#2F2F2F] shadow-lg overflow-hidden" style={{ backgroundColor: partyColor || "var(--secondary)" }}>
+          <img
+            alt={`Retrato de ${name}`}
+            className="w-full h-full object-cover grayscale brightness-90 contrast-110"
+            src={image}
+            width={600}
+            height={750}
           />
-        )}
+        </div>
       </div>
 
-      <div className="md:col-span-7 bg-primary-container p-6 md:p-10 flex flex-col justify-between">
-        <div>
-          <h1 className="font-headline text-3xl md:text-4xl font-bold text-on-primary-container mb-2">
-            {name}
-          </h1>
-          <p className="font-label text-sm uppercase tracking-wider text-on-primary-container/80 mb-4">
-            {fullName}
-          </p>
+      <div className="relative z-10 flex flex-col justify-center gap-6">
+        <div className="relative self-start">
+          <div className="absolute inset-0 bg-primary translate-x-1 translate-y-1" />
+          <span className="relative z-10 block font-label text-xs font-bold uppercase tracking-wider text-on-secondary-fixed-variant bg-secondary-fixed px-3 py-1 border border-secondary shadow-sm">
+            PERFIL DO DEPUTADO
+          </span>
+        </div>
 
-          <div className="space-y-2 mb-6">
-            {party && (
-              <p className="font-label text-xs uppercase tracking-wider text-on-primary-container/70">
-                <span className="font-semibold">Partido:</span> {party}
-              </p>
-            )}
-            {constituency && (
-              <p className="font-label text-xs uppercase tracking-wider text-on-primary-container/70">
-                <span className="font-semibold">Circunscrição:</span>{" "}
-                {constituency}
-              </p>
-            )}
-            <p className="font-label text-xs uppercase tracking-wider text-on-primary-container/70">
-              <span className="font-semibold">Legislatura:</span> {legislature}
+        <h1 className="font-headline text-4xl md:text-5xl font-bold text-primary-container leading-none">
+          {fullName}
+        </h1>
+
+        <div className="space-y-2">
+          {party && (
+            <p className="font-label text-xs uppercase tracking-wider text-on-surface-variant">
+              <span className="font-semibold">Partido:</span> {party}
             </p>
-            {committees.length > 0 && (
-              <p className="font-label text-xs uppercase tracking-wider text-on-primary-container/70">
-                <span className="font-semibold">Comissões:</span>{" "}
-                {committees
-                  .map((c) => `${c.name}${c.role ? ` (${c.role})` : ""}`)
-                  .join(", ")}
-              </p>
-            )}
-          </div>
+          )}
+          {constituency && (
+            <p className="font-label text-xs uppercase tracking-wider text-on-surface-variant">
+              <span className="font-semibold">Circunscrição:</span>{" "}
+              {constituency}
+            </p>
+          )}
+          <p className="font-label text-xs uppercase tracking-wider text-on-surface-variant">
+            <span className="font-semibold">Legislatura:</span> {legislature}
+          </p>
+          {committees.length > 0 && (
+            <p className="font-label text-xs uppercase tracking-wider text-on-surface-variant">
+              <span className="font-semibold">Comissões:</span>{" "}
+              {committees
+                .map((c) => `${c.name}${c.role ? ` (${c.role})` : ""}`)
+                .join(", ")}
+            </p>
+          )}
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3">
-          <Link
-            href={`https://www.parlamento.pt/DeputadoGP/Paginas/Biografia.aspx?BID=${fullName.replace(/\s+/g, "+")}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center border-2 border-stone-900 bg-surface text-primary px-6 py-3 font-label text-xs font-medium uppercase tracking-wider glossy-finish hover:bg-primary hover:text-on-primary transition-colors"
-          >
-            Ver Perfil Completo
-          </Link>
-          <Link
-            href="/assembly"
-            className="inline-flex items-center justify-center border-2 border-stone-900 bg-surface text-primary px-6 py-3 font-label text-xs font-medium uppercase tracking-wider glossy-finish hover:bg-primary hover:text-on-primary transition-colors"
-          >
-            Entrar na Assembleia
-          </Link>
-        </div>
       </div>
     </div>
   );

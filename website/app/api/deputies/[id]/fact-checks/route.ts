@@ -27,18 +27,18 @@ export async function GET(
   );
   const skip = (page - 1) * limit;
 
-  const [articles, total] = await Promise.all([
-    prisma.article.findMany({
+  const [factChecks, total] = await Promise.all([
+    prisma.factCheck.findMany({
       where: { deputyId },
-      orderBy: { publishedAt: "desc" },
+      orderBy: { createdAt: "desc" },
       skip,
       take: limit,
     }),
-    prisma.article.count({ where: { deputyId } }),
+    prisma.factCheck.count({ where: { deputyId } }),
   ]);
 
   return NextResponse.json({
-    articles,
+    factChecks,
     pagination: {
       page,
       limit,
