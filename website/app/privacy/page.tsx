@@ -10,7 +10,7 @@ const sections = [
   {
     title: "Informação pública e fontes",
     content:
-      "A maior parte do conteúdo apresentado resulta de fontes públicas oficiais, registos parlamentares, bases de dados públicas e comunicados divulgados por entidades oficiais. Sempre que possível, indicamos a origem da informação.",
+      "A maior parte do conteúdo apresentado resulta de fontes públicas oficiais, registos parlamentares, bases de dados públicas, comunicados divulgados por entidades oficiais, imprensa e newsletters. Sempre que possível, indicamos a origem da informação.",
   },
   {
     title: "Dados pessoais dos utilizadores",
