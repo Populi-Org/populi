@@ -3,9 +3,12 @@ interface FilterCategory {
   icon: string;
 }
 
+import { getPrismaClient } from "@/lib/prisma";
+
 interface PartyFilter {
+  id: number;
   label: string;
-  color: string;
+  color: string | null;
 }
 
 const filterCategories: FilterCategory[] = [
@@ -15,15 +18,23 @@ const filterCategories: FilterCategory[] = [
   { label: "Período", icon: "calendar_month" },
 ];
 
-const partyFilters: PartyFilter[] = [
-  { label: "Partido A", color: "bg-stone-400" },
-  { label: "Partido B", color: "bg-stone-900" },
-  { label: "Partido C", color: "bg-stone-200" },
-  { label: "Partido D", color: "border border-stone-900 bg-transparent" },
-  { label: "Partido E", color: "bg-primary" },
-];
+export default async function ExploreSection() {
+  const prisma = getPrismaClient();
+  const partyFilters: PartyFilter[] = (
+    await prisma.party.findMany({
+      select: {
+        id: true,
+        sigla: true,
+        color: true,
+      },
+      orderBy: { sigla: "asc" },
+    })
+  ).map((party) => ({
+    id: party.id,
+    label: party.sigla,
+    color: party.color,
+  }));
 
-export default function ExploreSection() {
   return (
     <section className="bg-surface-variant p-8 border-4 border-stone-900">
       <div className="flex flex-col md:flex-row items-center gap-8">
@@ -52,15 +63,24 @@ export default function ExploreSection() {
         </div>
       </div>
       <div className="mt-8 pt-8 border-t-2 border-stone-900/10 flex flex-wrap gap-3">
-        {partyFilters.map((party) => (
-          <span
-            key={party.label}
-            className="bg-white border-2 border-stone-900 px-4 py-2 font-label text-xs flex items-center gap-2"
-          >
-            <span className={`w-3 h-3 ${party.color}`} />
-            {party.label}
+        {partyFilters.length === 0 ? (
+          <span className="bg-white border-2 border-stone-900 px-4 py-2 font-label text-xs">
+            Sem partidos disponíveis.
           </span>
-        ))}
+        ) : (
+          partyFilters.map((party) => (
+            <span
+              key={party.id}
+              className="bg-white border-2 border-stone-900 px-4 py-2 font-label text-xs flex items-center gap-2"
+            >
+              <span
+                className={`w-3 h-3 ${party.color ? "" : "bg-stone-200"}`}
+                style={party.color ? { backgroundColor: party.color } : undefined}
+              />
+              {party.label}
+            </span>
+          ))
+        )}
       </div>
     </section>
   );
