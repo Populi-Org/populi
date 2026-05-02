@@ -7,21 +7,24 @@ type AssemblySearchParams = {
   party?: string;
   constituency?: string;
   theme?: string;
+  since?: string;
   search?: string;
   filters?: string;
 };
 
-export default function AssemblyPage({
+export default async function AssemblyPage({
   searchParams,
 }: {
-  searchParams?: AssemblySearchParams;
+  searchParams?: AssemblySearchParams | Promise<AssemblySearchParams>;
 }) {
+  const resolvedSearchParams = await Promise.resolve(searchParams);
   const shouldShowFilters = Boolean(
-    searchParams?.filters ||
-      searchParams?.party ||
-      searchParams?.constituency ||
-      searchParams?.theme ||
-      searchParams?.search,
+    resolvedSearchParams?.filters ||
+      resolvedSearchParams?.party ||
+      resolvedSearchParams?.constituency ||
+      resolvedSearchParams?.theme ||
+      resolvedSearchParams?.since ||
+      resolvedSearchParams?.search,
   );
 
   return (
@@ -30,10 +33,11 @@ export default function AssemblyPage({
       <main className="flex-grow p-6 md:p-8 max-w-7xl mx-auto w-full">
         <Suspense fallback={null}>
           <AssemblySection
-            initialSearch={searchParams?.search || ""}
-            initialConstituency={searchParams?.constituency || ""}
-            initialParty={searchParams?.party || ""}
-            initialTheme={searchParams?.theme || ""}
+            initialSearch={resolvedSearchParams?.search || ""}
+            initialConstituency={resolvedSearchParams?.constituency || ""}
+            initialParty={resolvedSearchParams?.party || ""}
+            initialTheme={resolvedSearchParams?.theme || ""}
+            initialSince={resolvedSearchParams?.since || ""}
             initialFiltersVisible={shouldShowFilters}
           />
         </Suspense>
