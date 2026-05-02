@@ -97,7 +97,7 @@ export default async function DeputyPage({
   return (
     <div className="bg-surface font-body text-on-surface antialiased azulejo-crazing min-h-screen">
       <Header />
-      <main className="flex-grow p-4 md:p-6 pt-24 max-w-7xl mx-auto w-full space-y-4">
+      <main className="flex-grow px-4 py-4 md:py-20 max-w-7xl mx-auto w-full space-y-4">
         <ProfileHero
           name={deputy.depNomeParlamentar}
           fullName={deputy.depNomeCompleto}
