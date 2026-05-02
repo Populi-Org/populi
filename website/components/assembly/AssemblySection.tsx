@@ -16,7 +16,7 @@ const representatives: Representative[] = [
     description:
       "Focado em infraestruturas e desenvolvimento urbano. Veterano da assembleia com uma abordagem pragmática ao planeamento urbano.",
     image: "/images/politicians/carlos-silva.jpg",
-    accentColor: "bg-primary-container",
+    accentColor: "bg-secondary",
   },
   {
     name: "Maria Santos",
@@ -32,7 +32,7 @@ const representatives: Representative[] = [
     description:
       "Promove a sustentabilidade ambiental e iniciativas de energia verde. Frequentemente organiza assembleias abertas.",
     image: "/images/politicians/joao-ferreira.jpg",
-    accentColor: "bg-tertiary-container",
+    accentColor: "bg-secondary",
   },
   {
     name: "Ana Costa",
@@ -40,7 +40,7 @@ const representatives: Representative[] = [
     description:
       "Especialista em regulação turística e políticas de proteção costeira. Uma voz forte pelos distritos do sul.",
     image: "/images/politicians/ana-costa.jpg",
-    accentColor: "bg-primary-container",
+    accentColor: "bg-secondary",
   },
 ];
 

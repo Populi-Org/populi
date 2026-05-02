@@ -74,7 +74,7 @@ export default function TrendingSection() {
                 width={400}
                 height={400}
               />
-              <div className="absolute top-2 right-2 bg-primary text-white text-[10px] font-bold px-2 py-1 uppercase">
+              <div className="absolute top-2 right-2 accent-color text-white text-[10px] font-bold px-2 py-1 uppercase">
                 {topic.category}
               </div>
             </div>
