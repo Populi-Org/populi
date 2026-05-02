@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import CompositionSvg from "./CompositionSvg";
@@ -137,8 +135,7 @@ export default function AssembleiaPage() {
                 const seatLabel = party.seats === 1 ? "deputado" : "deputados";
 
                 return (
-                  <Link key={party.sigla} href={party.href} className="block">
-                    <article className="border-2 border-stone-900 bg-white glossy-finish solid-shadow hover:-translate-y-1 transition-transform duration-200 h-full">
+                  <article key={party.sigla} className="border-2 border-stone-900 bg-white glossy-finish solid-shadow hover:-translate-y-1 transition-transform duration-200 h-full">
                       <div className="p-4">
                         <div className="flex items-center space-x-3 mb-3">
                           <div
@@ -178,7 +175,6 @@ export default function AssembleiaPage() {
                         </div>
                       </div>
                     </article>
-                  </Link>
                 );
               })}
             </div>
