@@ -15,7 +15,7 @@ export default function Header() {
           className="text-stone-700 font-medium hover:text-primary hover:bg-primary/5 transition-all duration-200 active:scale-[0.97] px-2 py-1 cursor-pointer"
           href="/assembly"
         >
-          Assembly
+          Assembleia
         </a>
         <a
           className="text-stone-700 font-medium hover:text-primary hover:bg-primary/5 transition-all duration-200 active:scale-[0.97] px-2 py-1 cursor-pointer"
@@ -27,7 +27,7 @@ export default function Header() {
           className="text-stone-700 font-medium hover:text-primary hover:bg-primary/5 transition-all duration-200 active:scale-[0.97] px-2 py-1 cursor-pointer"
           href="/archive"
         >
-          Archive
+          Arquivo
         </a>
       </nav>
       <div className="flex items-center gap-4">

@@ -6,7 +6,7 @@ export default function Footer() {
           Azulejo Político
         </div>
         <p className="font-headline text-sm uppercase tracking-widest text-stone-600">
-          © 2026 Azulejo Político. Crafting the Civic Mosaic piece by piece.
+          © 2026 Azulejo Político. Construindo o Mosaico Cívico peça por peça.
         </p>
       </div>
       <nav className="flex gap-8">
@@ -14,25 +14,25 @@ export default function Footer() {
           className="font-headline text-sm uppercase tracking-widest text-stone-600 hover:text-primary transition-all focus:outline-none focus:ring-2 focus:ring-primary"
           href="/tradition"
         >
-          The Tradition
+          A Tradição
         </a>
         <a
           className="font-headline text-sm uppercase tracking-widest text-stone-600 hover:text-primary transition-all focus:outline-none focus:ring-2 focus:ring-primary"
           href="/grout-rules"
         >
-          Grout Rules
+          Regras do Reboco
         </a>
         <a
           className="font-headline text-sm uppercase tracking-widest text-stone-600 hover:text-primary transition-all focus:outline-none focus:ring-2 focus:ring-primary"
           href="/privacy"
         >
-          Privacy Tile
+          Azulejo de Privacidade
         </a>
         <a
           className="font-headline text-sm uppercase tracking-widest text-stone-600 hover:text-primary transition-all focus:outline-none focus:ring-2 focus:ring-primary"
           href="/contact"
         >
-          Contact
+          Contacto
         </a>
       </nav>
     </footer>

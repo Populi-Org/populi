@@ -53,7 +53,7 @@ export default function TrendingSection() {
     <section>
       <div className="flex items-center gap-4 mb-8">
         <h2 className="font-headline text-3xl md:text-4xl font-semibold text-primary">
-          Trending Now
+          Em Destaque
         </h2>
         <div className="h-[2px] flex-grow bg-stone-900 opacity-20" />
         <span className="font-label text-on-surface-variant text-xs font-medium uppercase tracking-wider">
