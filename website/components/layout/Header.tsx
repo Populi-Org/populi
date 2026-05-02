@@ -32,7 +32,9 @@ export default function Header() {
         aria-expanded={isMenuOpen}
         onClick={() => setIsMenuOpen((prev) => !prev)}
       >
-        <span className="sr-only">{isMenuOpen ? "Fechar menu" : "Abrir menu"}</span>
+        <span className="sr-only">
+          {isMenuOpen ? "Fechar menu" : "Abrir menu"}
+        </span>
         <span className="flex flex-col gap-1">
           <span className="block w-5 h-[2px] bg-stone-900" />
           <span className="block w-5 h-[2px] bg-stone-900" />
@@ -59,4 +61,3 @@ export default function Header() {
     </header>
   );
 }
-

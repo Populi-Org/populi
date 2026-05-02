@@ -35,11 +35,11 @@ export default function HeroSection() {
       <div className="md:col-span-4 bg-primary-container border-4 border-stone-900 text-white p-8 glossy-finish flex flex-col justify-end">
         <div className="text-6xl font-headline mb-4 font-bold">230</div>
         <p className="font-label text-primary-fixed-dim text-xs font-medium uppercase tracking-wider">
-            Políticos e Deputados em Atividade
+          Políticos e Deputados em Atividade
         </p>
         <p className="mt-4 font-body opacity-80 italic">
-            Acompanhe em tempo real a composição da Assembleia da República e o
-            trabalho dos políticos e deputados que a representam.
+          Acompanhe em tempo real a composição da Assembleia da República e o
+          trabalho dos políticos e deputados que a representam.
         </p>
       </div>
     </section>

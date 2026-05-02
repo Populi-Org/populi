@@ -32,7 +32,8 @@ export default function ExploreSection() {
             Explore o Mosaico
           </h3>
           <p className="font-body text-on-surface-variant">
-            Filtre políticos e deputados por categoria para encontrar o que lhe interessa.
+            Filtre políticos e deputados por categoria para encontrar o que lhe
+            interessa.
           </p>
         </div>
         <div className="md:w-3/4 grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
