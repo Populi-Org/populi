@@ -411,6 +411,76 @@ model RelPeticoes {
 }
 
 
+model LegislativeInitiative {
+  id              Int                   @id @default(autoincrement())
+  iniId           Int                   @unique @map("ini_id")
+  iniNr           String?               @map("ini_nr")
+  iniTitulo       String                @map("ini_titulo")
+  iniDescTipo     String?               @map("ini_desc_tipo")
+  iniTipo         String?               @map("ini_tipo")
+  iniLeg          String?               @map("ini_leg")
+  iniEpigrafe     String?               @map("ini_epigrafe")
+  iniObs          String?               @map("ini_obs")
+  iniLinkTexto    String?               @map("ini_link_texto")
+  dataInicioLeg   DateTime?             @map("data_inicio_leg")
+  dataFimLeg      DateTime?             @map("data_fim_leg")
+  createdAt       DateTime              @default(now()) @map("created_at")
+  updatedAt       DateTime              @updatedAt @map("updated_at")
+
+  authors         InitiativeAuthor[]
+  events          InitiativeEvent[]
+
+  @@index([iniDescTipo])
+  @@index([iniTipo])
+  @@map("legislative_initiatives")
+}
+
+model InitiativeAuthor {
+  id              Int                   @id @default(autoincrement())
+  initiativeId    Int                   @map("initiative_id")
+  authorType      String                @map("author_type")
+  authorName      String?               @map("author_name")
+  authorSigla     String?               @map("author_sigla")
+
+  initiative      LegislativeInitiative @relation(fields: [initiativeId], references: [id], onDelete: Cascade)
+
+  @@map("initiative_authors")
+}
+
+model InitiativeEvent {
+  id              Int                   @id @default(autoincrement())
+  initiativeId    Int                   @map("initiative_id")
+  evtId           String?               @map("evt_id")
+  codigoFase      String?               @map("codigo_fase")
+  fase            String?               @map("fase")
+  dataFase        DateTime?             @map("data_fase")
+  comissao        String?               @map("comissao")
+  oevId           String?               @map("oev_id")
+  obsFase         String?               @map("obs_fase")
+
+  initiative      LegislativeInitiative @relation(fields: [initiativeId], references: [id], onDelete: Cascade)
+  votes           InitiativeVote[]
+
+  @@map("initiative_events")
+}
+
+model InitiativeVote {
+  id              Int                   @id @default(autoincrement())
+  eventId         Int                   @map("event_id")
+  voteId          String?               @map("vote_id")
+  data            DateTime?             @map("data")
+  resultado       String?               @map("resultado")
+  detalhe         String?               @map("detalhe")
+  descricao       String?               @map("descricao")
+  reuniao         String?               @map("reuniao")
+  tipoReuniao     String?               @map("tipo_reuniao")
+  unanime         String?               @map("unanime")
+
+  event           InitiativeEvent       @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@map("initiative_votes")
+}
+
 model Article {
   id            Int       @id @default(autoincrement())
   deputyId      Int       @map("deputy_id")
