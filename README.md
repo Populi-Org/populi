@@ -11,7 +11,7 @@
 
 <p align="center">
     <a href="https://github.com/Populi-Org/populi/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/Populi-Org/populi?style=flat&logo=github&label=Stars&logoColor=black&labelColor=white&color=2251E1"/></a>
-    <a href="https://www.figma.com/design/EfSVqJoV9CnLxAxfZWUGup/Projects?node-id=23-2&t=4bIj4dgQvyLHsySt-1"><img alt="Figma Project" src="https://img.shields.io/badge/Figma-2252E1?logo=figma&logoColor=white"></a>
+    <a href="https://www.figma.com/design/EfSVqJoV9CnLxAxfZWUGup/Populi?node-id=255-5&t=NAeMO7nN6KVn6SKt-1"><img alt="Figma Project" src="https://img.shields.io/badge/Figma-2252E1?logo=figma&logoColor=white"></a>
     <a href="https://taikai.network/shift-appens/hackathons/shift-appens-2026/projects/cmon7bccd00wilr6x2g758qgb/idea"><img alt="Taikai Project" src="https://img.shields.io/badge/Taikai-2252E1"></a>
     <a href="https://github.com/Populi-Org/populi/blob/main/LICENSE"><img alt="License: EPL" src="https://img.shields.io/github/license/Populi-Org/populi?label=License&logo=readthedocs&logoColor=black&labelColor=white&color=2251E1"/></a>
 </p>
