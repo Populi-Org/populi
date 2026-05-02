@@ -29,4 +29,4 @@ This document outlines the standard operating procedures (SOPs), technical const
 
 **Context:** Developing for the Portuguese electorate.
     * **Hardcoded UI Strings:** All standard UI elements (buttons, navbars, footer links) must be generated directly in Portuguese (e.g., "Pesquisar Político", "Ver Factos", "Filtrar por Partido").
-    * **Terminology:** Enforce the correct use of the Portuguese political lexicon in the code structure (e.g., naming components `AssembleiaData` instead of `ParliamentData` to maintain contextual accuracy if preferred, though English is fine for internal code variables as long as user-facing text is PT-PT).
+    * **Terminology:** Enforce the correct use of the Portuguese political lexicon in the code structure (e.g., naming components `DeputadosData` instead of `ParliamentData` to maintain contextual accuracy if preferred, though English is fine for internal code variables as long as user-facing text is PT-PT).

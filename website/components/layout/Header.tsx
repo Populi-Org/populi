@@ -8,7 +8,8 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navItems = [
     { href: "/", label: "Página Inicial" },
-    { href: "/assembly", label: "Assembleia" },
+    { href: "/deputados", label: "Deputados" },
+    { href: "/assembleia", label: "Assembleia" },
   ];
 
   return (
