@@ -6,4 +6,5 @@ export { default as FeaturedQuote } from "./FeaturedQuote";
 export { default as ProfileStats } from "./ProfileStats";
 export { default as TownHallBanner } from "./TownHallBanner";
 export { default as DeputyNews } from "./DeputyNews";
+export { default as DeputyFactChecks } from "./DeputyFactChecks";
 export { default as DeputyProfileTabs } from "./DeputyProfileTabs";

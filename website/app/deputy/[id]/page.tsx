@@ -9,6 +9,7 @@ import {
   ProfileStats,
   TownHallBanner,
   DeputyNews,
+  DeputyFactChecks,
   DeputyProfileTabs,
 } from "@/components/profile";
 import { getPrismaClient } from "@/lib/prisma";
@@ -155,6 +156,11 @@ export default async function DeputyPage({
               id: "news",
               label: "Notícias",
               content: <DeputyNews deputyId={deputy.id} />,
+            },
+            {
+              id: "poligrafo",
+              label: "Polígrafo",
+              content: <DeputyFactChecks deputyId={deputy.id} />,
             },
           ]}
         />
