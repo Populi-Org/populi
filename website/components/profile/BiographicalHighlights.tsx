@@ -13,37 +13,35 @@ interface BiographicalHighlightsProps {
 export default function BiographicalHighlights({
   statusHistory,
 }: BiographicalHighlightsProps) {
-  const events = statusHistory.filter((s) => s.description);
+  const events = statusHistory
+    .filter((s) => s.description && s.startDate)
+    .map((s) => ({
+      year: s.startDate ? new Date(s.startDate).getFullYear().toString() : "",
+      description: s.description!,
+    }));
 
   return (
-    <ProfileSection variant="secondary" className="p-6 md:p-8">
-      <h2 className="font-headline text-xl font-semibold text-on-surface mb-6 uppercase tracking-wider">
-        Destaques Biográficos
-      </h2>
+    <ProfileSection variant="secondary" className="p-6 flex flex-col gap-4">
+      <div className="flex items-center gap-2 border-b-2 border-secondary/30 pb-2">
+        <span className="text-secondary text-xl">&#9874;</span>
+        <h2 className="font-label text-xs font-bold uppercase tracking-wider text-secondary">
+          Destaques Biográficos
+        </h2>
+      </div>
 
       {events.length === 0 ? (
         <p className="font-body text-on-surface/70">
           Nenhum destaque biográfico disponível.
         </p>
       ) : (
-        <div className="relative border-l-2 border-stone-900 ml-3 space-y-6">
+        <ul className="space-y-4 font-body-md">
           {events.map((event, index) => (
-            <div key={index} className="pl-6 relative">
-              <span className="absolute -left-[9px] top-1.5 w-4 h-4 bg-stone-900 border-2 border-secondary" />
-              <p className="font-body text-on-surface text-sm leading-relaxed">
-                {event.description}
-              </p>
-              {event.startDate && (
-                <p className="font-label text-xs text-on-surface/60 mt-1">
-                  {new Date(event.startDate).toLocaleDateString("pt-PT")}
-                  {event.endDate
-                    ? ` – ${new Date(event.endDate).toLocaleDateString("pt-PT")}`
-                    : " – Presente"}
-                </p>
-              )}
-            </div>
+            <li key={index} className="flex gap-3">
+              <span className="font-bold text-secondary">{event.year}</span>
+              <span>{event.description}</span>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </ProfileSection>
   );

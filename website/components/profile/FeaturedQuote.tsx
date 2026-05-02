@@ -1,32 +1,32 @@
-import ProfileSection from "./ProfileSection";
-
 interface FeaturedQuoteProps {
-  quote: string | null;
+  quote: string;
+  author: string;
   date: Date | null;
 }
 
-export default function FeaturedQuote({ quote, date }: FeaturedQuoteProps) {
-  if (!quote) return null;
-
+export default function FeaturedQuote({ quote, author, date }: FeaturedQuoteProps) {
   return (
-    <ProfileSection variant="primary" className="p-6 md:p-10">
-      <div className="relative">
-        <span className="font-headline text-6xl text-on-primary-container/20 absolute -top-4 -left-2 select-none">
-          &ldquo;
+    <div className="bg-surface-container-low p-8 border-2 border-[#2F2F2F] tile-bevel crazing-overlay flex flex-col justify-center items-center text-center">
+      <span className="text-4xl text-primary-container/20 mb-4">&#10077;</span>
+      <blockquote className="font-headline italic text-xl text-primary-container max-w-2xl leading-snug">
+        {quote}
+      </blockquote>
+      <div className="mt-6 flex items-center gap-4">
+        <div className="h-px w-12 bg-primary-container/30" />
+        <span className="font-label text-xs uppercase tracking-widest text-on-surface-variant">
+          {author.toUpperCase()}
         </span>
-        <blockquote className="font-body text-lg md:text-xl text-on-primary-container leading-relaxed pl-6 border-l-2 border-stone-900">
-          {quote}
-        </blockquote>
-        {date && (
-          <p className="font-label text-xs text-on-primary-container/60 mt-4 uppercase tracking-wider">
-            {new Date(date).toLocaleDateString("pt-PT", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </p>
-        )}
+        <div className="h-px w-12 bg-primary-container/30" />
       </div>
-    </ProfileSection>
+      {date && (
+        <p className="font-label text-[10px] text-on-surface-variant/60 mt-2 uppercase tracking-wider">
+          {new Date(date).toLocaleDateString("pt-PT", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+        </p>
+      )}
+    </div>
   );
 }
