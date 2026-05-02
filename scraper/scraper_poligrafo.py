@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """
-Expresso.pt News Scraper for Portuguese Deputies
-Reads deputies from PostgreSQL, scrapes Expresso news, stores articles back in DB.
+Polígrafo Fact-Check Scraper for Portuguese Deputies
+Reads deputies from PostgreSQL, scrapes Polígrafo fact-checks, stores back in DB.
 """
 
 import os
 import sys
 import time
 import random
+import re
 from datetime import datetime
 from typing import List, Dict, Optional
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -23,7 +24,7 @@ except ImportError:
     tqdm = None
 
 # ── Configuration ────────────────────────────────────────────────────────────
-BASE_API_URL = "https://expresso.pt/api/molecule/search"
+BASE_URL = "https://poligrafo.sapo.pt"
 HEADERS = {
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -33,10 +34,9 @@ HEADERS = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     "Accept-Language": "pt-PT,pt;q=0.9,en;q=0.8",
 }
-REQUEST_DELAY = 0.15
-JITTER = 0.1
-PAGE_SIZE = 10
-MAX_WORKERS = 12
+REQUEST_DELAY = 0.5
+JITTER = 0.2
+MAX_WORKERS = 6
 
 
 # ── DB helpers ───────────────────────────────────────────────────────────────
@@ -99,28 +99,35 @@ def _throttled_sleep():
     time.sleep(REQUEST_DELAY + random.uniform(0, JITTER))
 
 
-def fetch_search_page(session: requests.Session, name: str, page: int, offset: int) -> Optional[str]:
-    params = {"q": name, "page": page, "offset": offset}
+def fetch_search_page(session: requests.Session, name: str, page: int) -> Optional[str]:
+    """Fetch one search result page for a deputy name."""
+    params = {"s": name}
+    if page > 1:
+        params["paged"] = page
     try:
-        resp = session.get(BASE_API_URL, params=params, headers=HEADERS, timeout=30)
+        resp = session.get(BASE_URL, params=params, headers=HEADERS, timeout=30)
         resp.raise_for_status()
         return resp.text
     except requests.RequestException:
         return None
 
 
-def parse_articles(html: str) -> List[Dict]:
+def parse_fact_checks(html: str) -> List[Dict]:
+    """Extract fact-check cards from a Polígrafo search result page."""
     soup = BeautifulSoup(html, "html.parser")
-    articles = []
+    fact_checks = []
 
-    for article_tag in soup.find_all("article"):
-        article_type = None
-        for cls in article_tag.get("class", []):
-            if cls.startswith("AT-"):
-                article_type = cls.replace("AT-", "")
-                break
+    container = soup.find("div", class_="ecs-posts")
+    if not container:
+        container = soup
 
-        title_tag = article_tag.find("h2", class_="title")
+    for article in container.find_all("article"):
+        classes = article.get("class", [])
+        if "fact_check" not in classes:
+            continue
+
+        # Title & URL
+        title_tag = article.find("h6", class_="elementor-heading-title")
         title = None
         url = None
         if title_tag:
@@ -128,43 +135,35 @@ def parse_articles(html: str) -> List[Dict]:
             if a:
                 title = a.get_text(strip=True)
                 url = a["href"]
-                if url.startswith("/"):
-                    url = f"https://expresso.pt{url}"
 
-        section_tag = article_tag.find("p", class_="mainSection")
-        section = None
-        if section_tag:
-            section_a = section_tag.find("a")
-            section = section_a.get_text(strip=True) if section_a else section_tag.get_text(strip=True)
+        # Lead / excerpt
+        lead = None
+        lead_widget = article.find("div", {"data-widget_type": "theme-post-excerpt.default"})
+        if lead_widget:
+            container_div = lead_widget.find("div", class_="elementor-widget-container")
+            if container_div:
+                lead = container_div.get_text(strip=True)
 
-        date_tag = article_tag.find("p", class_="publishedDate")
-        published_at = date_tag.get("datetime") if date_tag else None
-
-        author_tag = article_tag.find("p", class_="author")
-        authors = []
-        if author_tag:
-            for a in author_tag.find_all("a"):
-                authors.append(a.get_text(strip=True))
-        authors_str = ", ".join(authors) if authors else None
-
-        lead_tag = article_tag.find("h3", class_="lead")
-        lead = lead_tag.get_text(strip=True) if lead_tag else None
-
-        has_picture = 1 if "hasPicture" in " ".join(article_tag.get("class", [])) else 0
+        # Truth level from meter image
+        truth_level = None
+        meter_div = article.find("div", class_="fact_check_meter_image")
+        if meter_div:
+            img = meter_div.find("img")
+            if img:
+                src = img.get("src", "")
+                match = re.search(r"meter-03-([^/]+)-light\.gif", src)
+                if match:
+                    truth_level = match.group(1)
 
         if title and url:
-            articles.append({
+            fact_checks.append({
                 "title": title,
                 "url": url,
-                "section": section,
-                "published_at": published_at,
-                "authors": authors_str,
                 "lead": lead,
-                "has_picture": has_picture,
-                "article_type": article_type,
+                "truth_level": truth_level,
             })
 
-    return articles
+    return fact_checks
 
 
 def _match_score(name: str, title: str) -> int:
@@ -174,11 +173,9 @@ def _match_score(name: str, title: str) -> int:
     title_lower = title.lower()
     name_lower = name.lower()
 
-    # Full name match
     if name_lower in title_lower:
         return 2
 
-    # Partial name match: any name part longer than 2 chars
     for part in name_lower.split():
         if len(part) > 2 and part in title_lower:
             return 1
@@ -189,90 +186,65 @@ def _match_score(name: str, title: str) -> int:
 # ── Worker ─────────────────────────────────────────────────────────────────────
 
 def scrape_deputy(deputy: Dict) -> Dict:
-    """Scrape sequential pages for one deputy, store up to 20 best-matching articles."""
+    """Scrape sequential pages for one deputy, store matching fact-checks."""
     deputy_id = deputy["id"]
     name = deputy["name"]
     party = deputy.get("party", "")
-    MAX_ARTICLES = 20
-    MAX_PAGES = 50
+    MAX_PAGES = 20
 
     conn = get_connection()
     session = requests.Session()
     seen_urls = set()
-    all_articles = []
+    all_checks = []
     empty_page_count = 0
     page_num = 1
 
     while empty_page_count < 2 and page_num <= MAX_PAGES:
-        html = fetch_search_page(session, name, page_num, 0)
+        html = fetch_search_page(session, name, page_num)
         if html is None:
             time.sleep(0.5)
-            html = fetch_search_page(session, name, page_num, 0)
+            html = fetch_search_page(session, name, page_num)
             if html is None:
                 break
 
-        articles = parse_articles(html)
-        if not articles:
+        checks = parse_fact_checks(html)
+        if not checks:
             empty_page_count += 1
             page_num += 1
             continue
 
         empty_page_count = 0
-        for art in articles:
-            if art["url"] not in seen_urls:
-                seen_urls.add(art["url"])
-                art["_score"] = _match_score(name, art.get("title", ""))
-                all_articles.append(art)
-
-        # Stop early if we already have enough full-name matches
-        if sum(1 for a in all_articles if a["_score"] == 2) >= MAX_ARTICLES:
-            break
+        for fc in checks:
+            if fc["url"] not in seen_urls:
+                seen_urls.add(fc["url"])
+                fc["_score"] = _match_score(name, fc.get("title", ""))
+                all_checks.append(fc)
 
         _throttled_sleep()
         page_num += 1
 
-    if not all_articles:
+    if not all_checks:
         conn.close()
         return {"name": name, "party": party, "total_new": 0}
 
-    # Sort by score descending, then by published_at descending (most recent first)
-    all_articles.sort(
-        key=lambda a: (
-            a["_score"],
-            a.get("published_at") or "1970-01-01T00:00:00",
-        ),
-        reverse=True,
-    )
-    chosen = all_articles[:MAX_ARTICLES]
+    matched = [fc for fc in all_checks if fc["_score"] == 2]
 
     total_new = 0
     with conn.cursor() as cur:
-        for art in chosen:
+        for fc in matched:
             try:
-                # Parse ISO datetime
-                pub_dt = None
-                if art.get("published_at"):
-                    try:
-                        pub_dt = datetime.fromisoformat(art["published_at"].replace("Z", "+00:00"))
-                    except ValueError:
-                        pass
-
                 cur.execute("SAVEPOINT insert_sp")
                 cur.execute("""
-                    INSERT INTO articles
-                    (deputy_id, title, url, section, published_at, authors, lead, has_picture, article_type, updated_at)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    INSERT INTO fact_checks
+                    (deputy_id, title, url, lead, truth_level, updated_at)
+                    VALUES (%s, %s, %s, %s, %s, %s)
                     ON CONFLICT (deputy_id, url) DO NOTHING
                 """, (
                     deputy_id,
-                    art["title"],
-                    art["url"],
-                    art["section"],
-                    pub_dt,
-                    art["authors"],
-                    art["lead"],
-                    bool(art["has_picture"]),
-                    art["article_type"],
+                    fc["title"],
+                    fc["url"],
+                    fc["lead"],
+                    fc["truth_level"],
                     datetime.now(),
                 ))
                 if cur.rowcount > 0:
@@ -295,7 +267,7 @@ def main():
     conn.close()
 
     total_politicians = len(deputies)
-    total_articles = 0
+    total_new = 0
     completed = 0
 
     print(f"[i] Starting scrape of {total_politicians} deputies with {MAX_WORKERS} workers...")
@@ -322,8 +294,8 @@ def main():
                 continue
 
             completed += 1
-            total_articles += result["total_new"]
-            msg = f"[{completed}/{total_politicians}] {result['name']}: {result['total_new']} new articles"
+            total_new += result["total_new"]
+            msg = f"[{completed}/{total_politicians}] {result['name']}: {result['total_new']} new fact-checks"
 
             if pbar:
                 pbar.write(msg)
@@ -335,7 +307,7 @@ def main():
         if pbar:
             pbar.close()
 
-    print(f"\n[✓] Done. Processed {completed}/{total_politicians} deputies, stored {total_articles} new articles.")
+    print(f"\n[✓] Done. Processed {completed}/{total_politicians} deputies, stored {total_new} new fact-checks.")
 
 
 if __name__ == "__main__":

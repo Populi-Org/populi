@@ -40,6 +40,7 @@ model Deputy {
   relIniciativas         RelIniciativas[]
   relIniEuropeias        RelIniEuropeias[]
   relPeticoes            RelPeticoes[]
+  factChecks             FactCheck[]
 
   createdAt         DateTime           @default(now()) @map("created_at")
   updatedAt         DateTime           @updatedAt @map("updated_at")
@@ -404,4 +405,21 @@ model RelPeticoes {
   deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
 
   @@map("rel_peticoes")
+}
+
+model FactCheck {
+  id            Int       @id @default(autoincrement())
+  deputyId      Int       @map("deputy_id")
+  title         String    @map("title")
+  url           String    @map("url")
+  lead          String?   @map("lead")
+  truthLevel    String?   @map("truth_level")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+
+  @@unique([deputyId, url])
+  @@index([deputyId])
+  @@map("fact_checks")
 }
