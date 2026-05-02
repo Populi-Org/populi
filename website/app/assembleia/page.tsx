@@ -142,25 +142,22 @@ export default function AssembleiaPage() {
                       <div className="p-4">
                         <div className="flex items-center space-x-3 mb-3">
                           <div
-                            className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-sm border-2 border-stone-900"
+                            className="w-12 h-12 flex items-center justify-center text-white font-bold text-sm border-2 border-stone-900"
                             style={{ backgroundColor: party.color }}
                           >
                             {party.sigla}
                           </div>
                           <div className="flex-1 min-w-0">
                             <h3
-                              className="font-semibold text-sm truncate"
+                              className="font-semibold text-sm"
                               title={party.name}
                             >
                               {party.name}
                             </h3>
-                            <p className="text-xs text-on-surface-variant">
-                              {party.sigla}
-                            </p>
                           </div>
                         </div>
                         <div className="flex justify-between items-center">
-                          <div className="inline-flex items-center rounded-full border-2 border-stone-900 px-2.5 py-0.5 font-semibold text-on-surface text-xs">
+                          <div className="inline-flex items-center  border-2 border-stone-900 px-2.5 py-0.5 font-semibold text-on-surface text-xs">
                             {party.seats} {seatLabel}
                           </div>
                           <div className="text-xs text-on-surface-variant">
@@ -168,9 +165,9 @@ export default function AssembleiaPage() {
                           </div>
                         </div>
                         <div className="mt-3">
-                          <div className="w-full bg-surface-variant rounded-full h-2 border border-stone-900/20">
+                          <div className="w-full bg-surface-variant  h-2 border border-stone-900/20">
                             <div
-                              className="h-2 rounded-full transition-all duration-300"
+                              className="h-2  transition-all duration-300"
                               style={{
                                 backgroundColor: party.color,
                                 width: `${barWidth.toFixed(4)}%`,
