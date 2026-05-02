@@ -20,12 +20,12 @@ export default function SearchBar({
     <div className="border-4 border-stone-900 bg-surface-container glossy-finish azulejo-crazing solid-shadow p-6 md:p-10 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-32 h-32 geometric-bg opacity-10" />
       <div className="flex flex-col md:flex-row gap-4 relative z-10">
-        <div className="flex-grow border-2 border-stone-900 bg-surface flex items-center p-2 glossy-finish focus-within:ring-2 focus-within:ring-primary-container">
+        <div className="flex-grow border-2 border-stone-900 bg-surface flex items-center p-2 glossy-finish focus-within:border-primary transition-colors">
           <span className="material-symbols-outlined text-outline ml-2">
             search
           </span>
           <input
-            className="w-full bg-transparent border-none focus:ring-0 font-body text-on-surface ml-2"
+            className="w-full bg-transparent border-none outline-none font-body text-on-surface ml-2"
             placeholder={placeholder}
             type="text"
           />
