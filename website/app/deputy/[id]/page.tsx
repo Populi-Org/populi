@@ -3,13 +3,13 @@ import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import {
   BiographicalHighlights,
+  DeputyFactChecks,
+  DeputyNews,
+  DeputyProfileTabs,
   FeaturedQuote,
   LegislativeActivity,
   ProfileHero,
   ProfileStats,
-  DeputyNews,
-  DeputyFactChecks,
-  DeputyProfileTabs,
 } from "@/components/profile";
 import { getPrismaClient } from "@/lib/prisma";
 

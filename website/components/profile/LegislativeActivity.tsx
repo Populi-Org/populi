@@ -37,7 +37,7 @@ export default function LegislativeActivity({
         <div className="space-y-6 overflow-y-auto pr-2">
           {initiatives.map((initiative, index) => (
             <div
-              key={index}
+              key={`${initiative.id}-${index}`}
               className="relative pl-6"
               style={{
                 borderLeft: `4px solid ${index === 0 ? "var(--primary-container)" : "var(--outline)"}`,
