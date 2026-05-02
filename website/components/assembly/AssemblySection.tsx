@@ -12,6 +12,7 @@ interface Deputy {
   fullName: string;
   constituency: string | null;
   party: string | null;
+  partyColor: string | null;
   image: string;
   description: string;
 }
@@ -202,6 +203,7 @@ export default function AssemblySection() {
                 name={deputy.name}
                 constituency={deputy.constituency}
                 party={deputy.party}
+                partyColor={deputy.partyColor}
                 image={deputy.image}
                 description={deputy.description}
               />

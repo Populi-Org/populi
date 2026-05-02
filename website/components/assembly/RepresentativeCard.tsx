@@ -6,6 +6,7 @@ interface RepresentativeCardProps {
   name: string;
   constituency: string | null;
   party: string | null;
+  partyColor: string | null;
   image: string;
   description: string;
 }
@@ -31,12 +32,15 @@ export default function RepresentativeCard({
   name,
   constituency,
   party,
+  partyColor,
   image,
   description,
 }: RepresentativeCardProps) {
   return (
     <Link href={`/deputy/${id}`} className="block">
-      <article className="border-4 border-stone-900 bg-surface flex flex-col glossy-finish azulejo-crazing solid-shadow group hover:-translate-y-1 transition-transform duration-300">
+      <article
+        className="border-4 flex flex-col glossy-finish azulejo-crazing solid-shadow group hover:-translate-y-1 transition-transform duration-300"
+      >
         <div
           className={`h-4 w-full ${getPartyColor(party)} geometric-bg border-b-2 border-stone-900`}
         />
