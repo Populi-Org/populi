@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 interface HeaderLinkProps {
   href: string;
   children: React.ReactNode;
+  onClick?: () => void;
 }
 
-export default function HeaderLink({ href, children }: HeaderLinkProps) {
+export default function HeaderLink({ href, children, onClick }: HeaderLinkProps) {
   const pathname = usePathname();
   const isActive = pathname === href;
 
@@ -21,6 +22,7 @@ export default function HeaderLink({ href, children }: HeaderLinkProps) {
     <a
       className={isActive ? activeClasses : `${baseClasses} ${inactiveClasses}`}
       href={href}
+      onClick={onClick}
     >
       {children}
     </a>
