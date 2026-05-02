@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
   const search = searchParams.get("search") || "";
   const constituency = searchParams.get("constituency") || "";
   const showSuplentes = searchParams.get("showSuplentes") === "true";
+  const sortByPhoto = searchParams.get("sortByPhoto") !== "false";
   const page = Math.max(
     1,
     Number.parseInt(searchParams.get("page") || "1", 10),
@@ -40,9 +41,35 @@ export async function GET(request: NextRequest) {
   }
 
   const skip = (page - 1) * limit;
+  let deputies: Awaited<
+    ReturnType<
+      typeof prisma.deputy.findMany<{
+        include: {
+          partyHistory: {
+            include: { party: true };
+            orderBy: { gpDtInicio: "desc" };
+            take: 1;
+          };
+          cms: {
+            where: { cmsSituacao: { not: "Suspenso" } };
+            orderBy: { cmsCargo: "asc" };
+            take: 1;
+          };
+          statusHistory: {
+            where: {
+              sioDes: { contains: "suplent"; mode: "insensitive" };
+              sioDtFim: null;
+            };
+            take: 1;
+          };
+        };
+      }>
+    >
+  >;
+  let total: number;
 
-  const [deputies, total] = await Promise.all([
-    prisma.deputy.findMany({
+  if (sortByPhoto) {
+    const allDeputies = await prisma.deputy.findMany({
       where,
       include: {
         partyHistory: {
@@ -63,12 +90,50 @@ export async function GET(request: NextRequest) {
           take: 1,
         },
       },
-      skip,
-      take: limit,
       orderBy: { depNomeParlamentar: "asc" },
-    }),
-    prisma.deputy.count({ where }),
-  ]);
+    });
+
+    allDeputies.sort((a, b) => {
+      const aHasPhoto = !!a.depImageUrl;
+      const bHasPhoto = !!b.depImageUrl;
+      if (aHasPhoto !== bHasPhoto) return bHasPhoto ? 1 : -1;
+      return a.depNomeParlamentar.localeCompare(b.depNomeParlamentar);
+    });
+
+    total = allDeputies.length;
+    deputies = allDeputies.slice(skip, skip + limit);
+  } else {
+    const [dbDeputies, dbTotal] = await Promise.all([
+      prisma.deputy.findMany({
+        where,
+        include: {
+          partyHistory: {
+            include: { party: true },
+            orderBy: { gpDtInicio: "desc" },
+            take: 1,
+          },
+          cms: {
+            where: { cmsSituacao: { not: "Suspenso" } },
+            orderBy: { cmsCargo: "asc" },
+            take: 1,
+          },
+          statusHistory: {
+            where: {
+              sioDes: { contains: "suplent", mode: "insensitive" },
+              sioDtFim: null,
+            },
+            take: 1,
+          },
+        },
+        skip,
+        take: limit,
+        orderBy: { depNomeParlamentar: "asc" },
+      }),
+      prisma.deputy.count({ where }),
+    ]);
+    deputies = dbDeputies;
+    total = dbTotal;
+  }
 
   const mappedDeputies = deputies.map((deputy) => {
     const activePartyHistory = deputy.partyHistory[0];
