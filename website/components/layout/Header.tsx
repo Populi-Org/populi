@@ -13,16 +13,6 @@ export default function Header() {
         <HeaderLink href="/debate">Debate</HeaderLink>
         <HeaderLink href="/arquivo">Arquivo</HeaderLink>
       </nav>
-      <div className="flex items-center gap-4">
-        <button
-          type="button"
-          className="text-primary hover:bg-primary/5 transition-all duration-200 active:scale-[0.97] p-2 flex items-center justify-center"
-        >
-          <span className="material-symbols-outlined text-2xl">
-            account_circle
-          </span>
-        </button>
-      </div>
     </header>
   );
 }
