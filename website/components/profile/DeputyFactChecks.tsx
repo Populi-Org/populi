@@ -79,13 +79,13 @@ export default function DeputyFactChecks({ deputyId }: DeputyFactChecksProps) {
   };
 
   return (
-    <ProfileSection variant="primary" className="p-6 md:p-8">
+    <ProfileSection variant="secondary" className="p-6 md:p-8">
       <div className="flex items-center justify-between mb-8">
         <h2 className="font-headline text-2xl font-semibold text-primary-container uppercase tracking-wider">
           Polígrafo
         </h2>
         {factChecks.length > 0 && (
-          <span className="font-label text-xs uppercase tracking-wider text-primary-container/60">
+          <span className="font-label text-xs uppercase tracking-wider text-primary-container">
             {factChecks.length} verificações
           </span>
         )}

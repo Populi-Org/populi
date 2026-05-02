@@ -67,7 +67,7 @@ export default function DeputyNews({ deputyId }: DeputyNewsProps) {
   };
 
   return (
-    <ProfileSection variant="primary" className="p-6 md:p-8">
+    <ProfileSection variant="secondary" className="p-6 md:p-8">
       <div className="flex items-center justify-between mb-8">
         <h2 className="font-headline text-2xl font-semibold text-primary-container uppercase tracking-wider">
           Notícias
