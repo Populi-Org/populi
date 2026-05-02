@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import { LayoutDashboard, Newspaper, ShieldCheck } from "lucide-react";
+
+const iconMap: Record<string, React.ElementType> = {
+  general: LayoutDashboard,
+  news: Newspaper,
+  poligrafo: ShieldCheck,
+};
 
 interface Tab {
   id: string;
@@ -22,6 +29,7 @@ export default function DeputyProfileTabs({ tabs }: DeputyProfileTabsProps) {
       <div className="flex border-2 border-stone-900">
         {tabs.map((tab) => {
           const isActive = tab.id === activeTab;
+          const Icon = iconMap[tab.id] || LayoutDashboard;
           return (
             <button
               key={tab.id}
@@ -32,7 +40,8 @@ export default function DeputyProfileTabs({ tabs }: DeputyProfileTabsProps) {
                   : "bg-surface text-on-surface hover:bg-primary-container/50"
               }`}
             >
-              {tab.label}
+              <Icon className="w-5 h-5 mx-auto md:hidden" strokeWidth={1.5} />
+              <span className="hidden md:inline">{tab.label}</span>
             </button>
           );
         })}
