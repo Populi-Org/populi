@@ -37,7 +37,6 @@ export default async function AssemblyPage({
             initialConstituency={resolvedSearchParams?.constituency || ""}
             initialParty={resolvedSearchParams?.party || ""}
             initialTheme={resolvedSearchParams?.theme || ""}
-            initialSince={resolvedSearchParams?.since || ""}
             initialFiltersVisible={shouldShowFilters}
           />
         </Suspense>
