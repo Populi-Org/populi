@@ -263,7 +263,7 @@ export default function AssemblySection({
       {/* Search Section */}
       <div className="mb-12">
         <h1 className="font-headline text-3xl md:text-4xl font-semibold text-primary mb-6">
-          Assembleia de Representantes
+          Deputados
         </h1>
         <SearchBar
           placeholder="Pesquisar representantes por nome ou distrito..."

@@ -33,7 +33,7 @@ export default async function HeroSection() {
           </p>
           <div className="flex gap-4">
             <Link
-              href="/assembly"
+              href="/deputados"
               className="bg-primary text-white font-headline font-bold px-8 py-4 border-2 border-stone-900 glossy-finish active:translate-y-[2px]"
             >
               Explorar o Mosaico
@@ -56,7 +56,7 @@ export default async function HeroSection() {
           Políticos e Deputados em Atividade
         </p>
         <p className="mt-4 font-body opacity-80 italic">
-          Acompanhe em tempo real a composição da Assembleia da República e o
+          Acompanhe em tempo real a composição dos Deputados da República e o
           trabalho dos políticos e deputados que a representam.
         </p>
       </div>
