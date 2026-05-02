@@ -8,6 +8,7 @@ interface TrendingTopic {
   metric: string;
   icon: string;
   image: string;
+  href: string;
 }
 
 const formatCount = (value: number) => {
@@ -55,6 +56,7 @@ export default async function TrendingSection() {
     const description = committee
       ? `Membro${partySigla ? ` (${partySigla})` : ""} da Comissão de ${committee}.${constituency ? ` Representa ${constituency}.` : ""}`
       : `Deputado${partySigla ? ` (${partySigla})` : ""}${legislature ? ` na ${legislature}` : ""}.${constituency ? ` Representa ${constituency}.` : ""}`;
+    const href = `/deputy/${deputy.id}`;
 
     return {
       title: deputy.depNomeParlamentar,
@@ -63,6 +65,7 @@ export default async function TrendingSection() {
       metric: `${formatCount(deputy._count.intev)} Intervenções`,
       icon: "record_voice_over",
       image: deputy.depImageUrl || "/defaultNoImage.png",
+      href,
     };
   });
 
@@ -80,43 +83,42 @@ export default async function TrendingSection() {
       {trendingTopics.length === 0 ? (
         <div className="border-2 border-stone-900 p-6 bg-surface-container-lowest">
           <p className="font-body text-on-surface-variant">
-            Sem dados suficientes para destacar deputados neste momento.
+            Sem dados suficientes para destacar deputados neste memento.
           </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {trendingTopics.map((topic) => (
-            <div
-              key={topic.title}
-              className="bg-surface-container-lowest border-2 border-stone-900 solid-shadow p-6 flex flex-col glossy-finish"
-            >
-              <div className="w-full aspect-square bg-surface-variant mb-4 border-2 border-stone-900 overflow-hidden relative">
-                <Image
-                  className="w-full h-full object-cover grayscale contrast-125"
-                  src={topic.image}
-                  alt={topic.title}
-                  width={400}
-                  height={400}
-                />
-                <div className="absolute top-2 right-2 accent-color text-white text-[10px] font-bold px-2 py-1 uppercase">
-                  {topic.category}
+            <a href={topic.href} key={topic.title}>
+              <div className="bg-surface-container-lowest border-2 border-stone-900 solid-shadow p-6 flex flex-col glossy-finish group hover:-translate-y-1 transition-transform duration-300">
+                <div className="w-full aspect-square bg-surface-variant mb-4 border-2 border-stone-900 overflow-hidden relative">
+                  <Image
+                    className="w-full h-full object-cover grayscale contrast-125"
+                    src={topic.image}
+                    alt={topic.title}
+                    width={400}
+                    height={400}
+                  />
+                  <div className="absolute top-2 right-2 accent-color text-white text-[10px] font-bold px-2 py-1 uppercase">
+                    {topic.category}
+                  </div>
+                </div>
+                <h3 className="font-headline text-xl font-semibold text-on-surface mb-2">
+                  {topic.title}
+                </h3>
+                <p className="font-body text-on-surface-variant flex-grow">
+                  {topic.description}
+                </p>
+                <div className="mt-4 pt-4 border-t-2 border-stone-100 flex justify-between items-center">
+                  <span className="text-primary font-bold text-sm uppercase tracking-wider">
+                    {topic.metric}
+                  </span>
+                  <span className="material-symbols-outlined text-primary">
+                    {topic.icon}
+                  </span>
                 </div>
               </div>
-              <h3 className="font-headline text-xl font-semibold text-on-surface mb-2">
-                {topic.title}
-              </h3>
-              <p className="font-body text-on-surface-variant flex-grow">
-                {topic.description}
-              </p>
-              <div className="mt-4 pt-4 border-t-2 border-stone-100 flex justify-between items-center">
-                <span className="text-primary font-bold text-sm uppercase tracking-wider">
-                  {topic.metric}
-                </span>
-                <span className="material-symbols-outlined text-primary">
-                  {topic.icon}
-                </span>
-              </div>
-            </div>
+            </a>
           ))}
         </div>
       )}
