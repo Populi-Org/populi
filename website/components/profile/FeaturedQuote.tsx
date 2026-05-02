@@ -1,3 +1,5 @@
+import { Quote } from "lucide-react";
+
 interface FeaturedQuoteProps {
   quote: string;
   author: string;
@@ -7,7 +9,7 @@ interface FeaturedQuoteProps {
 export default function FeaturedQuote({ quote, author, date }: FeaturedQuoteProps) {
   return (
     <div className="bg-secondary-fixed p-8 border-2 border-[#2F2F2F] tile-bevel crazing-overlay flex flex-col justify-center items-center text-center">
-      <span className="text-4xl text-primary/20 mb-4">&#10077;</span>
+      <Quote className="w-10 h-10 text-primary mb-4" strokeWidth={0} fill="currentColor" />
       <blockquote className="font-headline italic text-xl text-primary max-w-2xl leading-snug">
         {quote}
       </blockquote>
