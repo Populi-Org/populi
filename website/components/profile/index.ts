@@ -7,4 +7,3 @@ export { default as LegislativeActivity } from "./LegislativeActivity";
 export { default as ProfileHero } from "./ProfileHero";
 export { default as ProfileSection } from "./ProfileSection";
 export { default as ProfileStats } from "./ProfileStats";
-export { default as TownHallBanner } from "./TownHallBanner";
