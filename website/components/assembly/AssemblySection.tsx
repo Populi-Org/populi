@@ -1,4 +1,3 @@
-import FilterChip from "../ui/FilterChip";
 import SearchBar from "../ui/SearchBar";
 import RepresentativeCard from "./RepresentativeCard";
 
@@ -55,7 +54,10 @@ export default function AssemblySection() {
         <h1 className="font-headline text-3xl md:text-4xl font-semibold text-primary mb-6">
           Assembleia de Representantes
         </h1>
-        <SearchBar placeholder="Pesquisar representantes por nome ou distrito..." />
+        <SearchBar
+          placeholder="Pesquisar representantes por nome ou distrito..."
+          filterOptions={districts}
+        />
       </div>
 
       {/* Representatives Grid */}
