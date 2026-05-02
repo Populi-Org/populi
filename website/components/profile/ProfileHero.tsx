@@ -43,7 +43,7 @@ export default function ProfileHero({
 
       <div className="relative w-full md:w-1/2 aspect-[4/5] flex-shrink-0">
         <div className="absolute inset-0 bg-primary translate-x-2 translate-y-2" />
-        <div className="relative z-10 w-full h-full bg-surface-variant border-4 border-primary-container p-4 shadow-lg">
+        <div className="relative z-10 w-full h-full border-4 border-primary-container p-4 shadow-lg" style={{ backgroundColor: partyColor || "var(--secondary)" }}>
           <div className="w-full h-full border-2 border-primary-container/30 relative overflow-hidden bg-surface-container-high">
             <img
               alt={`Retrato de ${name}`}
