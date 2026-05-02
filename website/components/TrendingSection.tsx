@@ -64,7 +64,7 @@ export default function TrendingSection() {
         {trendingTopics.map((topic) => (
           <div
             key={topic.title}
-            className="bg-surface-container-lowest border-2 border-stone-900 solid-shadow p-6 flex flex-col glossy-finish rounded-sm"
+            className="bg-surface-container-lowest border-2 border-stone-900 solid-shadow p-6 flex flex-col glossy-finish"
           >
             <div className="w-full aspect-square bg-surface-variant mb-4 border-2 border-stone-900 overflow-hidden relative">
               <Image

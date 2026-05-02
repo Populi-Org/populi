@@ -18,13 +18,13 @@ export default function HeroSection() {
           <div className="flex gap-4">
             <button
               type="button"
-              className="bg-primary text-white font-headline font-bold px-8 py-4 border-2 border-stone-900 glossy-finish active:translate-y-[2px] rounded-sm"
+              className="bg-primary text-white font-headline font-bold px-8 py-4 border-2 border-stone-900 glossy-finish active:translate-y-[2px]"
             >
               Explorar o Mosaico
             </button>
             <button
               type="button"
-              className="bg-transparent border-2 border-stone-900 font-headline font-bold px-8 py-4 glossy-finish hover:bg-surface-variant rounded-sm"
+              className="bg-transparent border-2 border-stone-900 font-headline font-bold px-8 py-4 glossy-finish hover:bg-surface-variant"
             >
               Saiba Mais
             </button>
