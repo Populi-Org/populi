@@ -9,18 +9,18 @@ interface PartyFilter {
 }
 
 const filterCategories: FilterCategory[] = [
-  { label: "PARTIDOS", icon: "token" },
-  { label: "REGIÃO", icon: "map" },
-  { label: "TEMA", icon: "topic" },
-  { label: "PERÍODO", icon: "calendar_month" },
+  { label: "Partidos", icon: "token" },
+  { label: "Região", icon: "map" },
+  { label: "Tema", icon: "topic" },
+  { label: "Período", icon: "calendar_month" },
 ];
 
 const partyFilters: PartyFilter[] = [
-  { label: "PARTIDO A", color: "bg-stone-400" },
-  { label: "PARTIDO B", color: "bg-stone-900" },
-  { label: "PARTIDO C", color: "bg-stone-200" },
-  { label: "PARTIDO D", color: "border border-stone-900 bg-transparent" },
-  { label: "PARTIDO E", color: "bg-primary" },
+  { label: "Partido A", color: "bg-stone-400" },
+  { label: "Partido B", color: "bg-stone-900" },
+  { label: "Partido C", color: "bg-stone-200" },
+  { label: "Partido D", color: "border border-stone-900 bg-transparent" },
+  { label: "Partido E", color: "bg-primary" },
 ];
 
 export default function ExploreSection() {
@@ -32,7 +32,7 @@ export default function ExploreSection() {
             Explore o Mosaico
           </h3>
           <p className="font-body text-on-surface-variant">
-            Filtre as peças por categoria para encontrar o que lhe interessa.
+            Filtre políticos e deputados por categoria para encontrar o que lhe interessa.
           </p>
         </div>
         <div className="md:w-3/4 grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
@@ -60,10 +60,6 @@ export default function ExploreSection() {
             {party.label}
           </span>
         ))}
-        <span className="text-on-surface-variant font-body text-sm italic ml-2">
-          As cores representam neutralidade geométrica, sem afiliação cromática
-          partidária.
-        </span>
       </div>
     </section>
   );

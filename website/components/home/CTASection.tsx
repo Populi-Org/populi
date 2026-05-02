@@ -25,11 +25,11 @@ export default function CTASection() {
           </span>
         </div>
         <h3 className="font-headline text-3xl font-semibold mb-4">
-          Arquivo das Peças
+          Arquivo de Políticos e Deputados
         </h3>
         <p className="font-body text-lg mb-8 opacity-90">
-          Consulte o histórico de votações, declarações e políticas que
-          construíram o mosaico político nacional desde a sua fundação.
+          Consulte o histórico de atuação, votações e declarações que moldaram
+          o mosaico político nacional ao longo das legislaturas.
         </p>
         <button
           type="button"

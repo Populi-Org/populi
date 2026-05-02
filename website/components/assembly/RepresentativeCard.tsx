@@ -43,7 +43,7 @@ export default function RepresentativeCard({
           type="button"
           className="mt-auto border-2 border-stone-900 bg-surface text-primary w-full py-2 font-label text-xs font-medium uppercase tracking-wider glossy-finish hover:bg-primary-container hover:text-on-primary transition-colors"
         >
-          VER PERFIL
+          Ver Perfil
         </button>
       </div>
     </article>
