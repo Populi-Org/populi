@@ -12,13 +12,13 @@ export default function ProfileSection({
   variant = "primary",
 }: ProfileSectionProps) {
   const bgColor =
-    variant === "secondary" ? "bg-secondary" : "bg-primary-container";
+    variant === "secondary" ? "bg-secondary-fixed" : "bg-surface";
 
   return (
-    <section
-      className={`border-2 border-stone-900 ${bgColor} glossy-finish ${className}`}
+    <div
+      className={`border-2 border-[#2F2F2F] tile-bevel crazing-overlay ${bgColor} ${className}`}
     >
       {children}
-    </section>
+    </div>
   );
 }

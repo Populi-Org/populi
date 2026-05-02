@@ -7,7 +7,9 @@ import {
   LegislativeActivity,
   ProfileHero,
   ProfileStats,
-  TownHallBanner,
+  DeputyNews,
+  DeputyFactChecks,
+  DeputyProfileTabs,
 } from "@/components/profile";
 import { getPrismaClient } from "@/lib/prisma";
 
@@ -95,7 +97,7 @@ export default async function DeputyPage({
   return (
     <div className="bg-surface font-body text-on-surface antialiased azulejo-crazing min-h-screen">
       <Header />
-      <main className="flex-grow p-4 md:p-6 max-w-7xl mx-auto w-full space-y-4">
+      <main className="flex-grow px-4 py-4 md:py-20 max-w-7xl mx-auto w-full space-y-4">
         <ProfileHero
           name={deputy.depNomeParlamentar}
           fullName={deputy.depNomeCompleto}
@@ -106,39 +108,67 @@ export default async function DeputyPage({
           committees={committees}
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <BiographicalHighlights
-            statusHistory={deputy.statusHistory.map((s) => ({
-              description: s.sioDes,
-              startDate: s.sioDtInicio,
-              endDate: s.sioDtFim,
-            }))}
-          />
-          <LegislativeActivity
-            initiatives={deputy.ini.map((i) => ({
-              id: i.iniId,
-              title: i.iniTi,
-              type: i.iniTpdesc,
-              number: i.iniNr,
-            }))}
-          />
-        </div>
+        <DeputyProfileTabs
+          tabs={[
+            {
+              id: "general",
+              label: "Geral",
+              content: (
+                <div className="grid grid-cols-12 gap-[2px]">
+                  <div className="col-span-12 lg:col-span-4">
+                    <BiographicalHighlights
+                      statusHistory={deputy.statusHistory.map((s) => ({
+                        description: s.sioDes,
+                        startDate: s.sioDtInicio,
+                        endDate: s.sioDtFim,
+                      }))}
+                    />
+                  </div>
 
-        {deputy.intev[0]?.intTe && (
-          <FeaturedQuote
-            quote={deputy.intev[0].intTe}
-            date={deputy.intev[0].pubDtreu}
+                  <div className="col-span-12 lg:col-span-8">
+                    <LegislativeActivity
+                      initiatives={deputy.ini.map((i) => ({
+                        id: i.iniId,
+                        title: i.iniTi,
+                        type: i.iniTpdesc,
+                        number: i.iniNr,
+                      }))}
+                    />
+                  </div>
+
+                  {deputy.intev[0]?.intTe && (
+                    <div className="col-span-12 md:col-span-6 lg:col-span-8 h-full">
+                      <FeaturedQuote
+                        quote={deputy.intev[0].intTe}
+                        author={deputy.depNomeParlamentar}
+                        date={deputy.intev[0].pubDtreu}
+                      />
+                    </div>
+                  )}
+
+                  <div className={deputy.intev[0]?.intTe ? "col-span-12 lg:col-span-4 h-full" : "col-span-12"}>
+                    <ProfileStats
+                      debateRank={debateRank}
+                      integrity={98}
+                      allies={alliesCount}
+                      muralViews={1200}
+                    />
+                  </div>
+                </div>
+                ),
+              },
+              {
+                id: "news",
+                label: "Notícias",
+                content: <DeputyNews deputyId={deputy.id} />,
+              },
+              {
+              id: "poligrafo",
+              label: "Polígrafo",
+              content: <DeputyFactChecks deputyId={deputy.id} />,
+            },
+          ]}
           />
-        )}
-
-        <ProfileStats
-          debateRank={debateRank}
-          integrity={98}
-          allies={alliesCount}
-          muralViews={1200}
-        />
-
-        <TownHallBanner />
       </main>
       <Footer />
     </div>
