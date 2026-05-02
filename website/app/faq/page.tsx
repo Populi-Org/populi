@@ -8,6 +8,11 @@ const faqs = [
       "A Populi é uma plataforma que organiza informação pública sobre a atividade política em Portugal, incluindo votações, posições, mandatos e acontecimentos relevantes, de forma clara e verificável.",
   },
   {
+    question: "De onde vem o nome Populi?",
+    answer:
+      "O nome inspira-se na expressão latina “Vox Populi, Vox Dei” e reflete a missão de dar visibilidade à voz pública através de dados políticos verificáveis.",
+  },
+  {
     question: "De onde vêm os dados?",
     answer:
       "Utilizamos fontes públicas oficiais, registos parlamentares, bases de dados públicas, comunicados divulgados por entidades oficiais, imprensa e newsletters. Sempre que possível, indicamos as fontes e datas de atualização.",

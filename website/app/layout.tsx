@@ -13,7 +13,7 @@ const workSans = Work_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Populi - Mural da Democracia",
+  title: "Populi",
   description: "Vox Populi, Vox Dei",
 };
 
