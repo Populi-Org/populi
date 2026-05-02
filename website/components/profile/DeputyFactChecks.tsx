@@ -25,7 +25,7 @@ export default function DeputyFactChecks({ deputyId }: DeputyFactChecksProps) {
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    fetch(`/api/deputies/${deputyId}/fact-checks?limit=100`)
+    fetch(`/api/deputies/${deputyId}/fact-checks`)
       .then((res) => res.json())
       .then((data) => {
         if (!cancelled) {
@@ -81,11 +81,11 @@ export default function DeputyFactChecks({ deputyId }: DeputyFactChecksProps) {
   return (
     <ProfileSection variant="primary" className="p-6 md:p-8">
       <div className="flex items-center justify-between mb-8">
-        <h2 className="font-headline text-2xl font-semibold text-on-primary-container uppercase tracking-wider">
+        <h2 className="font-headline text-2xl font-semibold text-primary-container uppercase tracking-wider">
           Polígrafo
         </h2>
         {factChecks.length > 0 && (
-          <span className="font-label text-xs uppercase tracking-wider text-on-primary-container/60">
+          <span className="font-label text-xs uppercase tracking-wider text-primary-container/60">
             {factChecks.length} verificações
           </span>
         )}

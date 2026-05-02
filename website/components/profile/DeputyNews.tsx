@@ -29,7 +29,7 @@ export default function DeputyNews({ deputyId }: DeputyNewsProps) {
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    fetch(`/api/deputies/${deputyId}/news?limit=100`)
+    fetch(`/api/deputies/${deputyId}/news`)
       .then((res) => res.json())
       .then((data) => {
         if (!cancelled) {
@@ -69,11 +69,11 @@ export default function DeputyNews({ deputyId }: DeputyNewsProps) {
   return (
     <ProfileSection variant="primary" className="p-6 md:p-8">
       <div className="flex items-center justify-between mb-8">
-        <h2 className="font-headline text-2xl font-semibold text-on-primary-container uppercase tracking-wider">
+        <h2 className="font-headline text-2xl font-semibold text-primary-container uppercase tracking-wider">
           Notícias
         </h2>
         {articles.length > 0 && (
-          <span className="font-label text-xs uppercase tracking-wider text-on-primary-container/60">
+          <span className="font-label text-xs uppercase tracking-wider text-primary-container/60">
             {articles.length} notícias
           </span>
         )}
@@ -133,9 +133,6 @@ export default function DeputyNews({ deputyId }: DeputyNewsProps) {
                     )}
                   </div>
                 </div>
-                {article.hasPicture && (
-                  <div className="shrink-0 w-3 h-3 rounded-full bg-primary mt-2" />
-                )}
               </div>
             </a>
           ))}
