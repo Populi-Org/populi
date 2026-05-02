@@ -16,6 +16,7 @@ model Deputy {
   depCPId           Int?               @map("dep_cp_id")
   depCPDes          String?            @map("dep_cp_des")
   depCargo          String?            @map("dep_cargo")
+  depImageUrl       String?            @map("dep_image_url")
   legDes            String             @map("leg_des")
 
   partyHistory      PartyHistory[]
