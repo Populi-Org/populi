@@ -126,7 +126,7 @@ export default async function DeputyPage({
                     />
                   </div>
 
-                  <div className="col-span-12 md:col-span-6 lg:col-span-4">
+                  <div className="col-span-12 lg:col-span-8">
                     <LegislativeActivity
                       initiatives={deputy.ini.map((i) => ({
                         id: i.iniId,

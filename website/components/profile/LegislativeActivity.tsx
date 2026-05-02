@@ -15,7 +15,7 @@ export default function LegislativeActivity({
   initiatives,
 }: LegislativeActivityProps) {
   return (
-    <ProfileSection variant="primary" className="p-6 flex flex-col gap-4">
+    <ProfileSection variant="primary" className="p-6 flex flex-col gap-4 h-[400px] overflow-hidden">
       <div className="flex items-center justify-between border-b-2 border-primary-container/20 pb-2">
         <div className="flex items-center gap-2">
           <span className="text-primary-container text-xl">&#9878;</span>
@@ -30,7 +30,7 @@ export default function LegislativeActivity({
           Nenhuma iniciativa legislativa registada.
         </p>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-6 overflow-y-auto pr-2">
           {initiatives.map((initiative, index) => (
             <div
               key={index}
