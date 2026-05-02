@@ -9,6 +9,7 @@ interface RepresentativeCardProps {
   partyColor: string | null;
   image: string;
   description: string;
+  isSuplente?: boolean;
 }
 
 const partyColors: Record<string, string> = {
@@ -35,12 +36,11 @@ export default function RepresentativeCard({
   partyColor,
   image,
   description,
+  isSuplente = false,
 }: RepresentativeCardProps) {
   return (
     <Link href={`/deputy/${id}`} className="block">
-      <article
-        className="border-4 flex flex-col glossy-finish azulejo-crazing solid-shadow group hover:-translate-y-1 transition-transform duration-300"
-      >
+      <article className="border-4 flex flex-col glossy-finish azulejo-crazing solid-shadow group hover:-translate-y-1 transition-transform duration-300">
         <div
           className={`h-4 w-full ${getPartyColor(party)} geometric-bg border-b-2 border-stone-900`}
         />
@@ -61,6 +61,11 @@ export default function RepresentativeCard({
             <p className="font-label text-xs font-medium uppercase tracking-wider text-secondary mb-1">
               {party}
             </p>
+          )}
+          {isSuplente && (
+            <span className="inline-block border-2 border-stone-900 bg-error text-white px-2 py-0.5 font-label text-[10px] font-medium uppercase tracking-wider mb-1">
+              Suplente
+            </span>
           )}
           {constituency && (
             <p className="font-label text-xs font-medium uppercase tracking-wider text-primary mb-4">

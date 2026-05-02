@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { getPrismaClient } from "@/lib/prisma";
+import { Prisma } from "@/app/generated/prisma/client";
 
 export const dynamic = "force-dynamic";
 
@@ -9,6 +10,7 @@ export async function GET(request: NextRequest) {
 
   const search = searchParams.get("search") || "";
   const constituency = searchParams.get("constituency") || "";
+  const showSuplentes = searchParams.get("showSuplentes") === "true";
   const page = Math.max(
     1,
     Number.parseInt(searchParams.get("page") || "1", 10),
@@ -18,10 +20,7 @@ export async function GET(request: NextRequest) {
     Math.min(50, Number.parseInt(searchParams.get("limit") || "12", 10)),
   );
 
-  const where: {
-    depNomeParlamentar?: { contains: string; mode: "insensitive" };
-    depCPDes?: string;
-  } = {};
+  const where: Prisma.DeputyWhereInput = {};
 
   if (search) {
     where.depNomeParlamentar = { contains: search, mode: "insensitive" };
@@ -29,6 +28,15 @@ export async function GET(request: NextRequest) {
 
   if (constituency) {
     where.depCPDes = constituency;
+  }
+
+  if (!showSuplentes) {
+    where.statusHistory = {
+      none: {
+        sioDes: { contains: "suplent", mode: "insensitive" },
+        sioDtFim: null,
+      },
+    };
   }
 
   const skip = (page - 1) * limit;
@@ -47,6 +55,13 @@ export async function GET(request: NextRequest) {
           orderBy: { cmsCargo: "asc" },
           take: 1,
         },
+        statusHistory: {
+          where: {
+            sioDes: { contains: "suplent", mode: "insensitive" },
+            sioDtFim: null,
+          },
+          take: 1,
+        },
       },
       skip,
       take: limit,
@@ -60,6 +75,7 @@ export async function GET(request: NextRequest) {
     const partySigla = activePartyHistory?.party?.sigla || null;
     const partyColor = activePartyHistory?.party?.color || null;
     const committee = deputy.cms[0];
+    const isSuplente = deputy.statusHistory.length > 0;
 
     let description: string;
     if (committee?.cmsNo) {
@@ -77,6 +93,7 @@ export async function GET(request: NextRequest) {
       partyColor,
       image: deputy.depImageUrl || "/defaultNoImage.png",
       description,
+      isSuplente,
     };
   });
 

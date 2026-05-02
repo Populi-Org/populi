@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { getPrismaClient } from "@/lib/prisma";
+import { type Deputy } from "@/app/generated/prisma/client";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +16,7 @@ export async function GET(
     return NextResponse.json({ error: "ID inválido" }, { status: 400 });
   }
 
-  const deputy = await prisma.deputy.findUnique({
+  const deputyResult = await prisma.deputy.findUnique({
     where: { id: deputyId },
     include: {
       partyHistory: {
@@ -50,12 +51,14 @@ export async function GET(
     },
   });
 
-  if (!deputy) {
+  if (!deputyResult) {
     return NextResponse.json(
       { error: "Deputado não encontrado" },
       { status: 404 },
     );
   }
+
+  const deputy = deputyResult as Deputy & typeof deputyResult;
 
   const activePartyHistory = deputy.partyHistory[0];
   const partySigla = activePartyHistory?.party?.sigla || null;
