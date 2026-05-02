@@ -1,6 +1,64 @@
-function CompositionSvg() {
+"use client";
+
+import { useState } from "react";
+
+const colorToParty: Record<string, string> = {
+  "#990000": "Bloco de Esquerda",
+  "#cc0000": "Partido Comunista Português",
+  "#ff66cc": "Partido Socialista",
+  "#00aa00": "Livre",
+  "#00cc66": "Pessoas-Animais-Natureza",
+  "#3ae0ac": "Juntos Pelo Povo",
+  "#ff9900": "Partido Social Democrata",
+  "#0047ab": "Centro Democrático Social",
+  "#00aaff": "Iniciativa Liberal",
+  "#202056": "Chega",
+};
+
+export default function CompositionSvg() {
+  const [tooltip, setTooltip] = useState<{
+    visible: boolean;
+    text: string;
+    x: number;
+    y: number;
+  }>({ visible: false, text: "", x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
+    if (!tooltip.visible) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    setTooltip((prev) => ({
+      ...prev,
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top - 12,
+    }));
+  };
+
+  const handleMouseOver = (e: React.MouseEvent<SVGSVGElement>) => {
+    const target = e.target as SVGElement;
+    if (target.tagName.toLowerCase() === "circle") {
+      const fill = target.getAttribute("fill");
+      if (fill && colorToParty[fill]) {
+        const rect = e.currentTarget.getBoundingClientRect();
+        setTooltip({
+          visible: true,
+          text: colorToParty[fill],
+          x: e.clientX - rect.left,
+          y: e.clientY - rect.top - 12,
+        });
+      }
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setTooltip((prev) => ({ ...prev, visible: false }));
+  };
+
   return (
-    <svg
+    <div className="relative inline-block">
+      <svg
+        onMouseMove={handleMouseMove}
+        onMouseOver={handleMouseOver}
+        onMouseLeave={handleMouseLeave}
       viewBox="0 0 300 140"
       className="w-full h-40"
       style={{ width: "500px", maxWidth: "500px" }}
@@ -1857,9 +1915,19 @@ function CompositionSvg() {
         fill="currentColor"
         className="opacity-60 text-muted-foreground"
       />
-    </svg>
+      </svg>
+      {tooltip.visible && (
+        <div
+          className="absolute pointer-events-none z-50 bg-surface-container border-2 border-stone-900 text-on-surface font-label text-xs px-2 py-1 solid-shadow whitespace-nowrap"
+          style={{
+            left: tooltip.x,
+            top: tooltip.y,
+            transform: "translate(-50%, -100%)",
+          }}
+        >
+          {tooltip.text}
+        </div>
+      )}
+    </div>
   );
 }
-
-
-export default CompositionSvg;
