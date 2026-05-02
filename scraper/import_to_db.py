@@ -647,7 +647,10 @@ async def insert_deputy(
     async with conn.cursor() as cur:
         for sql, rows in batches:
             if rows:
-                await cur.executemany(sql, rows)
+                # Chunk to avoid overwhelming remote connections / pipeline buffers
+                chunk_size = 500
+                for i in range(0, len(rows), chunk_size):
+                    await cur.executemany(sql, rows[i : i + chunk_size])
 
     return dep_db_id
 
@@ -693,6 +696,9 @@ async def main() -> None:
         for idx, entry in enumerate(data):
             try:
                 await insert_deputy(conn, entry, party_map)
+                # Commit every 10 deputies to keep transactions small
+                if (idx + 1) % 10 == 0:
+                    await conn.commit()
                 if (idx + 1) % 100 == 0 or idx == total - 1:
                     name = entry["Deputado"]["DepNomeParlamentar"]
                     print(f"  [{idx + 1}/{total}] {name}")

@@ -55,6 +55,7 @@ model Party {
   id            Int       @id @default(autoincrement())
   gpId          Int       @unique @map("gp_id")
   sigla         String    @unique @map("sigla")
+  color         String?   @map("color")
 
   partyHistory  PartyHistory[]
 
