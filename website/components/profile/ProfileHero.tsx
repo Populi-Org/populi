@@ -43,7 +43,10 @@ export default function ProfileHero({
 
       <div className="relative w-full md:w-1/2 aspect-[4/5] flex-shrink-0">
         <div className="absolute inset-0 bg-primary translate-x-2 translate-y-2" />
-        <div className="relative z-10 w-full h-full border-4 border-[#2F2F2F] shadow-lg overflow-hidden" style={{ backgroundColor: partyColor || "var(--secondary)" }}>
+        <div
+          className="relative z-10 w-full h-full border-4 border-[#2F2F2F] shadow-lg overflow-hidden"
+          style={{ backgroundColor: partyColor || "var(--secondary)" }}
+        >
           <img
             alt={`Retrato de ${name}`}
             className="w-full h-full object-cover grayscale brightness-90 contrast-110"
@@ -90,7 +93,6 @@ export default function ProfileHero({
             </p>
           )}
         </div>
-
       </div>
     </div>
   );

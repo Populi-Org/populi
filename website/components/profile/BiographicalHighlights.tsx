@@ -22,7 +22,10 @@ export default function BiographicalHighlights({
     }));
 
   return (
-    <ProfileSection variant="secondary" className="p-6 flex flex-col gap-4 h-[400px] overflow-hidden">
+    <ProfileSection
+      variant="secondary"
+      className="p-6 flex flex-col gap-4 h-[400px] overflow-hidden"
+    >
       <div className="flex items-center gap-2 border-b-2 border-primary/30 pb-2">
         <ScrollText className="w-5 h-5 text-primary" />
         <h2 className="font-label text-xs font-bold uppercase tracking-wider text-primary">

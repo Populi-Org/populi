@@ -146,7 +146,13 @@ export default async function DeputyPage({
                     </div>
                   )}
 
-                  <div className={deputy.intev[0]?.intTe ? "col-span-12 lg:col-span-4 h-full" : "col-span-12"}>
+                  <div
+                    className={
+                      deputy.intev[0]?.intTe
+                        ? "col-span-12 lg:col-span-4 h-full"
+                        : "col-span-12"
+                    }
+                  >
                     <ProfileStats
                       debateRank={debateRank}
                       integrity={98}
@@ -155,20 +161,20 @@ export default async function DeputyPage({
                     />
                   </div>
                 </div>
-                ),
-              },
-              {
-                id: "news",
-                label: "Notícias",
-                content: <DeputyNews deputyId={deputy.id} />,
-              },
-              {
+              ),
+            },
+            {
+              id: "news",
+              label: "Notícias",
+              content: <DeputyNews deputyId={deputy.id} />,
+            },
+            {
               id: "poligrafo",
               label: "Polígrafo",
               content: <DeputyFactChecks deputyId={deputy.id} />,
             },
           ]}
-          />
+        />
       </main>
       <Footer />
     </div>

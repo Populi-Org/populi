@@ -52,7 +52,9 @@ export default function DeputyFactChecks({ deputyId }: DeputyFactChecksProps) {
     });
   };
 
-  const truthLevelMap = (level: string | null): { label: string; color: string } => {
+  const truthLevelMap = (
+    level: string | null,
+  ): { label: string; color: string } => {
     if (!level) return { label: "N/A", color: "bg-stone-600" };
     const lower = level.toLowerCase();
     switch (lower) {
