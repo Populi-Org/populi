@@ -137,7 +137,7 @@ export default async function DeputyPage({
                   </div>
 
                   {deputy.intev[0]?.intTe && (
-                    <div className="col-span-12 md:col-span-6 lg:col-span-8">
+                    <div className="col-span-12 md:col-span-6 lg:col-span-8 h-full">
                       <FeaturedQuote
                         quote={deputy.intev[0].intTe}
                         author={deputy.depNomeParlamentar}
@@ -146,7 +146,7 @@ export default async function DeputyPage({
                     </div>
                   )}
 
-                  <div className={deputy.intev[0]?.intTe ? "col-span-12 lg:col-span-4" : "col-span-12"}>
+                  <div className={deputy.intev[0]?.intTe ? "col-span-12 lg:col-span-4 h-full" : "col-span-12"}>
                     <ProfileStats
                       debateRank={debateRank}
                       integrity={98}

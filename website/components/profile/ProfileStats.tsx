@@ -37,11 +37,11 @@ export default function ProfileStats({
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-[2px]">
+    <div className="grid grid-cols-2 gap-[2px] h-full">
       {stats.map((stat, index) => (
         <div
           key={index}
-          className="bg-surface p-4 border-2 border-[#2F2F2F] tile-bevel crazing-overlay flex flex-col items-center justify-center text-center gap-2"
+          className="bg-surface p-4 border-2 border-[#2F2F2F] tile-bevel crazing-overlay flex flex-col items-center justify-center text-center gap-2 h-full"
         >
           {stat.icon}
           <span className="font-label text-[10px] uppercase tracking-wider text-on-surface-variant">

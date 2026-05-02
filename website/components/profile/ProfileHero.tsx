@@ -54,9 +54,6 @@ export default function ProfileHero({
             />
           </div>
         </div>
-        <div className="absolute -bottom-2 -right-2 bg-primary-container text-on-primary px-4 py-2 font-headline font-bold italic text-lg border-2 border-[#2F2F2F]">
-          {name}
-        </div>
       </div>
 
       <div className="relative z-10 flex flex-col justify-center gap-6">
