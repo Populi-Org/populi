@@ -8,6 +8,8 @@ import {
   ProfileHero,
   ProfileStats,
   TownHallBanner,
+  DeputyNews,
+  DeputyProfileTabs,
 } from "@/components/profile";
 import { getPrismaClient } from "@/lib/prisma";
 
@@ -106,39 +108,56 @@ export default async function DeputyPage({
           committees={committees}
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <BiographicalHighlights
-            statusHistory={deputy.statusHistory.map((s) => ({
-              description: s.sioDes,
-              startDate: s.sioDtInicio,
-              endDate: s.sioDtFim,
-            }))}
-          />
-          <LegislativeActivity
-            initiatives={deputy.ini.map((i) => ({
-              id: i.iniId,
-              title: i.iniTi,
-              type: i.iniTpdesc,
-              number: i.iniNr,
-            }))}
-          />
-        </div>
+        <DeputyProfileTabs
+          tabs={[
+            {
+              id: "general",
+              label: "Geral",
+              content: (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <BiographicalHighlights
+                      statusHistory={deputy.statusHistory.map((s) => ({
+                        description: s.sioDes,
+                        startDate: s.sioDtInicio,
+                        endDate: s.sioDtFim,
+                      }))}
+                    />
+                    <LegislativeActivity
+                      initiatives={deputy.ini.map((i) => ({
+                        id: i.iniId,
+                        title: i.iniTi,
+                        type: i.iniTpdesc,
+                        number: i.iniNr,
+                      }))}
+                    />
+                  </div>
 
-        {deputy.intev[0]?.intTe && (
-          <FeaturedQuote
-            quote={deputy.intev[0].intTe}
-            date={deputy.intev[0].pubDtreu}
-          />
-        )}
+                  {deputy.intev[0]?.intTe && (
+                    <FeaturedQuote
+                      quote={deputy.intev[0].intTe}
+                      date={deputy.intev[0].pubDtreu}
+                    />
+                  )}
 
-        <ProfileStats
-          debateRank={debateRank}
-          integrity={98}
-          allies={alliesCount}
-          muralViews={1200}
+                  <ProfileStats
+                    debateRank={debateRank}
+                    integrity={98}
+                    allies={alliesCount}
+                    muralViews={1200}
+                  />
+
+                  <TownHallBanner />
+                </div>
+              ),
+            },
+            {
+              id: "news",
+              label: "Notícias",
+              content: <DeputyNews deputyId={deputy.id} />,
+            },
+          ]}
         />
-
-        <TownHallBanner />
       </main>
       <Footer />
     </div>
