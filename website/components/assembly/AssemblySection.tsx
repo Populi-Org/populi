@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import FilterChip from "../ui/FilterChip";
 import Pagination from "../ui/Pagination";
 import SearchBar from "../ui/SearchBar";
@@ -55,7 +56,37 @@ const constituencies = [
   "Europa",
   "Fora da Europa",
 ];
-export default function AssemblySection() {
+
+const themes = [
+  "Economia",
+  "Saúde",
+  "Educação",
+  "Habitação",
+  "Ambiente",
+  "Transportes",
+  "Justiça",
+  "Energia",
+];
+
+const sinceYears = ["1980", "1990", "2000", "2010", "2015", "2019", "2024"];
+
+interface AssemblySectionProps {
+  initialSearch?: string;
+  initialConstituency?: string;
+  initialParty?: string;
+  initialTheme?: string;
+  initialSince?: string;
+  initialFiltersVisible?: boolean;
+}
+export default function AssemblySection({
+  initialSearch = "",
+  initialConstituency = "",
+  initialParty = "",
+  initialTheme = "",
+  initialSince = "",
+  initialFiltersVisible = false,
+}: AssemblySectionProps) {
+  const searchParams = useSearchParams();
   const [deputies, setDeputies] = useState<Deputy[]>([]);
   const [pagination, setPagination] = useState<PaginationData>({
     page: 1,
@@ -63,15 +94,69 @@ export default function AssemblySection() {
     total: 0,
     totalPages: 0,
   });
-  const [search, setSearch] = useState("");
-  const [constituency, setConstituency] = useState("");
-  const [party, setParty] = useState("");
+  const [search, setSearch] = useState(initialSearch);
+  const [constituency, setConstituency] = useState(initialConstituency);
+  const [party, setParty] = useState(initialParty);
+  const [theme, setTheme] = useState(initialTheme);
+  const [since, setSince] = useState(initialSince);
   const [parties, setParties] = useState<Party[]>([]);
   const [showSuplentes, setShowSuplentes] = useState(false);
   const [sortByPhoto, setSortByPhoto] = useState(true);
-  const [filtersVisible, setFiltersVisible] = useState(false);
+  const [filtersVisible, setFiltersVisible] = useState(initialFiltersVisible);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const urlSearch = searchParams.get("search") || "";
+  const urlConstituency = searchParams.get("constituency") || "";
+  const urlParty = searchParams.get("party") || "";
+  const urlTheme = searchParams.get("theme") || "";
+  const urlSince = searchParams.get("since") || "";
+  const urlFilters = searchParams.get("filters");
+  const shouldShowFilters = Boolean(
+    urlFilters || urlSearch || urlConstituency || urlParty || urlTheme || urlSince,
+  );
+
+  useEffect(() => {
+    setSearch(initialSearch);
+    setConstituency(initialConstituency);
+    setParty(initialParty);
+    setTheme(initialTheme);
+    setSince(initialSince);
+    setFiltersVisible(initialFiltersVisible);
+  }, [
+    initialSearch,
+    initialConstituency,
+    initialParty,
+    initialTheme,
+    initialSince,
+    initialFiltersVisible,
+  ]);
+
+  useEffect(() => {
+    if (
+      urlSearch ||
+      urlConstituency ||
+      urlParty ||
+      urlTheme ||
+      urlSince ||
+      urlFilters
+    ) {
+      setSearch(urlSearch);
+      setConstituency(urlConstituency);
+      setParty(urlParty);
+      setTheme(urlTheme);
+      setSince(urlSince);
+      setFiltersVisible(shouldShowFilters);
+    }
+  }, [
+    urlSearch,
+    urlConstituency,
+    urlParty,
+    urlTheme,
+    urlSince,
+    urlFilters,
+    shouldShowFilters,
+  ]);
 
   const fetchDeputies = useCallback(
     async (
@@ -81,6 +166,8 @@ export default function AssemblySection() {
       partyFilter: string,
       showSuplentesFilter: boolean,
       sortByPhotoFilter: boolean,
+      themeFilter: string,
+      sinceFilter: string,
     ) => {
       setLoading(true);
       setError(null);
@@ -94,6 +181,8 @@ export default function AssemblySection() {
         if (partyFilter) params.set("party", partyFilter);
         if (showSuplentesFilter) params.set("showSuplentes", "true");
         if (!sortByPhotoFilter) params.set("sortByPhoto", "false");
+        if (themeFilter) params.set("theme", themeFilter);
+        if (sinceFilter) params.set("since", sinceFilter);
 
         const response = await fetch(`/api/deputy?${params.toString()}`);
 
@@ -116,11 +205,29 @@ export default function AssemblySection() {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      fetchDeputies(1, search, constituency, party, showSuplentes, sortByPhoto);
+      fetchDeputies(
+        1,
+        search,
+        constituency,
+        party,
+        showSuplentes,
+        sortByPhoto,
+        theme,
+        since,
+      );
     }, 300);
 
     return () => clearTimeout(timeout);
-  }, [search, constituency, party, showSuplentes, sortByPhoto, fetchDeputies]);
+  }, [
+    search,
+    constituency,
+    party,
+    showSuplentes,
+    sortByPhoto,
+    theme,
+    since,
+    fetchDeputies,
+  ]);
 
   useEffect(() => {
     let cancelled = false;
@@ -149,7 +256,16 @@ export default function AssemblySection() {
 
   const handlePageChange = (page: number) => {
     if (page < 1 || page > pagination.totalPages) return;
-    fetchDeputies(page, search, constituency, party, showSuplentes, sortByPhoto);
+      fetchDeputies(
+        page,
+        search,
+        constituency,
+        party,
+        showSuplentes,
+        sortByPhoto,
+        theme,
+        since,
+      );
   };
 
   const toggleConstituency = (c: string) => {
@@ -158,6 +274,14 @@ export default function AssemblySection() {
 
   const toggleParty = (sigla: string) => {
     setParty((prev) => (prev === sigla ? "" : sigla));
+  };
+
+  const toggleTheme = (value: string) => {
+    setTheme((prev) => (prev === value ? "" : value));
+  };
+
+  const toggleSince = (value: string) => {
+    setSince((prev) => (prev === value ? "" : value));
   };
 
   return (
@@ -179,6 +303,8 @@ export default function AssemblySection() {
               party,
               showSuplentes,
               sortByPhoto,
+              theme,
+              since,
             )
           }
           onFilterToggle={() => setFiltersVisible((v) => !v)}
@@ -219,6 +345,38 @@ export default function AssemblySection() {
               ))}
             </div>
           )}
+          <div className="flex flex-wrap gap-2 mb-4">
+            <FilterChip
+              key="all-themes"
+              label="Todos os temas"
+              active={!theme}
+              onClick={() => setTheme("")}
+            />
+            {themes.map((t) => (
+              <FilterChip
+                key={t}
+                label={t}
+                active={theme === t}
+                onClick={() => toggleTheme(t)}
+              />
+            ))}
+          </div>
+          <div className="flex flex-wrap gap-2 mb-4">
+            <FilterChip
+              key="all-periods"
+              label="Todos os períodos"
+              active={!since}
+              onClick={() => setSince("")}
+            />
+            {sinceYears.map((year) => (
+              <FilterChip
+                key={year}
+                label={`Desde ${year}`}
+                active={since === year}
+                onClick={() => toggleSince(year)}
+              />
+            ))}
+          </div>
           <div className="pt-4 border-t-2 border-stone-900/20 flex flex-wrap gap-x-6 gap-y-3">
             <Toggle
               label="Com foto primeiro"
@@ -282,6 +440,8 @@ export default function AssemblySection() {
                 party,
                 showSuplentes,
                 sortByPhoto,
+                theme,
+                since,
               )
             }
             className="border-2 border-stone-900 bg-primary text-white px-6 py-2 font-label text-xs font-medium uppercase tracking-wider glossy-finish hover:bg-primary-container transition-colors"

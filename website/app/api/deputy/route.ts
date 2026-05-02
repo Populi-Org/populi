@@ -13,6 +13,8 @@ export async function GET(request: NextRequest) {
   const party = searchParams.get("party") || "";
   const showSuplentes = searchParams.get("showSuplentes") === "true";
   const sortByPhoto = searchParams.get("sortByPhoto") !== "false";
+  const theme = searchParams.get("theme") || "";
+  const since = searchParams.get("since") || "";
   const page = Math.max(
     1,
     Number.parseInt(searchParams.get("page") || "1", 10),
@@ -23,6 +25,7 @@ export async function GET(request: NextRequest) {
   );
 
   const where: Prisma.DeputyWhereInput = {};
+  const andFilters: Prisma.DeputyWhereInput[] = [];
 
   if (search) {
     where.depNomeParlamentar = { contains: search, mode: "insensitive" };
@@ -33,12 +36,42 @@ export async function GET(request: NextRequest) {
   }
 
   if (party) {
-    where.partyHistory = {
-      some: {
-        party: { sigla: party },
-        gpDtFim: null,
+    andFilters.push({
+      partyHistory: {
+        some: {
+          party: { sigla: party },
+          gpDtFim: null,
+        },
       },
-    };
+    });
+  }
+
+  if (theme) {
+    andFilters.push({
+      intev: {
+        some: {
+          OR: [
+            { intTe: { contains: theme, mode: "insensitive" } },
+            { intSu: { contains: theme, mode: "insensitive" } },
+            { tinDs: { contains: theme, mode: "insensitive" } },
+          ],
+        },
+      },
+    });
+  }
+
+  if (since) {
+    const year = Number.parseInt(since, 10);
+    if (!Number.isNaN(year)) {
+      const sinceDate = new Date(year, 0, 1);
+      andFilters.push({
+        partyHistory: {
+          some: {
+            gpDtInicio: { lte: sinceDate },
+          },
+        },
+      });
+    }
   }
 
   if (!showSuplentes) {
@@ -48,6 +81,10 @@ export async function GET(request: NextRequest) {
         sioDtFim: null,
       },
     };
+  }
+
+  if (andFilters.length > 0) {
+    where.AND = andFilters;
   }
 
   const skip = (page - 1) * limit;
