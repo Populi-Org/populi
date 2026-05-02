@@ -14,13 +14,11 @@ import psycopg2
 
 # ── Configuration ────────────────────────────────────────────────────────────
 
-JSON_PATH = os.environ.get(
-    "INICIATIVAS_JSON",
-    os.path.join(os.path.expanduser("~"), "Downloads", "IniciativasXVII.json"),
-)
+JSON_PATH = os.path.join(os.path.dirname(__file__), "downloads", "IniciativasXVII.json")
 
 
 # ── DB helpers ───────────────────────────────────────────────────────────────
+
 
 def _find_env_file() -> Optional[str]:
     start = os.path.dirname(os.path.abspath(__file__))
@@ -50,12 +48,14 @@ def get_db_url() -> str:
 
 def get_connection():
     db_url = get_db_url()
+    print(db_url)
     if not db_url:
         raise RuntimeError("DATABASE_URL not found in .env or environment")
     return psycopg2.connect(db_url)
 
 
 # ── Parsing helpers ──────────────────────────────────────────────────────────
+
 
 def safe_str(val) -> Optional[str]:
     """Convert any value to a string or None, handling dicts/lists."""
@@ -71,38 +71,45 @@ def parse_date(val: Optional[str]) -> Optional[datetime]:
         return None
     try:
         return datetime.strptime(str(val), "%Y-%m-%d")
-    except (ValueError, TypeError):
+    except ValueError, TypeError:
         return None
 
 
 def parse_authors(data: dict) -> list[dict]:
     authors = []
-    for gp in (data.get("IniAutorGruposParlamentares") or []):
+    for gp in data.get("IniAutorGruposParlamentares") or []:
         if gp.get("GP"):
-            authors.append({
-                "author_type": "GP",
-                "author_name": None,
-                "author_sigla": gp["GP"],
-            })
+            authors.append(
+                {
+                    "author_type": "GP",
+                    "author_name": None,
+                    "author_sigla": gp["GP"],
+                }
+            )
     outros = data.get("IniAutorOutros")
-    if outros and outros.get("nome"):
-        authors.append({
-            "author_type": "OUTROS",
-            "author_name": outros["nome"],
-            "author_sigla": outros.get("sigla"),
-        })
-    for dep in (data.get("IniAutorDeputados") or []):
-        nome = dep.get("nome") or dep.get("DepNomeParlamentar")
-        if nome:
-            authors.append({
-                "author_type": "DEPUTADO",
-                "author_name": nome,
-                "author_sigla": None,
-            })
+    if outros and outros.get("gnome"):
+        authors.append(
+            {
+                "author_type": "OUTROS",
+                "author_name": outros["gnome"],
+                "author_sigla": outros.get("sigla"),
+            }
+        )
+    for dep in data.get("IniAutorDeputados") or []:
+        gnome = dep.get("gnome") or dep.get("DepNomeParlamentar")
+        if gnome:
+            authors.append(
+                {
+                    "author_type": "DEPUTADO",
+                    "author_name": gnome,
+                    "author_sigla": None,
+                }
+            )
     return authors
 
 
 # ── Import ───────────────────────────────────────────────────────────────────
+
 
 def load_initiatives(path: str) -> list[dict]:
     with open(path, "r", encoding="utf-8") as f:
@@ -156,9 +163,20 @@ def import_initiatives(conn, initiatives: list[dict]):
                             updated_at = %s
                         WHERE id = %s
                         """,
-                        (ini_nr, ini_titulo, ini_desc_tipo, ini_tipo,
-                         ini_leg, ini_epigrafe, ini_obs, ini_link,
-                         data_ini, data_fim, now, db_id),
+                        (
+                            ini_nr,
+                            ini_titulo,
+                            ini_desc_tipo,
+                            ini_tipo,
+                            ini_leg,
+                            ini_epigrafe,
+                            ini_obs,
+                            ini_link,
+                            data_ini,
+                            data_fim,
+                            now,
+                            db_id,
+                        ),
                     )
                 else:
                     cur.execute(
@@ -170,9 +188,21 @@ def import_initiatives(conn, initiatives: list[dict]):
                         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                         RETURNING id
                         """,
-                        (int(ini_id_raw), ini_nr, ini_titulo, ini_desc_tipo,
-                         ini_tipo, ini_leg, ini_epigrafe, ini_obs, ini_link,
-                         data_ini, data_fim, now, now),
+                        (
+                            int(ini_id_raw),
+                            ini_nr,
+                            ini_titulo,
+                            ini_desc_tipo,
+                            ini_tipo,
+                            ini_leg,
+                            ini_epigrafe,
+                            ini_obs,
+                            ini_link,
+                            data_ini,
+                            data_fim,
+                            now,
+                            now,
+                        ),
                     )
                     db_id = cur.fetchone()[0]
                     total_ini += 1
@@ -280,6 +310,7 @@ def import_initiatives(conn, initiatives: list[dict]):
 
 
 # ── Main ───────────────────────────────────────────────────────────────────────
+
 
 def main():
     if not os.path.exists(JSON_PATH):
