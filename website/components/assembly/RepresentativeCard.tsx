@@ -33,7 +33,6 @@ export default function RepresentativeCard({
   name,
   constituency,
   party,
-  partyColor,
   image,
   description,
   isSuplente = false,
@@ -46,12 +45,12 @@ export default function RepresentativeCard({
         />
         <div className="p-6 flex flex-col items-center flex-grow">
           <div className="w-32 h-32 border-2 border-stone-900 overflow-hidden mb-4 relative glossy-finish">
-            <img
+            <Image
               alt={`Retrato de ${name}`}
-              className="w-full h-full object-cover"
+              className="object-cover"
               src={image}
-              width={128}
-              height={128}
+              fill
+              sizes="128px"
             />
           </div>
           <h2 className="font-headline text-xl font-semibold text-on-surface text-center mb-1">

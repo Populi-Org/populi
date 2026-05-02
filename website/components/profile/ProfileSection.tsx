@@ -11,8 +11,7 @@ export default function ProfileSection({
   className = "",
   variant = "primary",
 }: ProfileSectionProps) {
-  const bgColor =
-    variant === "secondary" ? "bg-secondary-fixed" : "bg-surface";
+  const bgColor = variant === "secondary" ? "bg-secondary-fixed" : "bg-surface";
 
   return (
     <div

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
 import { LayoutDashboard, Newspaper, ShieldCheck } from "lucide-react";
+import { type ReactNode, useState } from "react";
 
 const iconMap: Record<string, React.ElementType> = {
   general: LayoutDashboard,
@@ -33,6 +33,7 @@ export default function DeputyProfileTabs({ tabs }: DeputyProfileTabsProps) {
           return (
             <button
               key={tab.id}
+              type="button"
               onClick={() => setActiveTab(tab.id)}
               className={`flex-1 font-label text-xs font-medium uppercase tracking-wider px-6 py-3 transition-colors border-r-2 border-stone-900 last:border-r-0 ${
                 isActive

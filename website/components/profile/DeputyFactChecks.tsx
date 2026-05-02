@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import ProfileSection from "./ProfileSection";
 
 interface FactCheck {
@@ -52,7 +52,9 @@ export default function DeputyFactChecks({ deputyId }: DeputyFactChecksProps) {
     });
   };
 
-  const truthLevelMap = (level: string | null): { label: string; color: string } => {
+  const truthLevelMap = (
+    level: string | null,
+  ): { label: string; color: string } => {
     if (!level) return { label: "N/A", color: "bg-stone-600" };
     const lower = level.toLowerCase();
     switch (lower) {
@@ -93,9 +95,9 @@ export default function DeputyFactChecks({ deputyId }: DeputyFactChecksProps) {
 
       {loading ? (
         <div className="space-y-6">
-          {Array.from({ length: 4 }).map((_, i) => (
+          {Array.from({ length: 4 }).map((v, _) => (
             <div
-              key={i}
+              key={`${v}-skeleton`}
               className="border-2 border-stone-900 bg-surface p-6 glossy-finish animate-pulse"
             >
               <div className="h-5 bg-stone-300 rounded w-3/4 mb-3" />

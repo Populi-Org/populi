@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
+import type { Deputy } from "@/app/generated/prisma/client";
 import { getPrismaClient } from "@/lib/prisma";
-import { type Deputy } from "@/app/generated/prisma/client";
 
 export const dynamic = "force-dynamic";
 

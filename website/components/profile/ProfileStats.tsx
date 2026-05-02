@@ -1,4 +1,9 @@
-import { BadgeCheck, MessagesSquare, TrendingUp, UsersRound } from "lucide-react";
+import {
+  BadgeCheck,
+  MessagesSquare,
+  TrendingUp,
+  UsersRound,
+} from "lucide-react";
 
 interface ProfileStatsProps {
   debateRank: number;
@@ -32,7 +37,10 @@ export default function ProfileStats({
     {
       icon: <TrendingUp className="w-8 h-8 text-primary-container" />,
       label: "VISUALIZAÇÕES",
-      value: muralViews >= 1000 ? `${(muralViews / 1000).toFixed(1)}k` : muralViews.toString(),
+      value:
+        muralViews >= 1000
+          ? `${(muralViews / 1000).toFixed(1)}k`
+          : muralViews.toString(),
     },
   ];
 
@@ -40,7 +48,7 @@ export default function ProfileStats({
     <div className="grid grid-cols-2 gap-[2px] h-full">
       {stats.map((stat, index) => (
         <div
-          key={index}
+          key={`${index}${stat.label}`}
           className="bg-surface p-4 border-2 border-[#2F2F2F] tile-bevel crazing-overlay flex flex-col items-center justify-center text-center gap-2 h-full"
         >
           {stat.icon}
