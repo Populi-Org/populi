@@ -3,7 +3,7 @@ services:
     image: "postgres:18"
     container_name: "populi-db"
     ports:
-      - 5432:5432
+      - 5555:5432
 
     environment:
       POSTGRES_USER: populi 

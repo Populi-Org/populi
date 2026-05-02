@@ -8,7 +8,11 @@ interface HeaderLinkProps {
   onClick?: () => void;
 }
 
-export default function HeaderLink({ href, children, onClick }: HeaderLinkProps) {
+export default function HeaderLink({
+  href,
+  children,
+  onClick,
+}: HeaderLinkProps) {
   const pathname = usePathname();
   const isActive = pathname === href;
 

@@ -28,8 +28,8 @@ export default function CTASection() {
           Arquivo de Políticos e Deputados
         </h3>
         <p className="font-body text-lg mb-8 opacity-90">
-          Consulte o histórico de atuação, votações e declarações que moldaram
-          o mosaico político nacional ao longo das legislaturas.
+          Consulte o histórico de atuação, votações e declarações que moldaram o
+          mosaico político nacional ao longo das legislaturas.
         </p>
         <button
           type="button"
