@@ -1,4 +1,5 @@
 import FilterChip from "../ui/FilterChip";
+import SearchBar from "../ui/SearchBar";
 import RepresentativeCard from "./RepresentativeCard";
 
 interface Representative {
@@ -50,44 +51,11 @@ export default function AssemblySection() {
   return (
     <section>
       {/* Search Section */}
-      <div className="mb-12 border-4 border-stone-900 bg-surface-container glossy-finish azulejo-crazing solid-shadow p-6 md:p-10 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 geometric-bg opacity-10" />
-        <h1 className="font-headline text-3xl md:text-4xl font-semibold text-primary mb-6 relative z-10">
+      <div className="mb-12">
+        <h1 className="font-headline text-3xl md:text-4xl font-semibold text-primary mb-6">
           Assembleia de Representantes
         </h1>
-        <div className="flex flex-col md:flex-row gap-4 relative z-10">
-          <div className="flex-grow border-2 border-stone-900 bg-surface flex items-center p-2 glossy-finish focus-within:ring-2 focus-within:ring-primary-container">
-            <span className="material-symbols-outlined text-outline ml-2">
-              search
-            </span>
-            <input
-              className="w-full bg-transparent border-none focus:ring-0 font-body text-on-surface ml-2"
-              placeholder="Pesquisar representantes por nome ou distrito..."
-              type="text"
-            />
-          </div>
-          <div className="flex gap-4">
-            <button
-              type="button"
-              className="border-2 border-stone-900 bg-surface text-primary-container px-4 py-2 font-label text-xs font-medium uppercase tracking-wider flex items-center gap-2 glossy-finish hover:bg-surface-container-high transition-colors"
-            >
-              <span
-                className="material-symbols-outlined"
-                style={{ fontVariationSettings: "'FILL' 1" }}
-              >
-                filter_alt
-              </span>
-              FILTRAR
-            </button>
-            <button
-              type="button"
-              className="border-2 border-stone-900 bg-primary-container text-on-primary px-6 py-2 font-label text-xs font-medium uppercase tracking-wider glossy-finish hover:bg-primary transition-colors"
-            >
-              PESQUISAR
-            </button>
-          </div>
-        </div>
-        {/* Quick Filters */}
+        <SearchBar placeholder="Pesquisar representantes por nome ou distrito..." />
         <div className="mt-6 flex flex-wrap gap-2">
           {districts.map((district) => (
             <FilterChip key={district} label={district} />
