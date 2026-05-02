@@ -22,9 +22,9 @@ export default function BiographicalHighlights({
 
   return (
     <ProfileSection variant="secondary" className="p-6 flex flex-col gap-4 h-[400px] overflow-hidden">
-      <div className="flex items-center gap-2 border-b-2 border-secondary/30 pb-2">
-        <span className="text-secondary text-xl">&#9874;</span>
-        <h2 className="font-label text-xs font-bold uppercase tracking-wider text-secondary">
+      <div className="flex items-center gap-2 border-b-2 border-primary/30 pb-2">
+        <span className="text-primary text-xl">&#9874;</span>
+        <h2 className="font-label text-xs font-bold uppercase tracking-wider text-primary">
           Destaques Biográficos
         </h2>
       </div>
@@ -37,7 +37,7 @@ export default function BiographicalHighlights({
         <ul className="space-y-4 font-body-md overflow-y-auto pr-2">
           {events.map((event, index) => (
             <li key={index} className="flex gap-3">
-              <span className="font-bold text-secondary">{event.year}</span>
+              <span className="font-bold text-primary">{event.year}</span>
               <span>{event.description}</span>
             </li>
           ))}
