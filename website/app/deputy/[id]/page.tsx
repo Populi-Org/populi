@@ -7,7 +7,6 @@ import {
   LegislativeActivity,
   ProfileHero,
   ProfileStats,
-  TownHallBanner,
   DeputyNews,
   DeputyFactChecks,
   DeputyProfileTabs,
@@ -155,11 +154,7 @@ export default async function DeputyPage({
                       muralViews={1200}
                     />
                   </div>
-
-                    <div className="col-span-12 lg:col-span-8">
-                      <TownHallBanner />
-                    </div>
-                  </div>
+                </div>
                 ),
               },
               {
