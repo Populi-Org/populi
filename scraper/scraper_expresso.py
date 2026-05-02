@@ -161,52 +161,43 @@ def parse_articles(html: str) -> List[Dict]:
     return articles
 
 
-def _name_in_title(name: str, title: str) -> bool:
+def _match_score(name: str, title: str) -> int:
+    """Return match score: 2=full name in title, 1=partial name, 0=no match."""
     if not title:
-        return False
+        return 0
     title_lower = title.lower()
-    if name.lower() in title_lower:
-        return True
-    surname = name.split()[-1]
-    if len(surname) > 2 and surname.lower() in title_lower:
-        return True
-    return False
+    name_lower = name.lower()
 
+    # Full name match
+    if name_lower in title_lower:
+        return 2
 
-def _distribute_across_pages(pages: List[List[Dict]], max_total: int) -> List[Dict]:
-    """Round-robin pick articles from pages to spread across time."""
-    result = []
-    idx = 0
-    while len(result) < max_total:
-        added = False
-        for page_arts in pages:
-            if idx < len(page_arts):
-                result.append(page_arts[idx])
-                added = True
-                if len(result) >= max_total:
-                    break
-        if not added:
-            break
-        idx += 1
-    return result
+    # Partial name match: any name part longer than 2 chars
+    for part in name_lower.split():
+        if len(part) > 2 and part in title_lower:
+            return 1
+
+    return 0
 
 
 # ── Worker ─────────────────────────────────────────────────────────────────────
 
 def scrape_deputy(deputy: Dict) -> Dict:
-    """Scrape spread-out pages for one deputy, store max 20 diverse articles in PostgreSQL."""
+    """Scrape sequential pages for one deputy, store up to 20 best-matching articles."""
     deputy_id = deputy["id"]
     name = deputy["name"]
     party = deputy.get("party", "")
     MAX_ARTICLES = 20
-    TARGET_PAGES = [1, 3, 6, 10, 15, 21]
+    MAX_PAGES = 50
 
     conn = get_connection()
     session = requests.Session()
-    all_pages: List[List[Dict]] = []
+    seen_urls = set()
+    all_articles = []
     empty_page_count = 0
+    page_num = 1
 
-    for page_num in TARGET_PAGES:
+    while empty_page_count < 2 and page_num <= MAX_PAGES:
         html = fetch_search_page(session, name, page_num, 0)
         if html is None:
             time.sleep(0.5)
@@ -217,34 +208,36 @@ def scrape_deputy(deputy: Dict) -> Dict:
         articles = parse_articles(html)
         if not articles:
             empty_page_count += 1
-            if empty_page_count >= 2:
-                break
+            page_num += 1
             continue
-        else:
-            empty_page_count = 0
-            all_pages.append(articles)
+
+        empty_page_count = 0
+        for art in articles:
+            if art["url"] not in seen_urls:
+                seen_urls.add(art["url"])
+                art["_score"] = _match_score(name, art.get("title", ""))
+                all_articles.append(art)
+
+        # Stop early if we already have enough full-name matches
+        if sum(1 for a in all_articles if a["_score"] == 2) >= MAX_ARTICLES:
+            break
 
         _throttled_sleep()
+        page_num += 1
 
-    if not all_pages:
+    if not all_articles:
         conn.close()
         return {"name": name, "party": party, "total_new": 0}
 
-    # 1. Filtered (name in title) round-robin across pages
-    filtered_pages = [[art for art in pg if _name_in_title(name, art.get("title", ""))] for pg in all_pages]
-    chosen = _distribute_across_pages(filtered_pages, MAX_ARTICLES)
-    chosen_urls = {art["url"] for art in chosen}
-
-    # 2. Relax: fill remaining from unfiltered
-    if len(chosen) < MAX_ARTICLES:
-        extra_pages = []
-        for pg in all_pages:
-            extra = [art for art in pg if art["url"] not in chosen_urls]
-            if extra:
-                extra_pages.append(extra)
-        needed = MAX_ARTICLES - len(chosen)
-        extras = _distribute_across_pages(extra_pages, needed)
-        chosen.extend(extras)
+    # Sort by score descending, then by published_at descending (most recent first)
+    all_articles.sort(
+        key=lambda a: (
+            a["_score"],
+            a.get("published_at") or "1970-01-01T00:00:00",
+        ),
+        reverse=True,
+    )
+    chosen = all_articles[:MAX_ARTICLES]
 
     total_new = 0
     with conn.cursor() as cur:
