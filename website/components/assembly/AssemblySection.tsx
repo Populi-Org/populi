@@ -68,14 +68,11 @@ const themes = [
   "Energia",
 ];
 
-const sinceYears = ["1980", "1990", "2000", "2010", "2015", "2019", "2024"];
-
 interface AssemblySectionProps {
   initialSearch?: string;
   initialConstituency?: string;
   initialParty?: string;
   initialTheme?: string;
-  initialSince?: string;
   initialFiltersVisible?: boolean;
 }
 export default function AssemblySection({
@@ -83,7 +80,6 @@ export default function AssemblySection({
   initialConstituency = "",
   initialParty = "",
   initialTheme = "",
-  initialSince = "",
   initialFiltersVisible = false,
 }: AssemblySectionProps) {
   const searchParams = useSearchParams();
@@ -98,7 +94,6 @@ export default function AssemblySection({
   const [constituency, setConstituency] = useState(initialConstituency);
   const [party, setParty] = useState(initialParty);
   const [theme, setTheme] = useState(initialTheme);
-  const [since, setSince] = useState(initialSince);
   const [parties, setParties] = useState<Party[]>([]);
   const [showSuplentes, setShowSuplentes] = useState(false);
   const [sortByPhoto, setSortByPhoto] = useState(true);
@@ -110,10 +105,9 @@ export default function AssemblySection({
   const urlConstituency = searchParams.get("constituency") || "";
   const urlParty = searchParams.get("party") || "";
   const urlTheme = searchParams.get("theme") || "";
-  const urlSince = searchParams.get("since") || "";
   const urlFilters = searchParams.get("filters");
   const shouldShowFilters = Boolean(
-    urlFilters || urlSearch || urlConstituency || urlParty || urlTheme || urlSince,
+    urlFilters || urlSearch || urlConstituency || urlParty || urlTheme,
   );
 
   useEffect(() => {
@@ -121,14 +115,12 @@ export default function AssemblySection({
     setConstituency(initialConstituency);
     setParty(initialParty);
     setTheme(initialTheme);
-    setSince(initialSince);
     setFiltersVisible(initialFiltersVisible);
   }, [
     initialSearch,
     initialConstituency,
     initialParty,
     initialTheme,
-    initialSince,
     initialFiltersVisible,
   ]);
 
@@ -138,14 +130,12 @@ export default function AssemblySection({
       urlConstituency ||
       urlParty ||
       urlTheme ||
-      urlSince ||
       urlFilters
     ) {
       setSearch(urlSearch);
       setConstituency(urlConstituency);
       setParty(urlParty);
       setTheme(urlTheme);
-      setSince(urlSince);
       setFiltersVisible(shouldShowFilters);
     }
   }, [
@@ -153,7 +143,6 @@ export default function AssemblySection({
     urlConstituency,
     urlParty,
     urlTheme,
-    urlSince,
     urlFilters,
     shouldShowFilters,
   ]);
@@ -167,7 +156,6 @@ export default function AssemblySection({
       showSuplentesFilter: boolean,
       sortByPhotoFilter: boolean,
       themeFilter: string,
-      sinceFilter: string,
     ) => {
       setLoading(true);
       setError(null);
@@ -182,7 +170,6 @@ export default function AssemblySection({
         if (showSuplentesFilter) params.set("showSuplentes", "true");
         if (!sortByPhotoFilter) params.set("sortByPhoto", "false");
         if (themeFilter) params.set("theme", themeFilter);
-        if (sinceFilter) params.set("since", sinceFilter);
 
         const response = await fetch(`/api/deputy?${params.toString()}`);
 
@@ -213,7 +200,6 @@ export default function AssemblySection({
         showSuplentes,
         sortByPhoto,
         theme,
-        since,
       );
     }, 300);
 
@@ -225,7 +211,6 @@ export default function AssemblySection({
     showSuplentes,
     sortByPhoto,
     theme,
-    since,
     fetchDeputies,
   ]);
 
@@ -264,7 +249,6 @@ export default function AssemblySection({
         showSuplentes,
         sortByPhoto,
         theme,
-        since,
       );
   };
 
@@ -278,10 +262,6 @@ export default function AssemblySection({
 
   const toggleTheme = (value: string) => {
     setTheme((prev) => (prev === value ? "" : value));
-  };
-
-  const toggleSince = (value: string) => {
-    setSince((prev) => (prev === value ? "" : value));
   };
 
   return (
@@ -304,7 +284,6 @@ export default function AssemblySection({
               showSuplentes,
               sortByPhoto,
               theme,
-              since,
             )
           }
           onFilterToggle={() => setFiltersVisible((v) => !v)}
@@ -358,22 +337,6 @@ export default function AssemblySection({
                 label={t}
                 active={theme === t}
                 onClick={() => toggleTheme(t)}
-              />
-            ))}
-          </div>
-          <div className="flex flex-wrap gap-2 mb-4">
-            <FilterChip
-              key="all-periods"
-              label="Todos os períodos"
-              active={!since}
-              onClick={() => setSince("")}
-            />
-            {sinceYears.map((year) => (
-              <FilterChip
-                key={year}
-                label={`Desde ${year}`}
-                active={since === year}
-                onClick={() => toggleSince(year)}
               />
             ))}
           </div>
@@ -441,7 +404,6 @@ export default function AssemblySection({
                 showSuplentes,
                 sortByPhoto,
                 theme,
-                since,
               )
             }
             className="border-2 border-stone-900 bg-primary text-white px-6 py-2 font-label text-xs font-medium uppercase tracking-wider glossy-finish hover:bg-primary-container transition-colors"

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-type FilterCategory = "Partidos" | "Região" | "Tema" | "Período";
+type FilterCategory = "Partidos" | "Região" | "Tema";
 
 interface PartyFilter {
   id: number;
@@ -15,7 +15,6 @@ const filterCategories: { label: FilterCategory; icon: string }[] = [
   { label: "Partidos", icon: "token" },
   { label: "Região", icon: "map" },
   { label: "Tema", icon: "topic" },
-  { label: "Período", icon: "calendar_month" },
 ];
 
 const constituencies = [
@@ -54,7 +53,7 @@ const themes = [
   "Energia",
 ];
 
-const sinceYears = ["1980", "1990", "2000", "2010", "2015", "2019", "2024"];
+
 
 export default function ExploreSection() {
   const [selectedCategory, setSelectedCategory] = useState<FilterCategory | null>(
@@ -106,7 +105,7 @@ export default function ExploreSection() {
             interessa.
           </p>
         </div>
-        <div className="md:w-3/4 grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
+        <div className="md:w-3/4 grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
           {filterCategories.map((cat) => (
             <button
               key={cat.label}
@@ -187,22 +186,7 @@ export default function ExploreSection() {
           ))}
         </div>
       )}
-      {selectedCategory === "Período" && (
-        <div className="mt-8 pt-8 border-t-2 border-stone-900/10 flex flex-wrap gap-3">
-          {sinceYears.map((year) => (
-            <Link
-              key={year}
-              href={{
-                pathname: "/assembly",
-                query: { since: year, filters: "1" },
-              }}
-              className="bg-white border-2 border-stone-900 px-4 py-2 font-label text-xs"
-            >
-              Desde {year}
-            </Link>
-          ))}
-        </div>
-      )}
+
     </section>
   );
 }
