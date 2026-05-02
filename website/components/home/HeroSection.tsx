@@ -1,4 +1,20 @@
-export default function HeroSection() {
+import Link from "next/link";
+
+import { getPrismaClient } from "@/lib/prisma";
+
+export default async function HeroSection() {
+  const prisma = getPrismaClient();
+  const activeDeputies = await prisma.deputy.count({
+    where: {
+      statusHistory: {
+        none: {
+          sioDes: { contains: "suplent", mode: "insensitive" },
+          sioDtFim: null,
+        },
+      },
+    },
+  });
+
   return (
     <section className="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
       <div className="md:col-span-8 bg-surface-container border-4 border-stone-900 relative glossy-finish overflow-hidden flex flex-col justify-center min-h-[500px]">
@@ -16,24 +32,26 @@ export default function HeroSection() {
             artesanal e apartidária.
           </p>
           <div className="flex gap-4">
-            <button
-              type="button"
+            <Link
+              href="/assembly"
               className="bg-primary text-white font-headline font-bold px-8 py-4 border-2 border-stone-900 glossy-finish active:translate-y-[2px]"
             >
               Explorar o Mosaico
-            </button>
-            <button
-              type="button"
+            </Link>
+            <Link
+              href="/faq"
               className="bg-transparent border-2 border-stone-900 font-headline font-bold px-8 py-4 glossy-finish hover:bg-surface-variant"
             >
               Saiba Mais
-            </button>
+            </Link>
           </div>
         </div>
         <div className="absolute right-0 bottom-0 w-1/3 h-full opacity-10 geometric-bg pointer-events-none" />
       </div>
       <div className="md:col-span-4 bg-primary-container border-4 border-stone-900 text-white p-8 glossy-finish flex flex-col justify-end">
-        <div className="text-6xl font-headline mb-4 font-bold">230</div>
+        <div className="text-6xl font-headline mb-4 font-bold">
+          {activeDeputies}
+        </div>
         <p className="font-label text-primary-fixed-dim text-xs font-medium uppercase tracking-wider">
           Políticos e Deputados em Atividade
         </p>

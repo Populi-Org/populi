@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import FilterChip from "../ui/FilterChip";
 import Pagination from "../ui/Pagination";
@@ -17,6 +18,12 @@ interface Deputy {
   image: string;
   description: string;
   isSuplente: boolean;
+}
+
+interface Party {
+  id: number;
+  sigla: string;
+  color: string | null;
 }
 
 interface PaginationData {
@@ -49,7 +56,33 @@ const constituencies = [
   "Europa",
   "Fora da Europa",
 ];
-export default function AssemblySection() {
+
+const themes = [
+  "Economia",
+  "Saúde",
+  "Educação",
+  "Habitação",
+  "Ambiente",
+  "Transportes",
+  "Justiça",
+  "Energia",
+];
+
+interface AssemblySectionProps {
+  initialSearch?: string;
+  initialConstituency?: string;
+  initialParty?: string;
+  initialTheme?: string;
+  initialFiltersVisible?: boolean;
+}
+export default function AssemblySection({
+  initialSearch = "",
+  initialConstituency = "",
+  initialParty = "",
+  initialTheme = "",
+  initialFiltersVisible = false,
+}: AssemblySectionProps) {
+  const searchParams = useSearchParams();
   const [deputies, setDeputies] = useState<Deputy[]>([]);
   const [pagination, setPagination] = useState<PaginationData>({
     page: 1,
@@ -57,21 +90,66 @@ export default function AssemblySection() {
     total: 0,
     totalPages: 0,
   });
-  const [search, setSearch] = useState("");
-  const [constituency, setConstituency] = useState("");
+  const [search, setSearch] = useState(initialSearch);
+  const [constituency, setConstituency] = useState(initialConstituency);
+  const [party, setParty] = useState(initialParty);
+  const [theme, setTheme] = useState(initialTheme);
+  const [parties, setParties] = useState<Party[]>([]);
   const [showSuplentes, setShowSuplentes] = useState(false);
   const [sortByPhoto, setSortByPhoto] = useState(true);
-  const [filtersVisible, setFiltersVisible] = useState(false);
+  const [filtersVisible, setFiltersVisible] = useState(initialFiltersVisible);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const urlSearch = searchParams.get("search") || "";
+  const urlConstituency = searchParams.get("constituency") || "";
+  const urlParty = searchParams.get("party") || "";
+  const urlTheme = searchParams.get("theme") || "";
+  const urlFilters = searchParams.get("filters");
+  const shouldShowFilters = Boolean(
+    urlFilters || urlSearch || urlConstituency || urlParty || urlTheme,
+  );
+
+  useEffect(() => {
+    setSearch(initialSearch);
+    setConstituency(initialConstituency);
+    setParty(initialParty);
+    setTheme(initialTheme);
+    setFiltersVisible(initialFiltersVisible);
+  }, [
+    initialSearch,
+    initialConstituency,
+    initialParty,
+    initialTheme,
+    initialFiltersVisible,
+  ]);
+
+  useEffect(() => {
+    if (urlSearch || urlConstituency || urlParty || urlTheme || urlFilters) {
+      setSearch(urlSearch);
+      setConstituency(urlConstituency);
+      setParty(urlParty);
+      setTheme(urlTheme);
+      setFiltersVisible(shouldShowFilters);
+    }
+  }, [
+    urlSearch,
+    urlConstituency,
+    urlParty,
+    urlTheme,
+    urlFilters,
+    shouldShowFilters,
+  ]);
 
   const fetchDeputies = useCallback(
     async (
       page: number,
       searchTerm: string,
       constituencyFilter: string,
+      partyFilter: string,
       showSuplentesFilter: boolean,
       sortByPhotoFilter: boolean,
+      themeFilter: string,
     ) => {
       setLoading(true);
       setError(null);
@@ -82,8 +160,10 @@ export default function AssemblySection() {
         params.set("limit", "12");
         if (searchTerm) params.set("search", searchTerm);
         if (constituencyFilter) params.set("constituency", constituencyFilter);
+        if (partyFilter) params.set("party", partyFilter);
         if (showSuplentesFilter) params.set("showSuplentes", "true");
         if (!sortByPhotoFilter) params.set("sortByPhoto", "false");
+        if (themeFilter) params.set("theme", themeFilter);
 
         const response = await fetch(`/api/deputy?${params.toString()}`);
 
@@ -106,19 +186,76 @@ export default function AssemblySection() {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      fetchDeputies(1, search, constituency, showSuplentes, sortByPhoto);
+      fetchDeputies(
+        1,
+        search,
+        constituency,
+        party,
+        showSuplentes,
+        sortByPhoto,
+        theme,
+      );
     }, 300);
 
     return () => clearTimeout(timeout);
-  }, [search, constituency, showSuplentes, sortByPhoto, fetchDeputies]);
+  }, [
+    search,
+    constituency,
+    party,
+    showSuplentes,
+    sortByPhoto,
+    theme,
+    fetchDeputies,
+  ]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const fetchParties = async () => {
+      try {
+        const response = await fetch("/api/parties");
+        if (!response.ok) return;
+        const data = await response.json();
+        if (!cancelled) {
+          setParties(Array.isArray(data.parties) ? data.parties : []);
+        }
+      } catch {
+        if (!cancelled) {
+          setParties([]);
+        }
+      }
+    };
+
+    fetchParties();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const handlePageChange = (page: number) => {
     if (page < 1 || page > pagination.totalPages) return;
-    fetchDeputies(page, search, constituency, showSuplentes, sortByPhoto);
+    fetchDeputies(
+      page,
+      search,
+      constituency,
+      party,
+      showSuplentes,
+      sortByPhoto,
+      theme,
+    );
   };
 
   const toggleConstituency = (c: string) => {
     setConstituency((prev) => (prev === c ? "" : c));
+  };
+
+  const toggleParty = (sigla: string) => {
+    setParty((prev) => (prev === sigla ? "" : sigla));
+  };
+
+  const toggleTheme = (value: string) => {
+    setTheme((prev) => (prev === value ? "" : value));
   };
 
   return (
@@ -133,7 +270,15 @@ export default function AssemblySection() {
           value={search}
           onChange={setSearch}
           onSearch={() =>
-            fetchDeputies(1, search, constituency, showSuplentes, sortByPhoto)
+            fetchDeputies(
+              1,
+              search,
+              constituency,
+              party,
+              showSuplentes,
+              sortByPhoto,
+              theme,
+            )
           }
           onFilterToggle={() => setFiltersVisible((v) => !v)}
           filtersVisible={filtersVisible}
@@ -152,6 +297,40 @@ export default function AssemblySection() {
                 label={c}
                 active={constituency === c}
                 onClick={() => toggleConstituency(c)}
+              />
+            ))}
+          </div>
+          {parties.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-4">
+              <FilterChip
+                key="all-parties"
+                label="Todos"
+                active={!party}
+                onClick={() => setParty("")}
+              />
+              {parties.map((p) => (
+                <FilterChip
+                  key={p.id}
+                  label={p.sigla}
+                  active={party === p.sigla}
+                  onClick={() => toggleParty(p.sigla)}
+                />
+              ))}
+            </div>
+          )}
+          <div className="flex flex-wrap gap-2 mb-4">
+            <FilterChip
+              key="all-themes"
+              label="Todos os temas"
+              active={!theme}
+              onClick={() => setTheme("")}
+            />
+            {themes.map((t) => (
+              <FilterChip
+                key={t}
+                label={t}
+                active={theme === t}
+                onClick={() => toggleTheme(t)}
               />
             ))}
           </div>
@@ -215,8 +394,10 @@ export default function AssemblySection() {
                 pagination.page,
                 search,
                 constituency,
+                party,
                 showSuplentes,
                 sortByPhoto,
+                theme,
               )
             }
             className="border-2 border-stone-900 bg-primary text-white px-6 py-2 font-label text-xs font-medium uppercase tracking-wider glossy-finish hover:bg-primary-container transition-colors"

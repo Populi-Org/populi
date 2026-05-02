@@ -10,8 +10,11 @@ export async function GET(request: NextRequest) {
 
   const search = searchParams.get("search") || "";
   const constituency = searchParams.get("constituency") || "";
+  const party = searchParams.get("party") || "";
   const showSuplentes = searchParams.get("showSuplentes") === "true";
   const sortByPhoto = searchParams.get("sortByPhoto") !== "false";
+  const theme = searchParams.get("theme") || "";
+  const since = searchParams.get("since") || "";
   const page = Math.max(
     1,
     Number.parseInt(searchParams.get("page") || "1", 10),
@@ -22,6 +25,7 @@ export async function GET(request: NextRequest) {
   );
 
   const where: Prisma.DeputyWhereInput = {};
+  const andFilters: Prisma.DeputyWhereInput[] = [];
 
   if (search) {
     where.depNomeParlamentar = { contains: search, mode: "insensitive" };
@@ -31,6 +35,69 @@ export async function GET(request: NextRequest) {
     where.depCPDes = constituency;
   }
 
+  let partyDeputyIds: number[] | null = null;
+
+  if (party) {
+    const rows = await prisma.$queryRaw<{ deputy_id: number }[]>`
+      SELECT latest.deputy_id
+      FROM (
+        SELECT DISTINCT ON (ph.deputy_id)
+          ph.deputy_id,
+          p.sigla
+        FROM party_history ph
+        JOIN parties p ON p.id = ph.party_id
+        ORDER BY ph.deputy_id, ph.gp_dt_inicio DESC NULLS LAST, ph.id DESC
+      ) latest
+      WHERE latest.sigla = ${party}
+    `;
+
+    partyDeputyIds = rows.map((row) => row.deputy_id);
+  }
+
+  if (theme) {
+    andFilters.push({
+      intev: {
+        some: {
+          OR: [
+            { intTe: { contains: theme, mode: "insensitive" } },
+            { intSu: { contains: theme, mode: "insensitive" } },
+            { tinDs: { contains: theme, mode: "insensitive" } },
+          ],
+        },
+      },
+    });
+  }
+
+  if (since) {
+    const year = Number.parseInt(since, 10);
+    if (!Number.isNaN(year)) {
+      const sinceDate = new Date(year, 0, 1);
+      andFilters.push({
+        partyHistory: {
+          some: {
+            gpDtInicio: { gte: sinceDate },
+          },
+        },
+      });
+    }
+  }
+
+  if (partyDeputyIds) {
+    if (partyDeputyIds.length === 0) {
+      return NextResponse.json({
+        deputies: [],
+        pagination: {
+          page,
+          limit,
+          total: 0,
+          totalPages: 0,
+        },
+      });
+    }
+
+    where.id = { in: partyDeputyIds };
+  }
+
   if (!showSuplentes) {
     where.statusHistory = {
       none: {
@@ -38,6 +105,10 @@ export async function GET(request: NextRequest) {
         sioDtFim: null,
       },
     };
+  }
+
+  if (andFilters.length > 0) {
+    where.AND = andFilters;
   }
 
   const skip = (page - 1) * limit;

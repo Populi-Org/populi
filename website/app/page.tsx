@@ -1,4 +1,3 @@
-import CTASection from "@/components/home/CTASection";
 import ExploreSection from "@/components/home/ExploreSection";
 import HeroSection from "@/components/home/HeroSection";
 import TrendingSection from "@/components/home/TrendingSection";
@@ -13,7 +12,6 @@ export default function Home() {
         <HeroSection />
         <TrendingSection />
         <ExploreSection />
-        <CTASection />
       </main>
       <Footer />
     </div>
