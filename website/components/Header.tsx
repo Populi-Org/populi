@@ -1,9 +1,17 @@
+import Image from "next/image";
+
 export default function Header() {
   return (
     <header className="bg-[#F9F6F0] font-headline text-lg tracking-tight sticky top-0 w-full z-50 border-b-4 border-stone-900 glossy-finish flex justify-between items-center px-8 py-4">
-      <div className="font-headline font-black uppercase tracking-tighter text-stone-900 text-xl">
-        POPULI
-      </div>
+      <a href="/" className="flex items-center">
+        <Image
+          src="/logo.svg"
+          alt="Populi"
+          width={120}
+          height={40}
+          priority
+        />
+      </a>
       <nav className="hidden md:flex items-center gap-6">
         <a
           className="text-primary border-b-2 border-primary pb-1 font-bold hover:bg-primary/5 transition-all duration-200 active:scale-[0.97] cursor-pointer"
