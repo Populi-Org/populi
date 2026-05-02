@@ -59,7 +59,7 @@ export default function DeputyFactChecks({ deputyId }: DeputyFactChecksProps) {
       case "true":
         return { label: "Verdadeiro", color: "bg-green-600" };
       case "true-but":
-        return { label: "Verdadeiro, mas...", color: "bg-emerald-500" };
+        return { label: "Verdadeiro, mas...", color: "bg-[#c5c10c]" };
       case "false":
         return { label: "Falso", color: "bg-red-600" };
       case "imprecise":
