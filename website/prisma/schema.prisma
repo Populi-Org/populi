@@ -420,7 +420,7 @@ model Article {
   authors       String?   @map("authors")
   lead          String?   @map("lead")
   hasPicture    Boolean   @default(false) @map("has_picture")
-  articleType   String?   @map("article_type")
+  source        String?   @map("source")
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
 
