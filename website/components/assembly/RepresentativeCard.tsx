@@ -5,6 +5,7 @@ interface RepresentativeCardProps {
   constituency: string | null;
   party: string | null;
   image: string;
+  description: string;
 }
 
 const partyColors: Record<string, string> = {
@@ -28,6 +29,7 @@ export default function RepresentativeCard({
   constituency,
   party,
   image,
+  description,
 }: RepresentativeCardProps) {
   return (
     <article className="border-4 border-stone-900 bg-surface flex flex-col glossy-finish azulejo-crazing solid-shadow group hover:-translate-y-1 transition-transform duration-300">
@@ -58,7 +60,7 @@ export default function RepresentativeCard({
           </p>
         )}
         <p className="font-body text-on-surface-variant text-center mb-6 line-clamp-3">
-          Deputy in the Assembly of the Republic
+          {description}
         </p>
         <button
           type="button"

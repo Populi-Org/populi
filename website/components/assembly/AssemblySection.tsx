@@ -12,8 +12,7 @@ interface Deputy {
   fullName: string;
   constituency: string | null;
   party: string | null;
-  position: string | null;
-  legislature: string;
+  description: string;
 }
 
 interface PaginationData {
@@ -215,6 +214,7 @@ export default function AssemblySection() {
                 constituency={deputy.constituency}
                 party={deputy.party}
                 image={getMockImage(index)}
+                description={deputy.description}
               />
             ))}
           </div>

@@ -42,6 +42,11 @@ export async function GET(request: NextRequest) {
           include: { party: true },
           take: 1,
         },
+        cms: {
+          where: { cmsSituacao: { not: "Suspenso" } },
+          orderBy: { cmsCargo: "asc" },
+          take: 1,
+        },
       },
       skip,
       take: limit,
@@ -53,6 +58,14 @@ export async function GET(request: NextRequest) {
   const mappedDeputies = deputies.map((deputy) => {
     const activePartyHistory = deputy.partyHistory[0];
     const partySigla = activePartyHistory?.party?.sigla || null;
+    const committee = deputy.cms[0];
+
+    let description: string;
+    if (committee?.cmsNo) {
+      description = `Deputado${partySigla ? ` (${partySigla})` : ""} na Comissão de ${committee.cmsNo}.${deputy.depCPDes ? ` Representando ${deputy.depCPDes}.` : ""}`;
+    } else {
+      description = `Deputado${partySigla ? ` (${partySigla})` : ""}${deputy.legDes ? ` na ${deputy.legDes}` : ""}.${deputy.depCPDes ? ` Representando ${deputy.depCPDes}.` : ""}`;
+    }
 
     return {
       id: deputy.id,
@@ -60,8 +73,7 @@ export async function GET(request: NextRequest) {
       fullName: deputy.depNomeCompleto,
       constituency: deputy.depCPDes,
       party: partySigla,
-      position: deputy.depCargo,
-      legislature: deputy.legDes,
+      description,
     };
   });
 
