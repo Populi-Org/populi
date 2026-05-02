@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import FilterChip from "../ui/FilterChip";
 import Pagination from "../ui/Pagination";
 import SearchBar from "../ui/SearchBar";
@@ -125,13 +125,7 @@ export default function AssemblySection({
   ]);
 
   useEffect(() => {
-    if (
-      urlSearch ||
-      urlConstituency ||
-      urlParty ||
-      urlTheme ||
-      urlFilters
-    ) {
+    if (urlSearch || urlConstituency || urlParty || urlTheme || urlFilters) {
       setSearch(urlSearch);
       setConstituency(urlConstituency);
       setParty(urlParty);
@@ -241,15 +235,15 @@ export default function AssemblySection({
 
   const handlePageChange = (page: number) => {
     if (page < 1 || page > pagination.totalPages) return;
-      fetchDeputies(
-        page,
-        search,
-        constituency,
-        party,
-        showSuplentes,
-        sortByPhoto,
-        theme,
-      );
+    fetchDeputies(
+      page,
+      search,
+      constituency,
+      party,
+      showSuplentes,
+      sortByPhoto,
+      theme,
+    );
   };
 
   const toggleConstituency = (c: string) => {

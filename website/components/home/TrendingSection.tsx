@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { getPrismaClient } from "@/lib/prisma";
 
 interface TrendingTopic {
@@ -90,7 +91,7 @@ export default async function TrendingSection() {
               className="bg-surface-container-lowest border-2 border-stone-900 solid-shadow p-6 flex flex-col glossy-finish"
             >
               <div className="w-full aspect-square bg-surface-variant mb-4 border-2 border-stone-900 overflow-hidden relative">
-                <img
+                <Image
                   className="w-full h-full object-cover grayscale contrast-125"
                   src={topic.image}
                   alt={topic.title}

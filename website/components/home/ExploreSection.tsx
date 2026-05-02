@@ -53,12 +53,9 @@ const themes = [
   "Energia",
 ];
 
-
-
 export default function ExploreSection() {
-  const [selectedCategory, setSelectedCategory] = useState<FilterCategory | null>(
-    "Partidos",
-  );
+  const [selectedCategory, setSelectedCategory] =
+    useState<FilterCategory | null>("Partidos");
   const [partyFilters, setPartyFilters] = useState<PartyFilter[]>([]);
 
   useEffect(() => {
@@ -73,7 +70,12 @@ export default function ExploreSection() {
         if (!cancelled) {
           setPartyFilters(
             parties.map(
-              (party: { id: number; sigla?: string; label?: string; color?: string | null }) => ({
+              (party: {
+                id: number;
+                sigla?: string;
+                label?: string;
+                color?: string | null;
+              }) => ({
                 id: party.id,
                 label: party.label ?? party.sigla ?? "",
                 color: party.color ?? null,
@@ -186,7 +188,6 @@ export default function ExploreSection() {
           ))}
         </div>
       )}
-
     </section>
   );
 }
