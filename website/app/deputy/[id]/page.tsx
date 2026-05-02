@@ -98,66 +98,63 @@ export default async function DeputyPage({
   return (
     <div className="bg-surface font-body text-on-surface antialiased azulejo-crazing min-h-screen">
       <Header />
-      <main className="flex-grow p-4 md:p-6 pt-24 max-w-7xl mx-auto w-full">
-        <div className="grid grid-cols-12 gap-[2px]">
-          <div className="col-span-12 lg:col-span-8">
-            <ProfileHero
-              name={deputy.depNomeParlamentar}
-              fullName={deputy.depNomeCompleto}
-              party={partySigla}
-              constituency={deputy.depCPDes}
-              legislature={deputy.legDes}
-              image={image}
-              committees={committees}
-            />
-          </div>
+      <main className="flex-grow p-4 md:p-6 pt-24 max-w-7xl mx-auto w-full space-y-4">
+        <ProfileHero
+          name={deputy.depNomeParlamentar}
+          fullName={deputy.depNomeCompleto}
+          party={partySigla}
+          constituency={deputy.depCPDes}
+          legislature={deputy.legDes}
+          image={image}
+          committees={committees}
+        />
 
-          <DeputyProfileTabs
-            tabs={[
-              {
-                id: "general",
-                label: "Geral",
-                content: (
-                  <div className="space-y-4">
-                    <div className="col-span-12 lg:col-span-4">
-                        <BiographicalHighlights
-                          statusHistory={deputy.statusHistory.map((s) => ({
-                            description: s.sioDes,
-                            startDate: s.sioDtInicio,
-                            endDate: s.sioDtFim,
-                          }))}
-                        />
-                      </div>
+        <DeputyProfileTabs
+          tabs={[
+            {
+              id: "general",
+              label: "Geral",
+              content: (
+                <div className="grid grid-cols-12 gap-[2px]">
+                  <div className="col-span-12 lg:col-span-4">
+                    <BiographicalHighlights
+                      statusHistory={deputy.statusHistory.map((s) => ({
+                        description: s.sioDes,
+                        startDate: s.sioDtInicio,
+                        endDate: s.sioDtFim,
+                      }))}
+                    />
+                  </div>
 
-                      <div className="col-span-12 md:col-span-6 lg:col-span-4">
-                        <LegislativeActivity
-                          initiatives={deputy.ini.map((i) => ({
-                            id: i.iniId,
-                            title: i.iniTi,
-                            type: i.iniTpdesc,
-                            number: i.iniNr,
-                          }))}
-                        />
-                      </div>
+                  <div className="col-span-12 md:col-span-6 lg:col-span-4">
+                    <LegislativeActivity
+                      initiatives={deputy.ini.map((i) => ({
+                        id: i.iniId,
+                        title: i.iniTi,
+                        type: i.iniTpdesc,
+                        number: i.iniNr,
+                      }))}
+                    />
+                  </div>
 
-                    <div className="col-span-12 md:col-span-6 lg:col-span-8">
-                      {deputy.intev[0]?.intTe && (
-                        <FeaturedQuote
-                          quote={deputy.intev[0].intTe}
-                          author={deputy.depNomeParlamentar}
-                          date={deputy.intev[0].pubDtreu}
-                        />
-                      )}
-                    </div>
-
-                    <div className="col-span-12 lg:col-span-4">
-                      <ProfileStats
-                        debateRank={debateRank}
-                        integrity={98}
-                        allies={alliesCount}
-                        muralViews={1200}
+                  <div className="col-span-12 md:col-span-6 lg:col-span-8">
+                    {deputy.intev[0]?.intTe && (
+                      <FeaturedQuote
+                        quote={deputy.intev[0].intTe}
+                        author={deputy.depNomeParlamentar}
+                        date={deputy.intev[0].pubDtreu}
                       />
-                    </div>
+                    )}
+                  </div>
+
+                  <div className="col-span-12 lg:col-span-4">
+                    <ProfileStats
+                      debateRank={debateRank}
+                      integrity={98}
+                      allies={alliesCount}
+                      muralViews={1200}
+                    />
+                  </div>
 
                     <div className="col-span-12 lg:col-span-8">
                       <TownHallBanner />
@@ -177,7 +174,6 @@ export default async function DeputyPage({
             },
           ]}
           />
-        </div>
       </main>
       <Footer />
     </div>
