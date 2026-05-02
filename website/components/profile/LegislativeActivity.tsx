@@ -1,3 +1,4 @@
+import { Landmark } from "lucide-react";
 import ProfileSection from "./ProfileSection";
 
 interface Initiative {
@@ -18,9 +19,9 @@ export default function LegislativeActivity({
     <ProfileSection variant="primary" className="p-6 flex flex-col gap-4 h-[400px] overflow-hidden">
       <div className="flex items-center justify-between border-b-2 border-primary-container/20 pb-2">
         <div className="flex items-center gap-2">
-          <span className="text-primary-container text-xl">&#9878;</span>
+          <Landmark className="w-5 h-5 text-primary-container" />
           <h2 className="font-label text-xs font-bold uppercase tracking-wider text-primary-container">
-            ATIVIDADE LEGISLATIVA
+            Atividade Legislativa
           </h2>
         </div>
       </div>
