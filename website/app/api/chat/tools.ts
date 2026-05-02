@@ -90,13 +90,65 @@ export const deputyTools = {
     },
   }),
 
+  count_deputies: tool({
+    description:
+      "Count how many deputies match the given search criteria (name, party, or constituency). Use this when the user asks 'how many' or wants a total.",
+    inputSchema: z.object({
+      name: z
+        .string()
+        .optional()
+        .describe("Name or partial name of the deputy"),
+      party: z
+        .string()
+        .optional()
+        .describe("Party sigla (e.g. PS, PSD, CH, IL, BE, PCP, L, PAN)"),
+      constituency: z
+        .string()
+        .optional()
+        .describe("Constituency name (e.g. Lisboa, Porto, Braga)"),
+    }),
+    execute: async ({ name, party, constituency }) => {
+      console.log("[Tool: count_deputies] Called with:", { name, party, constituency });
+      const prisma = getPrismaClient();
+
+      const count = await prisma.deputy.count({
+        where: {
+          AND: [
+            name
+              ? {
+                  depNomeParlamentar: {
+                    contains: name,
+                    mode: "insensitive",
+                  },
+                }
+              : {},
+            constituency ? { depCPDes: constituency } : {},
+          ],
+        },
+      });
+
+      console.log("[Tool: count_deputies] Result:", count);
+      return { count };
+    },
+  }),
+
   get_deputy_profile: tool({
     description:
-      "Get detailed profile information for a specific deputy by ID. Includes party, constituency, committees, and activity counts.",
+      "Get detailed profile information for a specific deputy by ID. Includes party, constituency, committees, status history, recent initiatives, recent interventions, and activity counts.",
     inputSchema: z.object({
       id: z.number().describe("The deputy's internal ID (not depId)"),
+      initiativesLimit: z
+        .number()
+        .optional()
+        .default(5)
+        .describe("Maximum number of recent initiatives to include"),
+      interventionsLimit: z
+        .number()
+        .optional()
+        .default(5)
+        .describe("Maximum number of recent interventions to include"),
     }),
-    execute: async ({ id }) => {
+    execute: async ({ id, initiativesLimit, interventionsLimit }) => {
       console.log("[Tool: get_deputy_profile] Called with id:", id);
       const prisma = getPrismaClient();
 
@@ -119,6 +171,14 @@ export const deputyTools = {
           cms: {
             where: { cmsSituacao: { not: "Suspenso" } },
             orderBy: { cmsCargo: "asc" },
+          },
+          ini: {
+            orderBy: { id: "desc" },
+            take: initiativesLimit,
+          },
+          intev: {
+            orderBy: { id: "desc" },
+            take: interventionsLimit,
           },
           _count: {
             select: {
@@ -158,49 +218,7 @@ export const deputyTools = {
           startDate: s.sioDtInicio,
           endDate: s.sioDtFim,
         })),
-        stats: {
-          interventions: deputy._count.intev,
-          initiatives: deputy._count.ini,
-          committees: deputy._count.cms,
-        },
-      };
-    },
-  }),
-
-  get_deputy_initiatives: tool({
-    description:
-      "Get legislative initiatives (bills, proposals) authored by a specific deputy.",
-    inputSchema: z.object({
-      id: z.number().describe("The deputy's internal ID"),
-      limit: z
-        .number()
-        .optional()
-        .default(5)
-        .describe("Maximum number of initiatives to return"),
-    }),
-    execute: async ({ id, limit }) => {
-      console.log("[Tool: get_deputy_initiatives] Called with id:", id, "limit:", limit);
-      const prisma = getPrismaClient();
-
-      const deputy = await prisma.deputy.findUnique({
-        where: { id },
-        include: {
-          ini: {
-            orderBy: { id: "desc" },
-            take: limit,
-          },
-        },
-      });
-
-      if (!deputy) {
-        console.log("[Tool: get_deputy_initiatives] Deputy not found:", id);
-        return { error: "Deputado não encontrado" };
-      }
-
-      console.log("[Tool: get_deputy_initiatives] Found", deputy.ini.length, "initiatives");
-      return {
-        deputyName: deputy.depNomeParlamentar,
-        initiatives: deputy.ini.map((i) => ({
+        recentInitiatives: deputy.ini.map((i) => ({
           id: i.iniId,
           title: i.iniTi,
           type: i.iniTpdesc,
@@ -208,44 +226,7 @@ export const deputyTools = {
           selectionNumber: i.iniSelNr,
           selectionLegislature: i.iniSelLg,
         })),
-      };
-    },
-  }),
-
-  get_deputy_interventions: tool({
-    description:
-      "Get parliamentary interventions (speeches, quotes) by a specific deputy.",
-    inputSchema: z.object({
-      id: z.number().describe("The deputy's internal ID"),
-      limit: z
-        .number()
-        .optional()
-        .default(5)
-        .describe("Maximum number of interventions to return"),
-    }),
-    execute: async ({ id, limit }) => {
-      console.log("[Tool: get_deputy_interventions] Called with id:", id, "limit:", limit);
-      const prisma = getPrismaClient();
-
-      const deputy = await prisma.deputy.findUnique({
-        where: { id },
-        include: {
-          intev: {
-            orderBy: { id: "desc" },
-            take: limit,
-          },
-        },
-      });
-
-      if (!deputy) {
-        console.log("[Tool: get_deputy_interventions] Deputy not found:", id);
-        return { error: "Deputado não encontrado" };
-      }
-
-      console.log("[Tool: get_deputy_interventions] Found", deputy.intev.length, "interventions");
-      return {
-        deputyName: deputy.depNomeParlamentar,
-        interventions: deputy.intev.map((i) => ({
+        recentInterventions: deputy.intev.map((i) => ({
           id: i.intId,
           subject: i.intSu,
           text: i.intTe,
@@ -253,45 +234,11 @@ export const deputyTools = {
           publicationNumber: i.pubNr,
           type: i.pubTp,
         })),
-      };
-    },
-  }),
-
-  get_deputy_committees: tool({
-    description:
-      "Get committee memberships for a specific deputy.",
-    inputSchema: z.object({
-      id: z.number().describe("The deputy's internal ID"),
-    }),
-    execute: async ({ id }) => {
-      console.log("[Tool: get_deputy_committees] Called with id:", id);
-      const prisma = getPrismaClient();
-
-      const deputy = await prisma.deputy.findUnique({
-        where: { id },
-        include: {
-          cms: {
-            where: { cmsSituacao: { not: "Suspenso" } },
-            orderBy: { cmsCargo: "asc" },
-          },
+        stats: {
+          interventions: deputy._count.intev,
+          initiatives: deputy._count.ini,
+          committees: deputy._count.cms,
         },
-      });
-
-      if (!deputy) {
-        console.log("[Tool: get_deputy_committees] Deputy not found:", id);
-        return { error: "Deputado não encontrado" };
-      }
-
-      console.log("[Tool: get_deputy_committees] Found", deputy.cms.length, "committees");
-      return {
-        deputyName: deputy.depNomeParlamentar,
-        committees: deputy.cms.map((c) => ({
-          name: c.cmsNo,
-          code: c.cmsCd,
-          role: c.cmsCargo,
-          situation: c.cmsSituacao,
-          subRole: c.cmsSubCargo,
-        })),
       };
     },
   }),
