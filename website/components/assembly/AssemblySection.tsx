@@ -56,11 +56,6 @@ export default function AssemblySection() {
           Assembleia de Representantes
         </h1>
         <SearchBar placeholder="Pesquisar representantes por nome ou distrito..." />
-        <div className="mt-6 flex flex-wrap gap-2">
-          {districts.map((district) => (
-            <FilterChip key={district} label={district} />
-          ))}
-        </div>
       </div>
 
       {/* Representatives Grid */}
