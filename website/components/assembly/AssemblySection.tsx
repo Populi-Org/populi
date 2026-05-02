@@ -210,6 +210,7 @@ export default function AssemblySection() {
             {deputies.map((deputy, index) => (
               <RepresentativeCard
                 key={deputy.id}
+                id={deputy.id}
                 name={deputy.name}
                 constituency={deputy.constituency}
                 party={deputy.party}
