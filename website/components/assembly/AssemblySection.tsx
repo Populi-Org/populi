@@ -84,7 +84,7 @@ export default function AssemblySection() {
         if (searchTerm) params.set("search", searchTerm);
         if (constituencyFilter) params.set("constituency", constituencyFilter);
 
-        const response = await fetch(`/api/deputies?${params.toString()}`);
+        const response = await fetch(`/api/deputy?${params.toString()}`);
 
         if (!response.ok) {
           throw new Error("Failed to fetch deputies");
@@ -210,6 +210,7 @@ export default function AssemblySection() {
             {deputies.map((deputy, index) => (
               <RepresentativeCard
                 key={deputy.id}
+                id={deputy.id}
                 name={deputy.name}
                 constituency={deputy.constituency}
                 party={deputy.party}
