@@ -9,8 +9,8 @@ export default function Footer() {
         </p>
       </div>
       <nav className="flex gap-8">
-        <FooterLink href="/grout-rules">Termos de Privacidade</FooterLink>
-        <FooterLink href="/privacy">FAQ</FooterLink>
+        <FooterLink href="/privacy">Termos de Privacidade</FooterLink>
+        <FooterLink href="/faq">FAQ</FooterLink>
         <FooterLink href="/contact">Contacto</FooterLink>
       </nav>
     </footer>

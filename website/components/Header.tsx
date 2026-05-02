@@ -17,7 +17,7 @@ export default function Header() {
           className="text-primary border-b-2 border-primary pb-1 font-bold hover:bg-primary/5 transition-all duration-200 active:scale-[0.97] cursor-pointer"
           href="/"
         >
-          Mural
+          Página Inicial
         </a>
         <a
           className="text-stone-700 font-medium hover:text-primary hover:bg-primary/5 transition-all duration-200 active:scale-[0.97] px-2 py-1 cursor-pointer"
