@@ -4,7 +4,7 @@ import { getPrismaClient } from "@/lib/prisma";
 export const dynamic = "force-dynamic";
 
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   const prisma = getPrismaClient();
@@ -98,13 +98,7 @@ export async function GET(
       }
     : null;
 
-  const imageIndex = deputy.id % 4;
-  const mockImages = [
-    "/images/politicians/carlos-silva.jpg",
-    "/images/politicians/maria-santos.jpg",
-    "/images/politicians/joao-ferreira.jpg",
-    "/images/politicians/ana-costa.jpg",
-  ];
+  const image = deputy.depImageUrl || "/defaultNoImage.png";
 
   return NextResponse.json({
     id: deputy.id,
@@ -114,7 +108,7 @@ export async function GET(
     constituency: deputy.depCPDes,
     legislature: deputy.legDes,
     party: partySigla,
-    image: mockImages[imageIndex],
+    image,
     committees,
     statusHistory: deputy.statusHistory.map((s) => ({
       description: s.sioDes,

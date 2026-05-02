@@ -12,6 +12,7 @@ interface Deputy {
   fullName: string;
   constituency: string | null;
   party: string | null;
+  image: string;
   description: string;
 }
 
@@ -21,14 +22,6 @@ interface PaginationData {
   total: number;
   totalPages: number;
 }
-
-const mockImages = [
-  "/images/politicians/carlos-silva.jpg",
-  "/images/politicians/maria-santos.jpg",
-  "/images/politicians/joao-ferreira.jpg",
-  "/images/politicians/ana-costa.jpg",
-];
-
 const constituencies = [
   "Aveiro",
   "Beja",
@@ -53,11 +46,6 @@ const constituencies = [
   "Europa",
   "Fora da Europa",
 ];
-
-function getMockImage(index: number): string {
-  return mockImages[index % mockImages.length];
-}
-
 export default function AssemblySection() {
   const [deputies, setDeputies] = useState<Deputy[]>([]);
   const [pagination, setPagination] = useState<PaginationData>({
@@ -207,14 +195,14 @@ export default function AssemblySection() {
       {!loading && !error && (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {deputies.map((deputy, index) => (
+            {deputies.map((deputy) => (
               <RepresentativeCard
                 key={deputy.id}
                 id={deputy.id}
                 name={deputy.name}
                 constituency={deputy.constituency}
                 party={deputy.party}
-                image={getMockImage(index)}
+                image={deputy.image}
                 description={deputy.description}
               />
             ))}

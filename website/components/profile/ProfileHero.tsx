@@ -40,7 +40,7 @@ export default function ProfileHero({
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-0 border-2 border-stone-900">
       <div className="md:col-span-5 relative border-b-2 md:border-b-0 md:border-r-2 border-stone-900">
-        <Image
+        <img
           alt={`Retrato de ${name}`}
           className="w-full h-64 md:h-full object-cover"
           src={image}

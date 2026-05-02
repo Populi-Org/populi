@@ -73,6 +73,7 @@ export async function GET(request: NextRequest) {
       fullName: deputy.depNomeCompleto,
       constituency: deputy.depCPDes,
       party: partySigla,
+      image: deputy.depImageUrl || "/defaultNoImage.png",
       description,
     };
   });

@@ -42,7 +42,7 @@ export default function RepresentativeCard({
         />
         <div className="p-6 flex flex-col items-center flex-grow">
           <div className="w-32 h-32 border-2 border-stone-900 overflow-hidden mb-4 relative glossy-finish">
-            <Image
+            <img
               alt={`Retrato de ${name}`}
               className="w-full h-full object-cover"
               src={image}

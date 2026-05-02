@@ -1,15 +1,15 @@
 import { notFound } from "next/navigation";
-import { getPrismaClient } from "@/lib/prisma";
-import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
 import {
-  ProfileHero,
   BiographicalHighlights,
-  LegislativeActivity,
   FeaturedQuote,
+  LegislativeActivity,
+  ProfileHero,
   ProfileStats,
   TownHallBanner,
 } from "@/components/profile";
+import { getPrismaClient } from "@/lib/prisma";
 
 export default async function DeputyPage({
   params,
@@ -90,13 +90,7 @@ export default async function DeputyPage({
     },
   });
 
-  const imageIndex = deputy.id % 4;
-  const mockImages = [
-    "/images/politicians/carlos-silva.jpg",
-    "/images/politicians/maria-santos.jpg",
-    "/images/politicians/joao-ferreira.jpg",
-    "/images/politicians/ana-costa.jpg",
-  ];
+  const image = deputy.depImageUrl || "/defaultNoImage.png";
 
   return (
     <div className="bg-surface font-body text-on-surface antialiased azulejo-crazing min-h-screen">
@@ -108,7 +102,7 @@ export default async function DeputyPage({
           party={partySigla}
           constituency={deputy.depCPDes}
           legislature={deputy.legDes}
-          image={mockImages[imageIndex]}
+          image={image}
           committees={committees}
         />
 
