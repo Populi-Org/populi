@@ -12,6 +12,7 @@ import {
   ProfileHero,
   ProfileStats,
 } from "@/components/profile";
+import { getProxiedImageUrl } from "@/lib/image-proxy";
 import { getPrismaClient } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -138,7 +139,7 @@ export default async function DeputyPage({
     },
   });
 
-  const image = deputy.depImageUrl || "/defaultNoImage.png";
+  const image = getProxiedImageUrl(deputy.depImageUrl);
 
   return (
     <div className="bg-surface font-body text-on-surface antialiased azulejo-crazing min-h-screen flex flex-col">

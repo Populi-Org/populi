@@ -1,7 +1,7 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
 import FilterChip from "../ui/FilterChip";
 import Pagination from "../ui/Pagination";
 import SearchBar from "../ui/SearchBar";
@@ -74,6 +74,7 @@ interface AssemblySectionProps {
   initialParty?: string;
   initialTheme?: string;
   initialFiltersVisible?: boolean;
+  initialPage?: number;
 }
 export default function AssemblySection({
   initialSearch = "",
@@ -81,11 +82,13 @@ export default function AssemblySection({
   initialParty = "",
   initialTheme = "",
   initialFiltersVisible = false,
+  initialPage = 1,
 }: AssemblySectionProps) {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const [deputies, setDeputies] = useState<Deputy[]>([]);
   const [pagination, setPagination] = useState<PaginationData>({
-    page: 1,
+    page: initialPage,
     limit: 12,
     total: 0,
     totalPages: 0,
@@ -106,6 +109,7 @@ export default function AssemblySection({
   const urlParty = searchParams.get("party") || "";
   const urlTheme = searchParams.get("theme") || "";
   const urlFilters = searchParams.get("filters");
+  const urlPage = Number.parseInt(searchParams.get("page") || "1", 10);
   const shouldShowFilters = Boolean(
     urlFilters || urlSearch || urlConstituency || urlParty || urlTheme,
   );
@@ -140,6 +144,34 @@ export default function AssemblySection({
     urlFilters,
     shouldShowFilters,
   ]);
+
+  const navigate = useCallback(
+    (opts: {
+      page: number;
+      search: string;
+      constituency: string;
+      party: string;
+      theme: string;
+      showSuplentes: boolean;
+      sortByPhoto: boolean;
+      filtersVisible: boolean;
+    }) => {
+      const params = new URLSearchParams();
+      if (opts.page > 1) params.set("page", String(opts.page));
+      if (opts.search) params.set("search", opts.search);
+      if (opts.constituency) params.set("constituency", opts.constituency);
+      if (opts.party) params.set("party", opts.party);
+      if (opts.theme) params.set("theme", opts.theme);
+      if (opts.showSuplentes) params.set("showSuplentes", "true");
+      if (!opts.sortByPhoto) params.set("sortByPhoto", "false");
+      if (opts.filtersVisible) params.set("filters", "true");
+
+      const newQuery = params.toString();
+      const newUrl = newQuery ? `?${newQuery}` : window.location.pathname;
+      router.replace(newUrl, { scroll: false });
+    },
+    [router],
+  );
 
   const fetchDeputies = useCallback(
     async (
@@ -184,10 +216,16 @@ export default function AssemblySection({
     [],
   );
 
+  const isInitialMount = useRef(true);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: pagination.page is only read on initial mount via ref
   useEffect(() => {
+    const page = isInitialMount.current ? pagination.page : 1;
+    isInitialMount.current = false;
+
     const timeout = setTimeout(() => {
       fetchDeputies(
-        1,
+        page,
         search,
         constituency,
         party,
@@ -233,8 +271,43 @@ export default function AssemblySection({
     };
   }, []);
 
+  useEffect(() => {
+    if (!Number.isNaN(urlPage) && urlPage > 0 && urlPage !== pagination.page) {
+      setPagination((prev) => ({ ...prev, page: urlPage }));
+      fetchDeputies(
+        urlPage,
+        search,
+        constituency,
+        party,
+        showSuplentes,
+        sortByPhoto,
+        theme,
+      );
+    }
+  }, [
+    urlPage,
+    pagination.page,
+    fetchDeputies,
+    search,
+    constituency,
+    party,
+    showSuplentes,
+    sortByPhoto,
+    theme,
+  ]);
+
   const handlePageChange = (page: number) => {
     if (page < 1 || page > pagination.totalPages) return;
+    navigate({
+      page,
+      search,
+      constituency,
+      party,
+      theme,
+      showSuplentes,
+      sortByPhoto,
+      filtersVisible,
+    });
     fetchDeputies(
       page,
       search,
@@ -247,15 +320,48 @@ export default function AssemblySection({
   };
 
   const toggleConstituency = (c: string) => {
-    setConstituency((prev) => (prev === c ? "" : c));
+    const next = constituency === c ? "" : c;
+    setConstituency(next);
+    navigate({
+      page: 1,
+      search,
+      constituency: next,
+      party,
+      theme,
+      showSuplentes,
+      sortByPhoto,
+      filtersVisible,
+    });
   };
 
   const toggleParty = (sigla: string) => {
-    setParty((prev) => (prev === sigla ? "" : sigla));
+    const next = party === sigla ? "" : sigla;
+    setParty(next);
+    navigate({
+      page: 1,
+      search,
+      constituency,
+      party: next,
+      theme,
+      showSuplentes,
+      sortByPhoto,
+      filtersVisible,
+    });
   };
 
   const toggleTheme = (value: string) => {
-    setTheme((prev) => (prev === value ? "" : value));
+    const next = theme === value ? "" : value;
+    setTheme(next);
+    navigate({
+      page: 1,
+      search,
+      constituency,
+      party,
+      theme: next,
+      showSuplentes,
+      sortByPhoto,
+      filtersVisible,
+    });
   };
 
   return (
@@ -269,7 +375,17 @@ export default function AssemblySection({
           placeholder="Pesquisar representantes por nome ou distrito..."
           value={search}
           onChange={setSearch}
-          onSearch={() =>
+          onSearch={() => {
+            navigate({
+              page: 1,
+              search,
+              constituency,
+              party,
+              theme,
+              showSuplentes,
+              sortByPhoto,
+              filtersVisible,
+            });
             fetchDeputies(
               1,
               search,
@@ -278,9 +394,22 @@ export default function AssemblySection({
               showSuplentes,
               sortByPhoto,
               theme,
-            )
-          }
-          onFilterToggle={() => setFiltersVisible((v) => !v)}
+            );
+          }}
+          onFilterToggle={() => {
+            const next = !filtersVisible;
+            setFiltersVisible(next);
+            navigate({
+              page: pagination.page,
+              search,
+              constituency,
+              party,
+              theme,
+              showSuplentes,
+              sortByPhoto,
+              filtersVisible: next,
+            });
+          }}
           filtersVisible={filtersVisible}
         />
         <div
@@ -306,7 +435,19 @@ export default function AssemblySection({
                 key="all-parties"
                 label="Todos"
                 active={!party}
-                onClick={() => setParty("")}
+                onClick={() => {
+                  setParty("");
+                  navigate({
+                    page: 1,
+                    search,
+                    constituency,
+                    party: "",
+                    theme,
+                    showSuplentes,
+                    sortByPhoto,
+                    filtersVisible,
+                  });
+                }}
               />
               {parties.map((p) => (
                 <FilterChip
@@ -323,7 +464,19 @@ export default function AssemblySection({
               key="all-themes"
               label="Todos os temas"
               active={!theme}
-              onClick={() => setTheme("")}
+              onClick={() => {
+                setTheme("");
+                navigate({
+                  page: 1,
+                  search,
+                  constituency,
+                  party,
+                  theme: "",
+                  showSuplentes,
+                  sortByPhoto,
+                  filtersVisible,
+                });
+              }}
             />
             {themes.map((t) => (
               <FilterChip
@@ -338,12 +491,36 @@ export default function AssemblySection({
             <Toggle
               label="Com foto primeiro"
               checked={sortByPhoto}
-              onChange={(checked) => setSortByPhoto(checked)}
+              onChange={(checked) => {
+                setSortByPhoto(checked);
+                navigate({
+                  page: 1,
+                  search,
+                  constituency,
+                  party,
+                  theme,
+                  showSuplentes,
+                  sortByPhoto: checked,
+                  filtersVisible,
+                });
+              }}
             />
             <Toggle
               label="Mostrar Suplentes"
               checked={showSuplentes}
-              onChange={(checked) => setShowSuplentes(checked)}
+              onChange={(checked) => {
+                setShowSuplentes(checked);
+                navigate({
+                  page: 1,
+                  search,
+                  constituency,
+                  party,
+                  theme,
+                  showSuplentes: checked,
+                  sortByPhoto,
+                  filtersVisible,
+                });
+              }}
             />
           </div>
         </div>

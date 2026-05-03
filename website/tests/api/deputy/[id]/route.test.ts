@@ -83,7 +83,7 @@ describe("GET /api/deputy/[id]", () => {
       constituency: "Lisboa",
       legislature: "XVI",
       party: "PS",
-      image: "http://example.com/img.jpg",
+      image: "/api/image-proxy?url=http%3A%2F%2Fexample.com%2Fimg.jpg",
       committees: [{ name: "Education", role: "Member", situation: "Active" }],
       statusHistory: [
         { description: "Active", startDate: "2024-01-01T00:00:00.000Z", endDate: null },

@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import DeputyImage from "@/components/ui/DeputyImage";
 
 interface RepresentativeCardProps {
   id: number;
@@ -39,18 +39,16 @@ export default function RepresentativeCard({
 }: RepresentativeCardProps) {
   return (
     <Link href={`/deputy/${id}`} className="block">
-      <article className="border-4 flex flex-col glossy-finish azulejo-crazing solid-shadow group hover:-translate-y-1 transition-transform duration-300">
+      <article className="border-4 flex flex-col bg-white glossy-finish solid-shadow group hover:-translate-y-1 transition-transform duration-300">
         <div
           className={`h-4 w-full ${getPartyColor(party)} geometric-bg border-b-2 border-stone-900`}
         />
         <div className="p-6 flex flex-col items-center flex-grow">
           <div className="w-32 h-32 border-2 border-stone-900 overflow-hidden mb-4 relative glossy-finish">
-            <Image
+            <DeputyImage
               alt={`Retrato de ${name}`}
-              className="object-cover"
+              className="w-full h-full object-cover"
               src={image}
-              fill
-              sizes="128px"
             />
           </div>
           <h2 className="font-headline text-xl font-semibold text-on-surface text-center mb-1">

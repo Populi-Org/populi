@@ -1,4 +1,5 @@
-import Image from "next/image";
+import DeputyImage from "@/components/ui/DeputyImage";
+import { getProxiedImageUrl } from "@/lib/image-proxy";
 import { getPrismaClient } from "@/lib/prisma";
 
 interface TrendingTopic {
@@ -64,7 +65,7 @@ export default async function TrendingSection() {
       category: partySigla,
       metric: `${formatCount(deputy._count.intev)} Intervenções`,
       icon: "record_voice_over",
-      image: deputy.depImageUrl || "/defaultNoImage.png",
+      image: getProxiedImageUrl(deputy.depImageUrl),
       href,
     };
   });
@@ -92,12 +93,10 @@ export default async function TrendingSection() {
             <a href={topic.href} key={topic.title}>
               <div className="bg-surface-container-lowest border-2 border-stone-900 solid-shadow p-6 flex flex-col glossy-finish group hover:-translate-y-1 transition-transform duration-300">
                 <div className="w-full aspect-square bg-surface-variant mb-4 border-2 border-stone-900 overflow-hidden relative">
-                  <Image
+                  <DeputyImage
                     className="w-full h-full object-cover contrast-125"
                     src={topic.image}
                     alt={topic.title}
-                    width={400}
-                    height={400}
                   />
                   <div className="absolute top-2 right-2 accent-color text-white text-[10px] font-bold px-2 py-1 uppercase">
                     {topic.category}

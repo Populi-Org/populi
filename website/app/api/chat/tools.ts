@@ -1,5 +1,6 @@
 import { tool } from "ai";
 import { z } from "zod";
+import { getProxiedImageUrl } from "@/lib/image-proxy";
 import { getPrismaClient } from "@/lib/prisma";
 
 const partyColors: Record<string, string> = {
@@ -35,8 +36,13 @@ export const deputyTools = {
         .string()
         .optional()
         .describe("Constituency name (e.g. Lisboa, Porto, Braga)"),
+      limit: z
+        .number()
+        .optional()
+        .default(10)
+        .describe("Maximum number of deputies to return (default 10)"),
     }),
-    execute: async ({ name, party, constituency }) => {
+    execute: async ({ name, party, constituency, limit = 10 }) => {
       const prisma = getPrismaClient();
 
       let partyDeputyIds: number[] | null = null;
@@ -82,7 +88,7 @@ export const deputyTools = {
             take: 1,
           },
         },
-        take: 10,
+        take: limit,
         orderBy: { depNomeParlamentar: "asc" },
       });
 
@@ -94,7 +100,7 @@ export const deputyTools = {
         partyColor: getPartyColor(d.partyHistory[0]?.party?.sigla || null),
         constituency: d.depCPDes,
         legislature: d.legDes,
-        image: d.depImageUrl,
+        image: getProxiedImageUrl(d.depImageUrl),
       }));
       return results;
     },
@@ -230,7 +236,7 @@ export const deputyTools = {
         legislature: deputy.legDes,
         party: partySigla,
         partyColor: getPartyColor(partySigla),
-        image: deputy.depImageUrl,
+        image: getProxiedImageUrl(deputy.depImageUrl),
         committees: deputy.cms.map((c) => ({
           name: c.cmsNo,
           role: c.cmsCargo,

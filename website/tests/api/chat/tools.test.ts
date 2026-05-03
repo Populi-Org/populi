@@ -103,7 +103,7 @@ describe("deputyTools.search_deputies", () => {
         partyColor: "#dc2626",
         constituency: "Porto",
         legislature: "XVI",
-        image: "http://img.jpg",
+        image: "/api/image-proxy?url=http%3A%2F%2Fimg.jpg",
       },
     ]);
   });
@@ -182,7 +182,7 @@ describe("deputyTools.get_deputy_profile", () => {
       legislature: "XVI",
       party: "PS",
       partyColor: "#dc2626",
-      image: "http://example.com/img.jpg",
+      image: "/api/image-proxy?url=http%3A%2F%2Fexample.com%2Fimg.jpg",
       committees: [
         { name: "Education", role: "Member", situation: "Active" },
       ],
