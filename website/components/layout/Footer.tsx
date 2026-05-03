@@ -11,6 +11,7 @@ export default function Footer() {
       <nav className="flex flex-wrap justify-center gap-4 md:gap-8">
         <FooterLink href="/privacy">Termos de Privacidade</FooterLink>
         <FooterLink href="/faq">FAQ</FooterLink>
+        <FooterLink href="/team">Equipa</FooterLink>
         <FooterLink href="/contact">Contacto</FooterLink>
       </nav>
     </footer>
