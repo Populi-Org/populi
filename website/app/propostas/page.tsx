@@ -11,7 +11,7 @@ export default function ProposalsPage() {
       <Header />
       <main className="flex-grow p-6 md:p-8 max-w-7xl mx-auto w-full">
         <h1 className="font-headline text-3xl md:text-4xl font-bold mb-6">
-          Propostas
+          Iniciativas
         </h1>
         <Suspense fallback={null}>
           <ProposalsSection />

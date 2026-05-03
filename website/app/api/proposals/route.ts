@@ -52,11 +52,7 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const whereClause =
-    conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
-
   // Filter by resultado: only match initiatives whose latest vote (among votes WITH a resultado) matches
-  let idFilter = "";
   if (resultado) {
     const matchingIds = await prisma.$queryRaw<{ id: number }[]>`
       WITH ranked AS (
@@ -87,14 +83,16 @@ export async function GET(request: NextRequest) {
       .map((_, i) => `$${params.length + i + 1}`)
       .join(",");
     params.push(...matchingIds.map((r) => r.id));
-    idFilter = `AND li.id IN (${idPlaceholders})`;
+    conditions.push(`li.id IN (${idPlaceholders})`);
   }
+
+  const whereClause =
+    conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
 
   const countQuery = `
     SELECT COUNT(*)::int as total
     FROM legislative_initiatives li
     ${whereClause}
-    ${idFilter}
   `;
 
   const dataQuery = `
@@ -135,14 +133,12 @@ export async function GET(request: NextRequest) {
     LEFT JOIN first_author fa ON fa.initiative_id = li.id
     LEFT JOIN latest_votes lv ON lv.initiative_id = li.id
     ${whereClause}
-    ${idFilter}
     ORDER BY li.id DESC
     LIMIT $${params.length + 1} OFFSET $${params.length + 2}
   `;
 
-  const countParams = resultado ? params.slice(0, -2) : params;
   const [countRows, rawProposals] = await Promise.all([
-    prisma.$queryRawUnsafe<{ total: number }[]>(countQuery, ...countParams),
+    prisma.$queryRawUnsafe<{ total: number }[]>(countQuery, ...params),
     prisma.$queryRawUnsafe<
       {
         id: number;
