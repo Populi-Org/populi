@@ -5,6 +5,7 @@
 <p align="center">
     <a href="https://status.henriquesf.me/"><img alt="Status" src="https://uptime.henriquesf.me/api/badge/10/uptime?labelColor=ffffff&labelValueColor=000000&color=2252E1"></a>
     <a href="https://github.com/Populi-Org/populi/actions/workflows/deploy.yml"><img alt="Deploy" src="https://img.shields.io/github/actions/workflow/status/Populi-Org/populi/deploy.yml?label=Deploy&logo=githubactions&logoColor=black&labelColor=white&color=2252E1"></a>
+    <a href="https://codecov.io/gh/Populi-Org/populi"><img alt="Coverage" src="https://img.shields.io/codecov/c/github/Populi-Org/populi?logo=codecov&logoColor=black&labelColor=white&color=2252E1"></a>
     <a href="https://github.com/Populi-Org/populi/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/Populi-Org/populi?label=Issues&logoColor=black&labelColor=white&color=2252E1"/></a>
     <a href="https://github.com/Populi-Org/populi/pulls"><img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/Populi-Org/populi?label=PRs&logoColor=black&labelColor=white&color=2252E1"/></a>
 </p>
