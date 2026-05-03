@@ -49,7 +49,7 @@ export default function ProfileHero({
         >
           <Image
             alt={`Retrato de ${name}`}
-            className="w-full h-full object-cover grayscale brightness-90 contrast-110"
+            className="w-full h-full object-cover brightness-90 contrast-110"
             src={image}
             width={600}
             height={750}

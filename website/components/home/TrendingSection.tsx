@@ -93,7 +93,7 @@ export default async function TrendingSection() {
               <div className="bg-surface-container-lowest border-2 border-stone-900 solid-shadow p-6 flex flex-col glossy-finish group hover:-translate-y-1 transition-transform duration-300">
                 <div className="w-full aspect-square bg-surface-variant mb-4 border-2 border-stone-900 overflow-hidden relative">
                   <Image
-                    className="w-full h-full object-cover grayscale contrast-125"
+                    className="w-full h-full object-cover contrast-125"
                     src={topic.image}
                     alt={topic.title}
                     width={400}
