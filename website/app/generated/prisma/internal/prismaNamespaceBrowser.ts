@@ -74,6 +74,10 @@ export const ModelName = {
   RelIniciativas: 'RelIniciativas',
   RelIniEuropeias: 'RelIniEuropeias',
   RelPeticoes: 'RelPeticoes',
+  LegislativeInitiative: 'LegislativeInitiative',
+  InitiativeAuthor: 'InitiativeAuthor',
+  InitiativeEvent: 'InitiativeEvent',
+  InitiativeVote: 'InitiativeVote',
   Article: 'Article',
   FactCheck: 'FactCheck'
 } as const
@@ -445,6 +449,68 @@ export const RelPeticoesScalarFieldEnum = {
 } as const
 
 export type RelPeticoesScalarFieldEnum = (typeof RelPeticoesScalarFieldEnum)[keyof typeof RelPeticoesScalarFieldEnum]
+
+
+export const LegislativeInitiativeScalarFieldEnum = {
+  id: 'id',
+  iniId: 'iniId',
+  iniNr: 'iniNr',
+  iniTitulo: 'iniTitulo',
+  iniDescTipo: 'iniDescTipo',
+  iniTipo: 'iniTipo',
+  iniLeg: 'iniLeg',
+  iniEpigrafe: 'iniEpigrafe',
+  iniObs: 'iniObs',
+  iniLinkTexto: 'iniLinkTexto',
+  dataInicioLeg: 'dataInicioLeg',
+  dataFimLeg: 'dataFimLeg',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LegislativeInitiativeScalarFieldEnum = (typeof LegislativeInitiativeScalarFieldEnum)[keyof typeof LegislativeInitiativeScalarFieldEnum]
+
+
+export const InitiativeAuthorScalarFieldEnum = {
+  id: 'id',
+  initiativeId: 'initiativeId',
+  authorType: 'authorType',
+  authorName: 'authorName',
+  authorSigla: 'authorSigla'
+} as const
+
+export type InitiativeAuthorScalarFieldEnum = (typeof InitiativeAuthorScalarFieldEnum)[keyof typeof InitiativeAuthorScalarFieldEnum]
+
+
+export const InitiativeEventScalarFieldEnum = {
+  id: 'id',
+  initiativeId: 'initiativeId',
+  evtId: 'evtId',
+  codigoFase: 'codigoFase',
+  fase: 'fase',
+  dataFase: 'dataFase',
+  comissao: 'comissao',
+  oevId: 'oevId',
+  obsFase: 'obsFase'
+} as const
+
+export type InitiativeEventScalarFieldEnum = (typeof InitiativeEventScalarFieldEnum)[keyof typeof InitiativeEventScalarFieldEnum]
+
+
+export const InitiativeVoteScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  voteId: 'voteId',
+  data: 'data',
+  resultado: 'resultado',
+  detalhe: 'detalhe',
+  descricao: 'descricao',
+  reuniao: 'reuniao',
+  tipoReuniao: 'tipoReuniao',
+  unanime: 'unanime'
+} as const
+
+export type InitiativeVoteScalarFieldEnum = (typeof InitiativeVoteScalarFieldEnum)[keyof typeof InitiativeVoteScalarFieldEnum]
 
 
 export const ArticleScalarFieldEnum = {

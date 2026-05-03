@@ -407,6 +407,10 @@ export const ModelName = {
   RelIniciativas: 'RelIniciativas',
   RelIniEuropeias: 'RelIniEuropeias',
   RelPeticoes: 'RelPeticoes',
+  LegislativeInitiative: 'LegislativeInitiative',
+  InitiativeAuthor: 'InitiativeAuthor',
+  InitiativeEvent: 'InitiativeEvent',
+  InitiativeVote: 'InitiativeVote',
   Article: 'Article',
   FactCheck: 'FactCheck'
 } as const
@@ -424,7 +428,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "deputy" | "party" | "partyHistory" | "statusHistory" | "dadosLegisDeputado" | "actP" | "audicoes" | "audiencias" | "cms" | "deslocacoes" | "dlE" | "eventos" | "gpa" | "ini" | "intev" | "parlamentoJovens" | "req" | "scgt" | "relAutoresPareceres" | "relContasPublicas" | "relIniciativas" | "relIniEuropeias" | "relPeticoes" | "article" | "factCheck"
+    modelProps: "deputy" | "party" | "partyHistory" | "statusHistory" | "dadosLegisDeputado" | "actP" | "audicoes" | "audiencias" | "cms" | "deslocacoes" | "dlE" | "eventos" | "gpa" | "ini" | "intev" | "parlamentoJovens" | "req" | "scgt" | "relAutoresPareceres" | "relContasPublicas" | "relIniciativas" | "relIniEuropeias" | "relPeticoes" | "legislativeInitiative" | "initiativeAuthor" | "initiativeEvent" | "initiativeVote" | "article" | "factCheck"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2130,6 +2134,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    LegislativeInitiative: {
+      payload: Prisma.$LegislativeInitiativePayload<ExtArgs>
+      fields: Prisma.LegislativeInitiativeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LegislativeInitiativeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LegislativeInitiativePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LegislativeInitiativeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LegislativeInitiativePayload>
+        }
+        findFirst: {
+          args: Prisma.LegislativeInitiativeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LegislativeInitiativePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LegislativeInitiativeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LegislativeInitiativePayload>
+        }
+        findMany: {
+          args: Prisma.LegislativeInitiativeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LegislativeInitiativePayload>[]
+        }
+        create: {
+          args: Prisma.LegislativeInitiativeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LegislativeInitiativePayload>
+        }
+        createMany: {
+          args: Prisma.LegislativeInitiativeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LegislativeInitiativeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LegislativeInitiativePayload>[]
+        }
+        delete: {
+          args: Prisma.LegislativeInitiativeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LegislativeInitiativePayload>
+        }
+        update: {
+          args: Prisma.LegislativeInitiativeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LegislativeInitiativePayload>
+        }
+        deleteMany: {
+          args: Prisma.LegislativeInitiativeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LegislativeInitiativeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LegislativeInitiativeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LegislativeInitiativePayload>[]
+        }
+        upsert: {
+          args: Prisma.LegislativeInitiativeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LegislativeInitiativePayload>
+        }
+        aggregate: {
+          args: Prisma.LegislativeInitiativeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLegislativeInitiative>
+        }
+        groupBy: {
+          args: Prisma.LegislativeInitiativeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LegislativeInitiativeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LegislativeInitiativeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LegislativeInitiativeCountAggregateOutputType> | number
+        }
+      }
+    }
+    InitiativeAuthor: {
+      payload: Prisma.$InitiativeAuthorPayload<ExtArgs>
+      fields: Prisma.InitiativeAuthorFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.InitiativeAuthorFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeAuthorPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.InitiativeAuthorFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeAuthorPayload>
+        }
+        findFirst: {
+          args: Prisma.InitiativeAuthorFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeAuthorPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.InitiativeAuthorFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeAuthorPayload>
+        }
+        findMany: {
+          args: Prisma.InitiativeAuthorFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeAuthorPayload>[]
+        }
+        create: {
+          args: Prisma.InitiativeAuthorCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeAuthorPayload>
+        }
+        createMany: {
+          args: Prisma.InitiativeAuthorCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.InitiativeAuthorCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeAuthorPayload>[]
+        }
+        delete: {
+          args: Prisma.InitiativeAuthorDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeAuthorPayload>
+        }
+        update: {
+          args: Prisma.InitiativeAuthorUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeAuthorPayload>
+        }
+        deleteMany: {
+          args: Prisma.InitiativeAuthorDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.InitiativeAuthorUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.InitiativeAuthorUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeAuthorPayload>[]
+        }
+        upsert: {
+          args: Prisma.InitiativeAuthorUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeAuthorPayload>
+        }
+        aggregate: {
+          args: Prisma.InitiativeAuthorAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInitiativeAuthor>
+        }
+        groupBy: {
+          args: Prisma.InitiativeAuthorGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InitiativeAuthorGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.InitiativeAuthorCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InitiativeAuthorCountAggregateOutputType> | number
+        }
+      }
+    }
+    InitiativeEvent: {
+      payload: Prisma.$InitiativeEventPayload<ExtArgs>
+      fields: Prisma.InitiativeEventFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.InitiativeEventFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeEventPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.InitiativeEventFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeEventPayload>
+        }
+        findFirst: {
+          args: Prisma.InitiativeEventFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeEventPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.InitiativeEventFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeEventPayload>
+        }
+        findMany: {
+          args: Prisma.InitiativeEventFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeEventPayload>[]
+        }
+        create: {
+          args: Prisma.InitiativeEventCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeEventPayload>
+        }
+        createMany: {
+          args: Prisma.InitiativeEventCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.InitiativeEventCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeEventPayload>[]
+        }
+        delete: {
+          args: Prisma.InitiativeEventDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeEventPayload>
+        }
+        update: {
+          args: Prisma.InitiativeEventUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeEventPayload>
+        }
+        deleteMany: {
+          args: Prisma.InitiativeEventDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.InitiativeEventUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.InitiativeEventUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeEventPayload>[]
+        }
+        upsert: {
+          args: Prisma.InitiativeEventUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeEventPayload>
+        }
+        aggregate: {
+          args: Prisma.InitiativeEventAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInitiativeEvent>
+        }
+        groupBy: {
+          args: Prisma.InitiativeEventGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InitiativeEventGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.InitiativeEventCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InitiativeEventCountAggregateOutputType> | number
+        }
+      }
+    }
+    InitiativeVote: {
+      payload: Prisma.$InitiativeVotePayload<ExtArgs>
+      fields: Prisma.InitiativeVoteFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.InitiativeVoteFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeVotePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.InitiativeVoteFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeVotePayload>
+        }
+        findFirst: {
+          args: Prisma.InitiativeVoteFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeVotePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.InitiativeVoteFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeVotePayload>
+        }
+        findMany: {
+          args: Prisma.InitiativeVoteFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeVotePayload>[]
+        }
+        create: {
+          args: Prisma.InitiativeVoteCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeVotePayload>
+        }
+        createMany: {
+          args: Prisma.InitiativeVoteCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.InitiativeVoteCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeVotePayload>[]
+        }
+        delete: {
+          args: Prisma.InitiativeVoteDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeVotePayload>
+        }
+        update: {
+          args: Prisma.InitiativeVoteUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeVotePayload>
+        }
+        deleteMany: {
+          args: Prisma.InitiativeVoteDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.InitiativeVoteUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.InitiativeVoteUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeVotePayload>[]
+        }
+        upsert: {
+          args: Prisma.InitiativeVoteUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeVotePayload>
+        }
+        aggregate: {
+          args: Prisma.InitiativeVoteAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInitiativeVote>
+        }
+        groupBy: {
+          args: Prisma.InitiativeVoteGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InitiativeVoteGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.InitiativeVoteCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InitiativeVoteCountAggregateOutputType> | number
+        }
+      }
+    }
     Article: {
       payload: Prisma.$ArticlePayload<ExtArgs>
       fields: Prisma.ArticleFieldRefs
@@ -2670,6 +2970,68 @@ export const RelPeticoesScalarFieldEnum = {
 export type RelPeticoesScalarFieldEnum = (typeof RelPeticoesScalarFieldEnum)[keyof typeof RelPeticoesScalarFieldEnum]
 
 
+export const LegislativeInitiativeScalarFieldEnum = {
+  id: 'id',
+  iniId: 'iniId',
+  iniNr: 'iniNr',
+  iniTitulo: 'iniTitulo',
+  iniDescTipo: 'iniDescTipo',
+  iniTipo: 'iniTipo',
+  iniLeg: 'iniLeg',
+  iniEpigrafe: 'iniEpigrafe',
+  iniObs: 'iniObs',
+  iniLinkTexto: 'iniLinkTexto',
+  dataInicioLeg: 'dataInicioLeg',
+  dataFimLeg: 'dataFimLeg',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LegislativeInitiativeScalarFieldEnum = (typeof LegislativeInitiativeScalarFieldEnum)[keyof typeof LegislativeInitiativeScalarFieldEnum]
+
+
+export const InitiativeAuthorScalarFieldEnum = {
+  id: 'id',
+  initiativeId: 'initiativeId',
+  authorType: 'authorType',
+  authorName: 'authorName',
+  authorSigla: 'authorSigla'
+} as const
+
+export type InitiativeAuthorScalarFieldEnum = (typeof InitiativeAuthorScalarFieldEnum)[keyof typeof InitiativeAuthorScalarFieldEnum]
+
+
+export const InitiativeEventScalarFieldEnum = {
+  id: 'id',
+  initiativeId: 'initiativeId',
+  evtId: 'evtId',
+  codigoFase: 'codigoFase',
+  fase: 'fase',
+  dataFase: 'dataFase',
+  comissao: 'comissao',
+  oevId: 'oevId',
+  obsFase: 'obsFase'
+} as const
+
+export type InitiativeEventScalarFieldEnum = (typeof InitiativeEventScalarFieldEnum)[keyof typeof InitiativeEventScalarFieldEnum]
+
+
+export const InitiativeVoteScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  voteId: 'voteId',
+  data: 'data',
+  resultado: 'resultado',
+  detalhe: 'detalhe',
+  descricao: 'descricao',
+  reuniao: 'reuniao',
+  tipoReuniao: 'tipoReuniao',
+  unanime: 'unanime'
+} as const
+
+export type InitiativeVoteScalarFieldEnum = (typeof InitiativeVoteScalarFieldEnum)[keyof typeof InitiativeVoteScalarFieldEnum]
+
+
 export const ArticleScalarFieldEnum = {
   id: 'id',
   deputyId: 'deputyId',
@@ -2927,6 +3289,10 @@ export type GlobalOmitConfig = {
   relIniciativas?: Prisma.RelIniciativasOmit
   relIniEuropeias?: Prisma.RelIniEuropeiasOmit
   relPeticoes?: Prisma.RelPeticoesOmit
+  legislativeInitiative?: Prisma.LegislativeInitiativeOmit
+  initiativeAuthor?: Prisma.InitiativeAuthorOmit
+  initiativeEvent?: Prisma.InitiativeEventOmit
+  initiativeVote?: Prisma.InitiativeVoteOmit
   article?: Prisma.ArticleOmit
   factCheck?: Prisma.FactCheckOmit
 }
