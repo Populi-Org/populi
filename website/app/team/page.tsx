@@ -73,7 +73,7 @@ export default async function TeamPage() {
           {users.map((user) => (
             <article
               key={user.username}
-              className="bg-white border-4 border-stone-900 glossy-finish solid-shadow p-4 sm:p-6 flex flex-col items-center text-center"
+              className="bg-white border-4 border-stone-900 glossy-finish solid-shadow hover:-translate-y-1 transition-transform duration-200 p-4 sm:p-6 flex flex-col items-center text-center"
             >
               <div className="w-24 h-24 sm:w-28 sm:h-28 border-2 border-stone-900 overflow-hidden mb-4 relative glossy-finish">
                 {user.github?.avatar_url ? (
