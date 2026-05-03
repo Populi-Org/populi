@@ -115,7 +115,7 @@ export default function AssembleiaPage() {
             </h2>
             <div className="bg-surface-container border-2 border-stone-900 glossy-finish p-4 md:p-6 mb-6">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-4">
-                <h3 className="font-headline text-lg md:text-xl font-semibold text-on-surface">
+                <h3 className="font-headline text-lg md:text-xl font-semibold text-on-surface text-center">
                   Composição do Parlamento
                 </h3>
                 <span className="font-label text-xs uppercase tracking-wider text-on-surface-variant">

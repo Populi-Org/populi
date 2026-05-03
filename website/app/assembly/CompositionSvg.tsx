@@ -54,7 +54,7 @@ export default function CompositionSvg() {
   };
 
   return (
-    <div className="relative inline-block">
+    <div className="relative w-full flex justify-center">
       {/* biome-ignore lint/a11y/useKeyWithMouseEvents: SVG circles are decorative and not keyboard-focusable */}
       <svg
         onMouseMove={handleMouseMove}
