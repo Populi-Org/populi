@@ -1,3 +1,4 @@
+import ContactForm from "@/components/contact/ContactForm";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 
@@ -68,51 +69,10 @@ export default function ContactPage() {
                 Envie-nos uma mensagem
               </h2>
               <p className="leading-relaxed opacity-90 mb-6">
-                Preencha os campos e clique em enviar para abrir o seu email com
-                a mensagem pré-preenchida.
+                Preencha os campos e clique em enviar para nos enviar a sua
+                mensagem.
               </p>
-              <form
-                className="space-y-4"
-                action="mailto:clara.barros.sousa@gmail.com"
-                method="post"
-                encType="text/plain"
-              >
-                <label className="flex flex-col gap-2 text-sm font-medium">
-                  Título da mensagem
-                  <input
-                    name="subject"
-                    required
-                    className="bg-white text-stone-900 border-2 border-stone-900 px-4 py-3 glossy-finish focus:outline-none focus:ring-2 focus:ring-white/70"
-                    placeholder="Ex: Sugestão de melhoria"
-                  />
-                </label>
-                <label className="flex flex-col gap-2 text-sm font-medium">
-                  O seu email
-                  <input
-                    type="email"
-                    name="from"
-                    required
-                    className="bg-white text-stone-900 border-2 border-stone-900 px-4 py-3 glossy-finish focus:outline-none focus:ring-2 focus:ring-white/70"
-                    placeholder="nome@exemplo.com"
-                  />
-                </label>
-                <label className="flex flex-col gap-2 text-sm font-medium">
-                  Mensagem
-                  <textarea
-                    name="message"
-                    required
-                    rows={5}
-                    className="bg-white text-stone-900 border-2 border-stone-900 px-4 py-3 glossy-finish focus:outline-none focus:ring-2 focus:ring-white/70"
-                    placeholder="Descreva a sua mensagem"
-                  />
-                </label>
-                <button
-                  type="submit"
-                  className="bg-white text-primary font-headline font-bold px-6 py-3 border-2 border-stone-900 glossy-finish active:translate-y-[2px]"
-                >
-                  Enviar email
-                </button>
-              </form>
+              <ContactForm />
             </div>
           </div>
         </section>
