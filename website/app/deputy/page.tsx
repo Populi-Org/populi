@@ -10,6 +10,7 @@ type AssemblySearchParams = {
   since?: string;
   search?: string;
   filters?: string;
+  page?: string;
 };
 
 export default async function AssemblyPage({
@@ -38,6 +39,7 @@ export default async function AssemblyPage({
             initialParty={resolvedSearchParams?.party || ""}
             initialTheme={resolvedSearchParams?.theme || ""}
             initialFiltersVisible={shouldShowFilters}
+            initialPage={Number.parseInt(resolvedSearchParams?.page || "1", 10)}
           />
         </Suspense>
       </main>
