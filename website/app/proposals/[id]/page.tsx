@@ -88,7 +88,7 @@ export default async function ProposalDetailPage({
       <Header />
       <main className="flex-grow p-6 md:p-8 max-w-4xl mx-auto w-full">
         <Link
-          href="/propostas"
+          href="/proposals"
           className="inline-flex items-center gap-1 text-on-surface-variant hover:text-primary mb-4 font-label text-sm uppercase tracking-wider transition-colors"
         >
           <span className="material-symbols-outlined text-base">

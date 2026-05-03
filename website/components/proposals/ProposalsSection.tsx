@@ -306,7 +306,7 @@ export default function ProposalsSection() {
             {proposals.map((p) => (
               <a
                 key={p.id}
-                href={`/propostas/${p.id}`}
+                href={`/proposals/${p.id}`}
                 className="border-2 border-stone-900 bg-surface-container p-4 glossy-finish flex flex-col hover:border-primary transition-colors group h-full"
               >
                 <div className="flex items-start justify-between gap-2 mb-2 min-h-[1.5rem]">
