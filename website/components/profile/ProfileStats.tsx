@@ -1,33 +1,28 @@
-import {
-  BadgeCheck,
-  MessagesSquare,
-  TrendingUp,
-  UsersRound,
-} from "lucide-react";
+import { FileText, Landmark, MessagesSquare, UsersRound } from "lucide-react";
 
 interface ProfileStatsProps {
   debateRank: number;
-  integrity: number;
+  initiatives: number;
   allies: number;
-  muralViews: number;
+  committees: number;
 }
 
 export default function ProfileStats({
   debateRank,
-  integrity,
+  initiatives,
   allies,
-  muralViews,
+  committees,
 }: ProfileStatsProps) {
   const stats = [
     {
       icon: <MessagesSquare className="w-8 h-8 text-primary-container" />,
-      label: "RANKING DE DEBATE",
-      value: `#${debateRank}`,
+      label: "INTERVENÇÕES",
+      value: debateRank.toString(),
     },
     {
-      icon: <BadgeCheck className="w-8 h-8 text-primary-container" />,
-      label: "INTEGRIDADE",
-      value: `${integrity}%`,
+      icon: <FileText className="w-8 h-8 text-primary-container" />,
+      label: "INICIATIVAS",
+      value: initiatives.toString(),
     },
     {
       icon: <UsersRound className="w-8 h-8 text-primary-container" />,
@@ -35,12 +30,9 @@ export default function ProfileStats({
       value: allies.toString(),
     },
     {
-      icon: <TrendingUp className="w-8 h-8 text-primary-container" />,
-      label: "VISUALIZAÇÕES",
-      value:
-        muralViews >= 1000
-          ? `${(muralViews / 1000).toFixed(1)}k`
-          : muralViews.toString(),
+      icon: <Landmark className="w-8 h-8 text-primary-container" />,
+      label: "COMISSÕES",
+      value: committees.toString(),
     },
   ];
 

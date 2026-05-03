@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
@@ -14,6 +15,49 @@ import {
 import { getPrismaClient } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const prisma = getPrismaClient();
+  const { id } = await params;
+  const deputyId = Number.parseInt(id, 10);
+
+  if (Number.isNaN(deputyId)) {
+    return { title: "Deputado não encontrado | Populi" };
+  }
+
+  const deputy = await prisma.deputy.findUnique({
+    where: { id: deputyId },
+    include: {
+      partyHistory: {
+        where: { gpDtFim: null },
+        include: { party: { select: { sigla: true } } },
+        take: 1,
+      },
+    },
+  });
+
+  if (!deputy) {
+    return { title: "Deputado não encontrado | Populi" };
+  }
+
+  const party = deputy.partyHistory[0]?.party?.sigla;
+  const title = `${deputy.depNomeParlamentar}${party ? ` (${party})` : ""} — Perfil no Populi`;
+  const description = `Perfil parlamentar de ${deputy.depNomeParlamentar}${party ? `, deputado ${party}` : ""}${deputy.depCPDes ? ` por ${deputy.depCPDes}` : ""}. Consulta atividade legislativa, iniciativas, comissões e estatísticas.`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: deputy.depImageUrl ? [deputy.depImageUrl] : undefined,
+    },
+  };
+}
 
 export default async function DeputyPage({
   params,
@@ -157,9 +201,9 @@ export default async function DeputyPage({
                   >
                     <ProfileStats
                       debateRank={debateRank}
-                      integrity={98}
+                      initiatives={deputy.ini.length}
                       allies={alliesCount}
-                      muralViews={1200}
+                      committees={deputy.cms.length}
                     />
                   </div>
                 </div>

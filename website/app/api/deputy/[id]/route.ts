@@ -1,5 +1,4 @@
 import { type NextRequest, NextResponse } from "next/server";
-import type { Deputy } from "@/app/generated/prisma/client";
 import { getPrismaClient } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -46,6 +45,8 @@ export async function GET(
       _count: {
         select: {
           intev: true,
+          ini: true,
+          cms: true,
         },
       },
     },
@@ -58,7 +59,7 @@ export async function GET(
     );
   }
 
-  const deputy = deputyResult as Deputy & typeof deputyResult;
+  const deputy = deputyResult;
 
   const activePartyHistory = deputy.partyHistory[0];
   const partySigla = activePartyHistory?.party?.sigla || null;
@@ -68,8 +69,6 @@ export async function GET(
     role: c.cmsCargo,
     situation: c.cmsSituacao,
   }));
-
-  const debateRank = deputy._count.intev;
 
   const alliesCount = await prisma.deputy.count({
     where: {
@@ -121,10 +120,10 @@ export async function GET(
     initiatives,
     latestIntervention,
     stats: {
-      debateRank,
-      integrity: 98,
+      interventions: deputy._count.intev,
+      initiatives: deputy._count.ini,
+      committees: deputy._count.cms,
       allies: alliesCount,
-      muralViews: 1200,
     },
   });
 }
