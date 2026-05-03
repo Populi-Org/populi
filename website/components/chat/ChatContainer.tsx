@@ -99,7 +99,7 @@ export default function ChatContainer() {
     : null;
 
   return (
-    <div className="flex flex-col min-h-[400px] border-2 border-stone-900 bg-surface tile-bevel crazing-overlay">
+    <div className="flex flex-col flex-grow min-h-0 border-2 border-stone-900 bg-surface tile-bevel crazing-overlay">
       {/* Header */}
       <div className="flex items-center justify-between border-b-2 border-stone-900 p-3 bg-surface-container">
         <div>

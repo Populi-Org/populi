@@ -56,9 +56,9 @@ const sections = [
 
 export default function PrivacyPage() {
   return (
-    <div className="bg-surface font-body text-on-surface antialiased azulejo-crazing min-h-screen">
+    <div className="bg-surface font-body text-on-surface antialiased azulejo-crazing min-h-screen flex flex-col">
       <Header />
-      <main className="max-w-[1200px] mx-auto p-6 md:p-10 space-y-10">
+      <main className="flex-grow max-w-[1200px] mx-auto p-6 md:p-10 space-y-10">
         <section className="bg-surface-container border-4 border-stone-900 glossy-finish relative overflow-hidden">
           <div className="absolute inset-0 pattern-frame opacity-20 pointer-events-none" />
           <div className="relative z-10 p-8 md:p-12">

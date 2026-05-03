@@ -4,7 +4,7 @@ import Header from "@/components/layout/Header";
 
 export default function DeputyNotFound() {
   return (
-    <div className="bg-surface font-body text-on-surface antialiased azulejo-crazing min-h-screen">
+    <div className="bg-surface font-body text-on-surface antialiased azulejo-crazing min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow px-4 py-12 md:py-24 max-w-7xl mx-auto w-full flex flex-col items-center justify-center text-center">
         <div className="border-2 border-stone-900 bg-surface glossy-finish p-8 md:p-12 max-w-lg w-full">

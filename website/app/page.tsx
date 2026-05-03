@@ -8,9 +8,9 @@ export const dynamic = "force-dynamic";
 
 export default function Home() {
   return (
-    <div className="bg-surface font-body text-on-surface antialiased azulejo-crazing min-h-screen">
+    <div className="bg-surface font-body text-on-surface antialiased azulejo-crazing min-h-screen flex flex-col">
       <Header />
-      <main className="max-w-[1400px] mx-auto p-8 space-y-12">
+      <main className="flex-grow max-w-[1400px] mx-auto p-8 space-y-12">
         <HeroSection />
         <TrendingSection />
         <ExploreSection />

@@ -3,7 +3,7 @@ import Header from "@/components/layout/Header";
 
 export default function DeputyLoading() {
   return (
-    <div className="bg-surface font-body text-on-surface antialiased azulejo-crazing min-h-screen">
+    <div className="bg-surface font-body text-on-surface antialiased azulejo-crazing min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow px-4 py-4 md:py-20 max-w-7xl mx-auto w-full space-y-4">
         {/* Hero skeleton */}
