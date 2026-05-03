@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback, type FormEvent } from "react"
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import type { UIMessage } from "ai";
-import { Trash2 } from "lucide-react";
+import { Bot, Trash2 } from "lucide-react";
 import ChatMessage from "./ChatMessage";
 import ChatInput from "./ChatInput";
 import ClearChatDialog from "./ClearChatDialog";
@@ -113,7 +113,8 @@ export default function ChatContainer() {
       {/* Header */}
       <div className="flex items-center justify-between border-b-2 border-stone-900 p-3 bg-surface-container">
         <div>
-          <h2 className="font-headline text-lg font-bold text-primary">
+          <h2 className="font-headline text-lg font-bold text-primary flex items-center gap-2">
+            <Bot className="w-5 h-5" />
             Assistente Populi
           </h2>
           <p className="font-label text-[10px] uppercase tracking-wider text-on-surface-variant">
