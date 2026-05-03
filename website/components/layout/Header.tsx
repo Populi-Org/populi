@@ -9,8 +9,8 @@ export default function Header() {
   const navItems = [
     { href: "/", label: "Página Inicial" },
     { href: "/deputy", label: "Deputados" },
-    { href: "/assembly", label: "Assembleia" },
     { href: "/proposals", label: "Iniciativas" },
+    { href: "/assembly", label: "Assembleia" },
     { href: "/chat", label: "Chat" },
   ];
 
