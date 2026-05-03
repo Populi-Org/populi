@@ -28,6 +28,35 @@ Following political activity in Portugal has become an exhausting exercise: info
 
 To solve this problem, we created Populi. The name, drawn from the expression "Vox Populi, Vox Dei"; Latin for "The voice of the people is the voice of God"; demonstrates the platform's objective: a place where users can find concise and structured information regarding the politicians within each political party. By ignoring rumors and reinforcing facts, Populi is the key to a better-informed political opinion.
 
+# Tech Stack
+
+- **Frontend:** React, Tailwind CSS, Next.js, Lucide Icons
+- **Backend (runtime app):** Next.js, Prisma
+- **Data ingestion/scraper:** Python
+- **Database:** PostgreSQL
+- **AI Integration:** AI SDK, OpenCode
+- **DevOps:** Docker, GitHub Actions
+- **Code Quality:** Biome
+- **Design:** Figma, Stitch
+- **Testing:** Vitest with Codecov
+- **External APIs/Sources:** Público, Expresso, Polígrafo, Dados Abertos da Assembleia da República
+
+# Main Features
+
+- **Homepage** - The "Mural da Democracia" displays a live count of active deputies, highlights trending politicians based on parliamentary interventions, and allows users to explore the deputy mosaic filtered by party, region, or theme.
+
+- **Deputy Directory** (`/deputy`) - A searchable and paginated grid of all deputies. Users can filter by name, party, constituency, or theme, and toggle the inclusion of substitute deputies.
+
+- **Deputy Profile** (`/deputy/[id]`) - A detailed, tabbed profile for each politician including biographical highlights, legislative activity, recent initiatives, a featured parliamentary quote, profile statistics, news coverage, and Polígrafo fact-checks.
+
+- **Assembly Overview** (`/assembly`) - A visual breakdown of the Portuguese Parliament's composition, displaying all parties with seat counts, percentages, and an interactive hemicycle seating chart.
+
+- **Legislative Proposals** (`/proposals`) - A searchable and filterable catalog of legislative initiatives. Users can filter by type, author party, or result, and view detailed timelines of each proposal's legislative journey, including vote breakdowns by party.
+
+- **AI Chat Assistant** (`/chat`) - A conversational interface powered by an LLM with access to structured database tools. Users can ask natural language questions about deputies, parties, and parliamentary activity to receive factual, data-driven answers.
+
+- **Information Pages** - Dedicated pages for FAQ, Contact, Team, and Privacy Policy.
+
 # The Team
 
 <table>
