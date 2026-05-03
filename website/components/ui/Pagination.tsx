@@ -72,34 +72,38 @@ export default function Pagination({
         <span className="material-symbols-outlined">chevron_left</span>
       </button>
 
-      {visiblePages.map((page, index) => {
-        if (page === "...") {
-          return (
-            <span
-              key={`ellipsis-${index}`}
-              className="w-10 h-10 flex items-center justify-center font-body text-on-surface-variant"
-            >
-              ...
-            </span>
-          );
-        }
+      {(() => {
+        let ellipsisCount = 0;
+        return visiblePages.map((page) => {
+          if (page === "...") {
+            ellipsisCount++;
+            return (
+              <span
+                key={`ellipsis-${ellipsisCount}`}
+                className="w-10 h-10 flex items-center justify-center font-body text-on-surface-variant"
+              >
+                ...
+              </span>
+            );
+          }
 
-        const pageNum = page as number;
-        return (
-          <button
-            key={pageNum}
-            type="button"
-            onClick={() => onPageChange(pageNum)}
-            className={`border-2 border-stone-900 w-10 h-10 flex items-center justify-center glossy-finish font-label text-xs font-medium uppercase ${
-              pageNum === currentPage
-                ? "bg-primary-container text-on-primary"
-                : "bg-surface text-on-surface hover:bg-surface-container-high"
-            }`}
-          >
-            {pageNum}
-          </button>
-        );
-      })}
+          const pageNum = page as number;
+          return (
+            <button
+              key={pageNum}
+              type="button"
+              onClick={() => onPageChange(pageNum)}
+              className={`border-2 border-stone-900 w-10 h-10 flex items-center justify-center glossy-finish font-label text-xs font-medium uppercase ${
+                pageNum === currentPage
+                  ? "bg-primary-container text-on-primary"
+                  : "bg-surface text-on-surface hover:bg-surface-container-high"
+              }`}
+            >
+              {pageNum}
+            </button>
+          );
+        });
+      })()}
 
       <button
         type="button"

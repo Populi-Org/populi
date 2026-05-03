@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
+import { getProxiedImageUrl } from "@/lib/image-proxy";
 import { getPrismaClient } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -100,7 +101,7 @@ export async function GET(
       }
     : null;
 
-  const image = deputy.depImageUrl || "/defaultNoImage.png";
+  const image = getProxiedImageUrl(deputy.depImageUrl);
 
   return NextResponse.json({
     id: deputy.id,

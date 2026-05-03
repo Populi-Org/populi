@@ -1,4 +1,4 @@
-import Image from "next/image";
+import DeputyImage from "@/components/ui/DeputyImage";
 
 const partyColors: Record<string, string> = {
   PS: "#dc2626",
@@ -47,13 +47,10 @@ export default function ProfileHero({
           className="relative z-10 w-full h-full border-4 border-[#2F2F2F] shadow-lg overflow-hidden"
           style={{ backgroundColor: partyColor || "var(--secondary)" }}
         >
-          <Image
+          <DeputyImage
             alt={`Retrato de ${name}`}
             className="w-full h-full object-cover brightness-90 contrast-110"
             src={image}
-            width={600}
-            height={750}
-            priority
           />
         </div>
       </div>

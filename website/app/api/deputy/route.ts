@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import type { Prisma } from "@/app/generated/prisma/client";
+import { getProxiedImageUrl } from "@/lib/image-proxy";
 import { getPrismaClient } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -227,7 +228,7 @@ export async function GET(request: NextRequest) {
       constituency: deputy.depCPDes,
       party: partySigla,
       partyColor,
-      image: deputy.depImageUrl || "/defaultNoImage.png",
+      image: getProxiedImageUrl(deputy.depImageUrl),
       description,
       isSuplente,
     };

@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import DeputyImage from "@/components/ui/DeputyImage";
 
 interface RepresentativeCardProps {
   id: number;
@@ -45,12 +45,10 @@ export default function RepresentativeCard({
         />
         <div className="p-6 flex flex-col items-center flex-grow">
           <div className="w-32 h-32 border-2 border-stone-900 overflow-hidden mb-4 relative glossy-finish">
-            <Image
+            <DeputyImage
               alt={`Retrato de ${name}`}
-              className="object-cover"
+              className="w-full h-full object-cover"
               src={image}
-              fill
-              sizes="128px"
             />
           </div>
           <h2 className="font-headline text-xl font-semibold text-on-surface text-center mb-1">
