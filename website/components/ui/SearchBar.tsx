@@ -17,9 +17,9 @@ export default function SearchBar({
   onFilterToggle,
 }: SearchBarProps) {
   return (
-    <div className="border-4 border-stone-900 bg-surface-container glossy-finish azulejo-crazing solid-shadow p-6 md:p-10 relative overflow-hidden">
+    <div className="border-4 border-stone-900 bg-surface-container glossy-finish azulejo-crazing solid-shadow p-4 sm:p-6 md:p-10 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-32 h-32 geometric-bg opacity-10" />
-      <div className="flex flex-col md:flex-row gap-4 relative z-10">
+      <div className="flex flex-col gap-4 relative z-10">
         <div className="flex-grow border-2 border-stone-900 bg-surface flex items-center p-2 glossy-finish focus-within:border-primary transition-colors">
           <span className="material-symbols-outlined text-outline ml-2">
             search
@@ -37,11 +37,11 @@ export default function SearchBar({
             }}
           />
         </div>
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
           <button
             type="button"
             onClick={onFilterToggle}
-            className="border-2 border-stone-900 bg-surface text-primary-container px-4 py-2 font-label text-xs font-medium uppercase tracking-wider flex items-center gap-2 glossy-finish hover:bg-surface-container-high transition-colors"
+            className="border-2 border-stone-900 bg-surface text-primary-container px-4 py-2 font-label text-xs font-medium uppercase tracking-wider flex items-center justify-center gap-2 glossy-finish hover:bg-surface-container-high transition-colors"
           >
             <span
               className="material-symbols-outlined"

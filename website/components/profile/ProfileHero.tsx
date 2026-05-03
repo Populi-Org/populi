@@ -38,10 +38,10 @@ export default function ProfileHero({
   const partyColor = getPartyColor(party);
 
   return (
-    <div className="relative p-6 border-2 border-[#2F2F2F] bg-surface-container tile-bevel crazing-overlay flex flex-col md:flex-row gap-8 overflow-hidden">
+    <div className="relative p-4 sm:p-6 border-2 border-[#2F2F2F] bg-surface-container tile-bevel crazing-overlay flex flex-col md:flex-row gap-6 sm:gap-8 overflow-hidden">
       <div className="absolute inset-0 azulejo-border opacity-20 pointer-events-none" />
 
-      <div className="relative w-full md:w-1/2 aspect-[4/5] flex-shrink-0">
+      <div className="relative w-full md:w-1/2 aspect-[3/4] sm:aspect-[4/5] max-h-[400px] sm:max-h-none flex-shrink-0 mx-auto md:mx-0">
         <div className="absolute inset-0 bg-primary translate-x-2 translate-y-2" />
         <div
           className="relative z-10 w-full h-full border-4 border-[#2F2F2F] shadow-lg overflow-hidden"
@@ -58,7 +58,7 @@ export default function ProfileHero({
         </div>
       </div>
 
-      <div className="relative z-10 flex flex-col justify-center gap-6">
+      <div className="relative z-10 flex flex-col justify-center gap-4 sm:gap-6">
         <div className="relative self-start">
           <div className="absolute inset-0 bg-primary translate-x-1 translate-y-1" />
           <span className="relative z-10 block font-label text-xs font-bold uppercase tracking-wider text-on-secondary-fixed-variant bg-secondary-fixed px-3 py-1 border border-secondary shadow-sm">
@@ -66,7 +66,7 @@ export default function ProfileHero({
           </span>
         </div>
 
-        <h1 className="font-headline text-4xl md:text-5xl font-bold text-primary-container leading-none">
+        <h1 className="font-headline text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary-container leading-tight">
           {fullName}
         </h1>
 

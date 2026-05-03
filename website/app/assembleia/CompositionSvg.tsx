@@ -61,8 +61,8 @@ export default function CompositionSvg() {
         onMouseOver={handleMouseOver}
         onMouseLeave={handleMouseLeave}
         viewBox="0 0 300 140"
-        className="w-full h-40"
-        style={{ width: "500px", maxWidth: "500px" }}
+        className="w-full h-auto"
+        style={{ maxWidth: "500px" }}
         role="img"
         aria-labelledby="composition-title"
       >

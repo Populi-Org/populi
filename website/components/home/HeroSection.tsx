@@ -17,30 +17,30 @@ export default async function HeroSection() {
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
-      <div className="md:col-span-8 bg-surface-container border-4 border-stone-900 relative glossy-finish overflow-hidden flex flex-col justify-center min-h-[500px]">
+      <div className="md:col-span-8 bg-surface-container border-4 border-stone-900 relative glossy-finish overflow-hidden flex flex-col justify-center min-h-[400px] sm:min-h-[450px] md:min-h-[500px]">
         <div className="absolute inset-0 pattern-frame opacity-30 pointer-events-none" />
-        <div className="p-12 relative z-10">
+        <div className="p-6 sm:p-8 md:p-12 relative z-10">
           <span className="font-label text-primary tracking-[0.2em] mb-4 block text-xs font-medium uppercase">
             Bem-vindo ao Mosaico Cívico
           </span>
-          <h1 className="font-headline text-on-surface mb-6 leading-none text-5xl md:text-6xl font-bold">
+          <h1 className="font-headline text-on-surface mb-6 leading-none text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold">
             Mural da Democracia
           </h1>
-          <p className="font-body text-lg max-w-xl text-on-surface-variant mb-8 leading-relaxed">
+          <p className="font-body text-base sm:text-lg max-w-xl text-on-surface-variant mb-8 leading-relaxed">
             Cada decisão, cada voto e cada voz é um azulejo nesta construção
             coletiva. Explore o panorama político português através de uma lente
             artesanal e apartidária.
           </p>
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-4">
             <Link
               href="/deputados"
-              className="bg-primary text-white font-headline font-bold px-8 py-4 border-2 border-stone-900 glossy-finish active:translate-y-[2px]"
+              className="bg-primary text-white font-headline font-bold px-6 sm:px-8 py-3 sm:py-4 border-2 border-stone-900 glossy-finish active:translate-y-[2px] text-center"
             >
               Explorar o Mosaico
             </Link>
             <Link
               href="/faq"
-              className="bg-transparent border-2 border-stone-900 font-headline font-bold px-8 py-4 glossy-finish hover:bg-surface-variant"
+              className="bg-transparent border-2 border-stone-900 font-headline font-bold px-6 sm:px-8 py-3 sm:py-4 glossy-finish hover:bg-surface-variant text-center"
             >
               Saiba Mais
             </Link>

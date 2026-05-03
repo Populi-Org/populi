@@ -96,7 +96,7 @@ export default function ExploreSection() {
   }, []);
 
   return (
-    <section className="bg-surface-variant p-8 border-4 border-stone-900">
+    <section className="bg-surface-variant p-4 sm:p-6 md:p-8 border-4 border-stone-900">
       <div className="flex flex-col md:flex-row items-center gap-8">
         <div className="md:w-1/4">
           <h3 className="font-headline text-xl font-semibold text-primary mb-2">
