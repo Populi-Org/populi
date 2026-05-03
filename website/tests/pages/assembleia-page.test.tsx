@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import AssembleiaPage from "@/app/assembleia/page";
+import AssembleiaPage from "@/app/assembly/page";
 
 vi.mock("@/components/layout/Header", () => ({
   default: () => <header data-testid="header">Header</header>,
@@ -10,7 +10,7 @@ vi.mock("@/components/layout/Footer", () => ({
   default: () => <footer data-testid="footer">Footer</footer>,
 }));
 
-vi.mock("@/app/assembleia/CompositionSvg", () => ({
+vi.mock("@/app/assembly/CompositionSvg", () => ({
   default: () => <div data-testid="composition-svg">SVG</div>,
 }));
 

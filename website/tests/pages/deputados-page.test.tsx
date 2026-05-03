@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
-import AssemblyPage from "@/app/deputados/page";
+import AssemblyPage from "@/app/deputy/page";
 
 vi.mock("@/components/layout/Header", () => ({
   default: () => <header data-testid="header">Header</header>,

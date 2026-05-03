@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import HomePage from "@/app/page";
-import ProposalsPage from "@/app/propostas/page";
+import ProposalsPage from "@/app/proposals/page";
 import ChatPage from "@/app/chat/page";
 
 vi.mock("@/components/layout/Header", () => ({
