@@ -16,7 +16,9 @@ const rateLimitMap = new Map<string, RateLimitEntry>();
 function cleanupExpiredEntries(): void {
   const now = Date.now();
   for (const [ip, entry] of rateLimitMap.entries()) {
-    const valid = entry.timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
+    const valid = entry.timestamps.filter(
+      (t) => now - t < RATE_LIMIT_WINDOW_MS,
+    );
     if (valid.length === 0) {
       rateLimitMap.delete(ip);
     } else {

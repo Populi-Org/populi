@@ -1,7 +1,7 @@
 "use client";
 
 import { Send } from "lucide-react";
-import { type FormEvent } from "react";
+import type { FormEvent } from "react";
 
 interface ChatInputProps {
   input: string;

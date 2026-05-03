@@ -1,7 +1,7 @@
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
-import { streamText, convertToModelMessages, stepCountIs } from "ai";
-import { deputyTools } from "./tools";
+import { convertToModelMessages, stepCountIs, streamText } from "ai";
 import { getClientIp, isRateLimited } from "./rate-limit";
+import { deputyTools } from "./tools";
 
 const provider = createOpenAICompatible({
   name: "opencode-go",

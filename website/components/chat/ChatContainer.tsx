@@ -1,12 +1,18 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback, type FormEvent } from "react";
 import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
 import type { UIMessage } from "ai";
+import { DefaultChatTransport } from "ai";
 import { Bot, Trash2 } from "lucide-react";
-import ChatMessage from "./ChatMessage";
+import {
+  type FormEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import ChatInput from "./ChatInput";
+import ChatMessage from "./ChatMessage";
 import ClearChatDialog from "./ClearChatDialog";
 import { DEFAULT_QUESTIONS } from "./chat-constants";
 
@@ -46,14 +52,7 @@ export default function ChatContainer() {
     new DefaultChatTransport({ api: "/api/chat" }),
   ).current;
 
-  const {
-    messages,
-    status,
-    error,
-    setMessages,
-    sendMessage,
-    stop,
-  } = useChat({
+  const { messages, status, error, setMessages, sendMessage } = useChat({
     transport,
     onError: (err) => {
       console.error("Chat error:", err);
@@ -83,7 +82,7 @@ export default function ChatContainer() {
   // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, []);
 
   const handleSubmit = useCallback(
     (e: FormEvent<HTMLFormElement>) => {
@@ -183,9 +182,7 @@ export default function ChatContainer() {
         {errorMessage && (
           <div className="flex justify-center">
             <div className="bg-error-container border-2 border-stone-900 p-3 max-w-md">
-              <p className="font-body text-sm text-on-error">
-                {errorMessage}
-              </p>
+              <p className="font-body text-sm text-on-error">{errorMessage}</p>
             </div>
           </div>
         )}

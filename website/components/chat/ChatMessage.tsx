@@ -11,7 +11,9 @@ interface ChatMessageProps {
 function getMessageText(message: UIMessage): string {
   if (!message.parts) return "";
   return message.parts
-    .filter((part): part is { type: "text"; text: string } => part.type === "text")
+    .filter(
+      (part): part is { type: "text"; text: string } => part.type === "text",
+    )
     .map((part) => part.text)
     .join("");
 }
@@ -37,27 +39,27 @@ function getToolLabel(name: string): string {
   return toolLabelMap[name] || name;
 }
 
-export default function ChatMessage({ message, isLoading, isLast }: ChatMessageProps) {
+export default function ChatMessage({
+  message,
+  isLoading,
+  isLast,
+}: ChatMessageProps) {
   const isUser = message.role === "user";
   const text = getMessageText(message);
   const toolNames = getToolCallNames(message);
 
   // Only show thinking badges on the last assistant message while loading
   const showThinking =
-    !isUser &&
-    isLast &&
-    isLoading &&
-    toolNames.length > 0 &&
-    text.length === 0;
+    !isUser && isLast && isLoading && toolNames.length > 0 && text.length === 0;
 
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
       <div className="max-w-[80%] space-y-1">
         {showThinking && toolNames.length > 0 && (
           <div className="flex flex-wrap gap-1">
-            {toolNames.map((name, i) => (
+            {toolNames.map((name) => (
               <span
-                key={i}
+                key={name}
                 className="inline-flex items-center gap-1 bg-primary-container text-on-primary px-2 py-0.5 font-label text-[10px] uppercase tracking-wider animate-pulse"
               >
                 <span className="w-1.5 h-1.5 bg-on-primary rounded-full" />

@@ -1,9 +1,4 @@
-import {
-  FileText,
-  Landmark,
-  MessagesSquare,
-  UsersRound,
-} from "lucide-react";
+import { FileText, Landmark, MessagesSquare, UsersRound } from "lucide-react";
 
 interface ProfileStatsProps {
   debateRank: number;
