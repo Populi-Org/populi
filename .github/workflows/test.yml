@@ -31,7 +31,7 @@ jobs:
 
       - name: Run tests with coverage
         working-directory: ./website
-        run: pnpm test -- --coverage
+        run: pnpm exec vitest run --coverage
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
