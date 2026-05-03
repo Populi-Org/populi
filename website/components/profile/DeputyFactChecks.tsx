@@ -25,7 +25,7 @@ export default function DeputyFactChecks({ deputyId }: DeputyFactChecksProps) {
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    fetch(`/api/deputies/${deputyId}/fact-checks`)
+    fetch(`/api/deputy/${deputyId}/fact-checks`)
       .then((res) => res.json())
       .then((data) => {
         if (!cancelled) {

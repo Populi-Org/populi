@@ -29,7 +29,7 @@ export default function DeputyNews({ deputyId }: DeputyNewsProps) {
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    fetch(`/api/deputies/${deputyId}/news`)
+    fetch(`/api/deputy/${deputyId}/news`)
       .then((res) => res.json())
       .then((data) => {
         if (!cancelled) {
