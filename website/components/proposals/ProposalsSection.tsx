@@ -213,13 +213,6 @@ export default function ProposalsSection() {
                   label={p}
                   active={party === p}
                   onClick={() => setParty(party === p ? "" : p)}
-                  style={
-                    party === p && partyColor(p)
-                      ? { backgroundColor: partyColor(p), color: "#fff" }
-                      : partyColor(p)
-                        ? { borderColor: partyColor(p) }
-                        : undefined
-                  }
                 />
               ))}
             </div>
