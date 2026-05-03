@@ -31,7 +31,8 @@ To solve this problem, we created Populi. The name, drawn from the expression "V
 # Tech Stack
 
 - **Frontend:** React, Tailwind CSS, Next.js, Lucide Icons
-- **Backend:** Next.js, Prisma
+- **Backend (runtime app):** Next.js, Prisma
+- **Data ingestion/scraper:** Python
 - **Database:** PostgreSQL
 - **AI Integration:** AI SDK, OpenCode
 - **DevOps:** Docker, GitHub Actions
