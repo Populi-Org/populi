@@ -4,7 +4,7 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
-function getVisiblePages(
+export function getVisiblePages(
   currentPage: number,
   totalPages: number,
 ): (number | string)[] {

@@ -142,7 +142,7 @@ export default function ExploreSection() {
               <Link
                 key={party.id}
                 href={{
-                  pathname: "/deputados",
+                  pathname: "/deputy",
                   query: { party: party.label, filters: "1" },
                 }}
                 className="bg-white border-2 border-stone-900 px-4 py-2 font-label text-xs flex items-center gap-2"
@@ -165,7 +165,7 @@ export default function ExploreSection() {
             <Link
               key={region}
               href={{
-                pathname: "/deputados",
+                pathname: "/deputy",
                 query: { constituency: region, filters: "1" },
               }}
               className="bg-white border-2 border-stone-900 px-4 py-2 font-label text-xs"
@@ -180,7 +180,7 @@ export default function ExploreSection() {
           {themes.map((theme) => (
             <Link
               key={theme}
-              href={{ pathname: "/deputados", query: { theme, filters: "1" } }}
+              href={{ pathname: "/deputy", query: { theme, filters: "1" } }}
               className="bg-white border-2 border-stone-900 px-4 py-2 font-label text-xs"
             >
               {theme}

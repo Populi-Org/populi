@@ -13,7 +13,7 @@ const partyColors: Record<string, string> = {
   PAN: "#14b8a6",
 };
 
-function getPartyColor(sigla: string | null): string | null {
+export function getPartyColor(sigla: string | null): string | null {
   if (!sigla) return null;
   return partyColors[sigla] || null;
 }

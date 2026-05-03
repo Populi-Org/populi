@@ -33,7 +33,7 @@ export default async function HeroSection() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Link
-              href="/deputados"
+              href="/deputy"
               className="bg-primary text-white font-headline font-bold px-6 sm:px-8 py-3 sm:py-4 border-2 border-stone-900 glossy-finish active:translate-y-[2px] text-center"
             >
               Explorar o Mosaico

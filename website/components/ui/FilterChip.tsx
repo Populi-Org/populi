@@ -2,17 +2,20 @@ interface FilterChipProps {
   label: string;
   active?: boolean;
   onClick?: () => void;
+  style?: React.CSSProperties;
 }
 
 export default function FilterChip({
   label,
   active = false,
   onClick,
+  style,
 }: FilterChipProps) {
   return (
     <button
       type="button"
       onClick={onClick}
+      style={style}
       className={`border-2 border-stone-900 px-3 py-1 font-label text-xs font-medium uppercase tracking-wider cursor-pointer transition-colors ${
         active
           ? "bg-primary-container text-on-primary"
