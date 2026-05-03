@@ -84,7 +84,7 @@ export default async function ProposalDetailPage({
     })[0];
 
   return (
-    <div className="bg-surface font-body text-on-surface antialiased azulejo-crazing min-h-screen">
+    <div className="bg-surface font-body text-on-surface antialiased azulejo-crazing min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow p-6 md:p-8 max-w-4xl mx-auto w-full">
         <Link
