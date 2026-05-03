@@ -17,7 +17,7 @@ export default function SearchBar({
   onFilterToggle,
 }: SearchBarProps) {
   return (
-    <div className="border-4 border-stone-900 bg-surface-container glossy-finish azulejo-crazing solid p-4 sm:p-6 md:p-10 relative overflow-hidden">
+    <div className="border-4 border-stone-900 bg-surface-container glossy-finish azulejo-crazing solid-shadow p-4 sm:p-6 md:p-10 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-32 h-32 geometric-bg opacity-10" />
       <div className="flex flex-col gap-4 relative z-10">
         <div className="flex-grow border-2 border-stone-900 bg-surface flex items-center p-2 glossy-finish focus-within:border-primary transition-colors">
