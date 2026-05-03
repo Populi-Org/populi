@@ -36,8 +36,13 @@ export const deputyTools = {
         .string()
         .optional()
         .describe("Constituency name (e.g. Lisboa, Porto, Braga)"),
+      limit: z
+        .number()
+        .optional()
+        .default(10)
+        .describe("Maximum number of deputies to return (default 10)"),
     }),
-    execute: async ({ name, party, constituency }) => {
+    execute: async ({ name, party, constituency, limit = 10 }) => {
       const prisma = getPrismaClient();
 
       let partyDeputyIds: number[] | null = null;
@@ -83,7 +88,7 @@ export const deputyTools = {
             take: 1,
           },
         },
-        take: 10,
+        take: limit,
         orderBy: { depNomeParlamentar: "asc" },
       });
 
