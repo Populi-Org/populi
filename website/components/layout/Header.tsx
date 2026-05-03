@@ -10,6 +10,7 @@ export default function Header() {
     { href: "/", label: "Página Inicial" },
     { href: "/deputados", label: "Deputados" },
     { href: "/assembleia", label: "Assembleia" },
+    { href: "/propostas", label: "Propostas" },
     { href: "/chat", label: "Chat" },
   ];
 
