@@ -14,7 +14,8 @@
       "!dist",
       "!build",
       "!prisma",
-      "!app/generated"
+      "!app/generated",
+      "!tests"
     ]
   },
   "formatter": {
