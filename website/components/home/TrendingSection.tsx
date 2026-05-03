@@ -83,7 +83,7 @@ export default async function TrendingSection() {
       {trendingTopics.length === 0 ? (
         <div className="border-2 border-stone-900 p-6 bg-surface-container-lowest">
           <p className="font-body text-on-surface-variant">
-            Sem dados suficientes para destacar deputados neste memento.
+            Sem dados suficientes para destacar deputados neste momento.
           </p>
         </div>
       ) : (

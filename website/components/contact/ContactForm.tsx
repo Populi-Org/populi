@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, FormEvent } from "react";
 import { Loader2 } from "lucide-react";
+import { type FormEvent, useState } from "react";
 
 export default function ContactForm() {
   const [subject, setSubject] = useState("");

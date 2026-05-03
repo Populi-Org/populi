@@ -1,6 +1,6 @@
+import ContactForm from "@/components/contact/ContactForm";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
-import ContactForm from "@/components/contact/ContactForm";
 
 const contactOptions = [
   {
