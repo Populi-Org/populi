@@ -1,12 +1,11 @@
 "use client";
 
 import { Send } from "lucide-react";
-import type { FormEvent } from "react";
 
 interface ChatInputProps {
   input: string;
   onChange: (value: string) => void;
-  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  onSubmit: () => void;
   isLoading: boolean;
 }
 
@@ -18,13 +17,22 @@ export default function ChatInput({
 }: ChatInputProps) {
   return (
     <form
-      onSubmit={onSubmit}
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSubmit();
+      }}
       className="flex gap-2 border-2 border-stone-900 bg-surface p-2 tile-bevel"
     >
       <input
         type="text"
         value={input}
         onChange={(e) => onChange(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            onSubmit();
+          }
+        }}
         placeholder="Pergunte sobre um deputado..."
         className="flex-1 bg-transparent outline-none font-body text-sm px-2"
         disabled={isLoading}

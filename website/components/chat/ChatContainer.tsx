@@ -3,14 +3,9 @@
 import { useChat } from "@ai-sdk/react";
 import type { UIMessage } from "ai";
 import { DefaultChatTransport } from "ai";
-import { Bot, Trash2 } from "lucide-react";
-import {
-  type FormEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { Trash2 } from "lucide-react";
+import Image from "next/image";
+import { useCallback, useEffect, useRef, useState } from "react";
 import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
 import ClearChatDialog from "./ClearChatDialog";
@@ -84,16 +79,12 @@ export default function ChatContainer() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
-  const handleSubmit = useCallback(
-    (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      if (!input.trim() || isLoading) return;
+  const handleSubmit = useCallback(() => {
+    if (!input.trim() || isLoading) return;
 
-      sendMessage({ text: input });
-      setInput("");
-    },
-    [input, isLoading, sendMessage],
-  );
+    sendMessage({ text: input });
+    setInput("");
+  }, [input, isLoading, sendMessage]);
 
   const handleClear = useCallback(() => {
     setMessages([]);
@@ -108,12 +99,12 @@ export default function ChatContainer() {
     : null;
 
   return (
-    <div className="flex flex-col h-[calc(100vh-200px)] min-h-[400px] border-2 border-stone-900 bg-surface tile-bevel crazing-overlay">
+    <div className="flex flex-col min-h-[400px] border-2 border-stone-900 bg-surface tile-bevel crazing-overlay">
       {/* Header */}
       <div className="flex items-center justify-between border-b-2 border-stone-900 p-3 bg-surface-container">
         <div>
           <h2 className="font-headline text-lg font-bold text-primary flex items-center gap-2">
-            <Bot className="w-5 h-5" />
+            <Image src="/eye.svg" alt="Eye" width={20} height={20} />
             Assistente Populi
           </h2>
           <p className="font-label text-[10px] uppercase tracking-wider text-on-surface-variant">
